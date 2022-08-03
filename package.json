@@ -1,0 +1,26 @@
+{
+  "name": "tfvm_windows",
+  "version": "1.0.0",
+  "main": "ind.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "Jaden Sterner",
+  "license": "Apache-2.0",
+  "homepage": "",
+  "dependencies": {
+    "chalk": "^5.0.1",
+    "commander": "^9.4.0",
+    "conf": "^10.2.0"
+  },
+  "keywords": [],
+  "description": "",
+  "bin": {
+    "tfvm": "./index.js"
+  },
+  "type": "module"
+}
