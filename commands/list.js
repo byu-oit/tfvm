@@ -1,12 +1,15 @@
-import chalk from 'chalk';
-import compareVersions from 'compare-versions';
-import getTerraformVersion from "../util/tfVersion.js";
-import getInstalledVersions from "../util/getInstalledVersions.js";
+import chalk from 'chalk'
+import compareVersions from 'compare-versions'
+import getTerraformVersion from '../util/tfVersion.js'
+import getInstalledVersions from '../util/getInstalledVersions.js'
+import verifySetup from '../util/verifySetup.js'
 
 async function list () {
+  await verifySetup()
+  
   let printList = [];
   const tfList = await getInstalledVersions()
-
+  
   if (tfList !== null) {
       const currentTFVersion = await getTerraformVersion()
         process.stdout.write('\n');

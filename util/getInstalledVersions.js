@@ -1,6 +1,6 @@
-import fs from 'node:fs/promises';
-import versionRegEx from "./versionRegEx.js";
-import getDirectoriesObj from "../util/getDirectoriesObj.js";
+import fs from 'node:fs/promises'
+import versionRegEx from './versionRegEx.js'
+import getDirectoriesObj from '../util/getDirectoriesObj.js'
 
 async function getInstalledVersions () {
 

@@ -1,12 +1,15 @@
-import chalk from 'chalk';
-import versionRegEx from "../util/versionRegEx.js";
-import getInstalledVersions from "../util/getInstalledVersions.js";
-import getDirectoriesObj from "../util/getDirectoriesObj.js";
-import download from "../util/installFile.js";
-import unzipFile from "../util/unzipFile.js";
-import fs from 'node:fs/promises';
+import chalk from 'chalk'
+import versionRegEx from '../util/versionRegEx.js'
+import getInstalledVersions from '../util/getInstalledVersions.js'
+import getDirectoriesObj from '../util/getDirectoriesObj.js'
+import download from '../util/installFile.js'
+import unzipFile from '../util/unzipFile.js'
+import fs from 'node:fs/promises'
+import verifySetup from '../util/verifySetup.js'
 
 async function install (installVersion) {
+  await verifySetup()
+  
   const versionNum = installVersion
   installVersion = 'v' + installVersion
   if (!versionRegEx.test(installVersion)) {

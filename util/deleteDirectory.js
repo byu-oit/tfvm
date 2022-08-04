@@ -1,4 +1,4 @@
-import fs from 'node:fs/promises';
+import fs from 'node:fs/promises'
 
 async function deleteDirectory (baseDirectory, removeDir) {
   const baseDirFiles = await fs.readdir(baseDirectory);
