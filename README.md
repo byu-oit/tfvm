@@ -1,5 +1,5 @@
 
-# TFVM - Terraform Version Manager
+# TFVM - Terraform Version Manager for Windows
 
 #Step 1: Installation
 Users must first install TFVM
