@@ -22,8 +22,9 @@ async function use (useVersion) {
         chalk.white.bold(`terraform ${useVersion} is not installed. Type "tfvm list" to see what is installed.`)
       )
     } else {
+      console.log(terraformDir)
       const programFiles = await fs.readdir(programFilesDir)
-      if (programFiles.includes(terraformDir)) {
+      if (programFiles.includes('terraform')) {
         await fs.rmdir(terraformDir)
       }
 
