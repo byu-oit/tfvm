@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import fs from 'node:fs/promises';
+import deleteDirectory from "../util/deleteDirectory.js";
 import versionRegEx from "../util/versionRegEx.js";
 import getInstalledVersions from "../util/getInstalledVersions.js";
 import getDirectoriesObj from "../util/getDirectoriesObj.js";
@@ -13,7 +13,6 @@ async function uninstall (uninstallVersion) {
   }
   else {
     const tfvmDir = getDirectoriesObj().tfvmDir
-    const uninstallVerDir = tfvmDir.concat('\\').concat(uninstallVersion)
     const installedVersions = await getInstalledVersions()
     if (installedVersions === null || !installedVersions.includes(uninstallVersion)) {
       console.log(
@@ -23,11 +22,7 @@ async function uninstall (uninstallVersion) {
       process.stdout.write(
         chalk.white.bold(`Uninstalling terraform ${uninstallVersion}...`)
       )
-        const files = await fs.readdir(uninstallVerDir);
-        for (const file of files) {
-          await fs.unlink(uninstallVerDir + '\\' + file);
-        }
-        await fs.rmdir(uninstallVerDir)
+      await deleteDirectory(tfvmDir, uninstallVersion)
       process.stdout.write(' done')
     }
   }
