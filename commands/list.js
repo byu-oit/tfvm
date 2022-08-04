@@ -1,19 +1,34 @@
-import Conf from 'conf';
-const conf = new Conf({ projectName: 'tfvm_windows' });
 import chalk from 'chalk';
+import compareVersions from 'compare-versions';
+import getTerraformVersion from "../util/tfVersion.js";
+import getInstalledVersions from "../util/getInstalledVersions.js";
 
-const tfList = [];
+async function list () {
+  let printList = [];
+  const tfList = await getInstalledVersions()
 
-function list () {
-  // const tfList = conf.get('todo-list')
-
-  if (tfList && tfList.length) { //TODO highlight or add asterisk to current version
-    tfList.forEach(version => {
-      console.log(
-        chalk.white(version)
-      )
-    })
-  } else {
+  if (tfList !== null) {
+      const currentTFVersion = await getTerraformVersion()
+        process.stdout.write('\n');
+        tfList.sort(compareVersions).reverse();
+        for (const versionDir of tfList) {
+          if (versionDir === currentTFVersion) {
+            let printVersion = '  * ';
+            printVersion = printVersion + versionDir.substring(1, versionDir.length);
+            printVersion = printVersion + ' (Currently using 64-bit executable)';
+            printList.push(printVersion);
+          } else {
+            let printVersion = '    ';
+            printVersion = printVersion + versionDir.substring(1, versionDir.length);
+            printList.push(printVersion);
+            }
+          }
+          printList.forEach(printVersion => {
+            console.log(
+              chalk.white.bold(printVersion)
+            )
+          })
+    } else {
     console.log(
       chalk.cyan.bold('It appears you have no Terraform versions downloaded.', '\n',
         chalk.green.bold('Run tfmv install <version> to install a new version'))
@@ -21,4 +36,4 @@ function list () {
   }
 }
 
-export default list
+export default list;
