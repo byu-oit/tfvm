@@ -13,6 +13,7 @@ async function use (useVersion) {
   } else {
     const directories = getDirectoriesObj();
     const terraformDir = directories.terraformDir;
+    const programFilesDir = directories.programFilesdDir
     const tfvmDir = directories.tfvmDir;
     const useVerDir = tfvmDir.concat('\\').concat(useVersion);
     const installedVersions = await getInstalledVersions();
@@ -21,7 +22,11 @@ async function use (useVersion) {
         chalk.white.bold(`terraform ${useVersion} is not installed. Type "tfvm list" to see what is installed.`)
       )
     } else {
-      await fs.rmdir(terraformDir)
+      const programFiles = await fs.readdir(programFilesDir)
+      if (programFiles.includes(terraformDir)) {
+        await fs.rmdir(terraformDir)
+      }
+
       await fs.symlink(useVerDir, terraformDir, 'dir');
       console.log(
         chalk.cyan.bold(`Now using terraform ${useVersion} (64-bit)`)
