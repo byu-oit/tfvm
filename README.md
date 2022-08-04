@@ -1,12 +1,6 @@
 
 # TFVM - Terraform Version Manager
 
-**Table of Contents**
-
-[TOCM]
-
-[TOC]
-
 #Step 1: Installation
 Users must first install TFVM
 - Clone this repo (git clone https://github.com/jsterner30/tfvm-windows)
