@@ -23,7 +23,7 @@ async function use (useVersion) {
       )
     } else {
       const programFiles = await fs.readdir(programFilesDir)
-      if (programFiles.includes(terraformDir)) {
+      if (programFiles.includes('terraform')) {
         await fs.rmdir(terraformDir)
       }
 
