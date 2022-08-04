@@ -16,7 +16,7 @@ async function install (installVersion) {
   } else {
     const installedVersions = await getInstalledVersions();
     const tfvmDir = getDirectoriesObj().tfvmDir
-    if (installedVersions.includes(installVersion)) {
+    if (installedVersions && installedVersions.includes(installVersion)) {
       console.log(
         chalk.white.bold(`Version ${installVersion} is already installed.`)
       )
@@ -29,6 +29,10 @@ async function install (installVersion) {
       await fs.mkdir(newVersionDir);
       await unzipFile(zipPath, newVersionDir)
       await fs.unlink(zipPath)
+      process.stdout.write(
+        chalk.bold.cyan(`Installation complete. If you want to use this version, type\n\ntfvm use ${versionNum}`)
+      )
+
     }
   }
 }
