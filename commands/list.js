@@ -2,8 +2,10 @@ import chalk from 'chalk';
 import compareVersions from 'compare-versions';
 import getTerraformVersion from "../util/tfVersion.js";
 import getInstalledVersions from "../util/getInstalledVersions.js";
+import checkTFVMDir from "../util/checkTFVMDir.js";
 
 async function list () {
+  await checkTFVMDir()
   let printList = [];
   const tfList = await getInstalledVersions()
 

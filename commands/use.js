@@ -3,8 +3,10 @@ import fs from 'node:fs/promises';
 import versionRegEx from "../util/versionRegEx.js";
 import getInstalledVersions from "../util/getInstalledVersions.js";
 import getDirectoriesObj from "../util/getDirectoriesObj.js";
+import checkTFVMDir from "../util/checkTFVMDir.js";
 
 async function use (useVersion) {
+  await checkTFVMDir()
   useVersion = 'v' + useVersion
   if (!versionRegEx.test(useVersion)) {
     console.log(

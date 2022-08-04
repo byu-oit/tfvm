@@ -5,8 +5,11 @@ import getDirectoriesObj from "../util/getDirectoriesObj.js";
 import download from "../util/installFile.js";
 import unzipFile from "../util/unzipFile.js";
 import fs from 'node:fs/promises';
+import checkTFVMDir from "../util/checkTFVMDir.js";
+import getOSBits from '../util/getOSBits.js'
 
 async function install (installVersion) {
+  await checkTFVMDir()
   const versionNum = installVersion
   installVersion = 'v' + installVersion
   if (!versionRegEx.test(installVersion)) {
@@ -24,7 +27,8 @@ async function install (installVersion) {
     else {
       const zipPath = tfvmDir.concat('\\').concat(`${installVersion}.zip`)
       const newVersionDir =  tfvmDir.concat('\\').concat(installVersion)
-      const url = `https://releases.hashicorp.com/terraform/${versionNum}/terraform_${versionNum}_windows_amd64.zip`
+      const bitType = getOSBits() === 'AMD64' ? 'windows_amd64' : 'windows_386'
+      const url = `https://releases.hashicorp.com/terraform/${versionNum}/terraform_${versionNum}_${bitType}.zip`
       await download(url, zipPath, versionNum)
       await fs.mkdir(newVersionDir);
       await unzipFile(zipPath, newVersionDir)
