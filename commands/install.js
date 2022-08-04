@@ -2,8 +2,12 @@ import chalk from 'chalk';
 import versionRegEx from "../util/versionRegEx.js";
 import getInstalledVersions from "../util/getInstalledVersions.js";
 import getDirectoriesObj from "../util/getDirectoriesObj.js";
+import download from "../util/installFile.js";
+import unzipFile from "../util/unzipFile.js";
+import fs from 'node:fs/promises';
 
 async function install (installVersion) {
+  const versionNum = installVersion
   installVersion = 'v' + installVersion
   if (!versionRegEx.test(installVersion)) {
     console.log(
@@ -11,13 +15,20 @@ async function install (installVersion) {
     )
   } else {
     const installedVersions = await getInstalledVersions();
+    const tfvmDir = getDirectoriesObj().tfvmDir
     if (installedVersions.includes(installVersion)) {
       console.log(
         chalk.white.bold(`Version ${installVersion} is already installed.`)
       )
     }
     else {
-
+      const zipPath = tfvmDir.concat('\\').concat(`${installVersion}.zip`)
+      const newVersionDir =  tfvmDir.concat('\\').concat(installVersion)
+      const url = `https://releases.hashicorp.com/terraform/${versionNum}/terraform_${versionNum}_windows_amd64.zip`
+      await download(url, zipPath, versionNum)
+      await fs.mkdir(newVersionDir);
+      await unzipFile(zipPath, newVersionDir)
+      await fs.unlink(zipPath)
     }
   }
 }

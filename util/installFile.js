@@ -1,7 +1,8 @@
 import * as https from 'https';
-import fs from 'node:fs/promises';
+import chalk from 'chalk';
+import fs from 'node:fs';
 
-async function download(url, filePath) {
+async function download(url, filePath, version) {
   const proto = !url.charAt(4).localeCompare('s') ? https : http;
 
   return new Promise((resolve, reject) => {
@@ -11,7 +12,9 @@ async function download(url, filePath) {
     const request = proto.get(url, response => {
       if (response.statusCode !== 200) {
         fs.unlink(filePath, () => {
-          reject(new Error(`Failed to get '${url}' (${response.statusCode})`));
+          console.log(
+            chalk.red.bold(`Terraform ${version}  is not yet released or available.`)
+          )
         });
         return;
       }

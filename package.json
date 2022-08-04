@@ -19,6 +19,7 @@
     "conf": "^10.2.0",
     "file-system": "^1.2.2",
     "https": "^1.0.0",
+    "node-stream-zip": "^1.15.0",
     "util": "^0.12.4"
   },
   "keywords": [],
