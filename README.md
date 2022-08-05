@@ -3,7 +3,7 @@
 
 #Step 1: Installation
 Users must first install TFVM
-- run `npm i -g tfvm-windows
+- run `npm i -g tfvm-windows`
 
 #Step 2: Change Path System and User Variables
 User must add the filepath for the terraform command to system and user environmental Path variable
