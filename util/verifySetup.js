@@ -36,7 +36,7 @@ async function verifySetup () {
     } else if (tfPaths.length > 1) {
       console.log(
         chalk.red.bold(
-          'Your path environmental variable includes the following terraform paths:'
+          'Your Path environmental variable includes the following terraform paths:'
         )
       )
       for (const badPath of tfPaths) {
@@ -50,7 +50,7 @@ async function verifySetup () {
         chalk.red.bold(`This may stop tfvm from working correctly.`)
       )
       console.log(
-        chalk.red.bold(`To ensure that tfvm functions correctly, use only 'C:\\Program Files\\terraform' in your path system/user variables.`)
+        chalk.red.bold(`To ensure that tfvm functions correctly, use only 'C:\\Program Files\\terraform' in your Path system environmental variables.`)
       )
       console.log(
         chalk.cyan.bold(`To disable this error run 'tfvm config disableErrors=true'`)
