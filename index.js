@@ -1,9 +1,9 @@
 #! /usr/bin/env node
 
-import { Command } from 'commander';
-const program = new Command();
-import list from './commands/list.js';
-import uninstall from './commands/uninstall.js';
+import { Command } from 'commander'
+const program = new Command()
+import list from './commands/list.js'
+import uninstall from './commands/uninstall.js'
 import use from './commands/use.js'
 import install from './commands/install.js'
 

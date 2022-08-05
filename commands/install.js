@@ -1,13 +1,14 @@
-import chalk from 'chalk';
-import versionRegEx from "../util/versionRegEx.js";
-import getInstalledVersions from "../util/getInstalledVersions.js";
-import getDirectoriesObj from "../util/getDirectoriesObj.js";
-import download from "../util/installFile.js";
-import unzipFile from "../util/unzipFile.js";
-import fs from 'node:fs/promises';
-import checkTFVMDir from "../util/checkTFVMDir.js";
+
+import chalk from 'chalk'
+import versionRegEx from '../util/versionRegEx.js'
+import getInstalledVersions from '../util/getInstalledVersions.js'
+import getDirectoriesObj from '../util/getDirectoriesObj.js'
+import download from '../util/installFile.js'
+import unzipFile from '../util/unzipFile.js'
+import fs from 'node:fs/promises'
+import checkTFVMDir from "../util/checkTFVMDir.js"
 import getOSBits from '../util/getOSBits.js'
-import getErrorMessage from "../util/errorChecker.js";
+import getErrorMessage from "../util/errorChecker.js"
 
 async function install (installVersion) {
   try {

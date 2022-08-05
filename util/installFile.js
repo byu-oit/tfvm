@@ -1,6 +1,6 @@
-import * as https from 'https';
-import chalk from 'chalk';
-import fs from 'node:fs';
+import * as https from 'https'
+import chalk from 'chalk'
+import fs from 'node:fs'
 
 async function download(url, filePath, version) {
   const proto = !url.charAt(4).localeCompare('s') ? https : http;

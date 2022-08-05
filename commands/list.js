@@ -1,9 +1,10 @@
-import chalk from 'chalk';
-import compareVersions from 'compare-versions';
-import getTerraformVersion from "../util/tfVersion.js";
-import getInstalledVersions from "../util/getInstalledVersions.js";
-import checkTFVMDir from "../util/checkTFVMDir.js";
-import getErrorMessage from "../util/errorChecker.js";
+
+import chalk from 'chalk'
+import compareVersions from 'compare-versions'
+import getTerraformVersion from '../util/tfVersion.js'
+import getInstalledVersions from '../util/getInstalledVersions.js'
+import checkTFVMDir from "../util/checkTFVMDir.js"
+import getErrorMessage from "../util/errorChecker.js"
 
 async function list () {
   try {
