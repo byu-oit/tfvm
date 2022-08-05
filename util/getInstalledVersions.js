@@ -5,13 +5,13 @@ import getDirectoriesObj from '../util/getDirectoriesObj.js'
 async function getInstalledVersions () {
 
   const directoriesObj = getDirectoriesObj()
-  const tfList = [];
+  const tfList = []
 
-  const files = await fs.readdir(directoriesObj.tfvmDir);
+  const files = await fs.readdir(directoriesObj.tfvmDir)
   if (files && files.length) {
     files.forEach(file => {
       if (versionRegEx.test(file)) {
-        tfList.push(file);
+        tfList.push(file)
       }
     })
     return tfList

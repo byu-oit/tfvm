@@ -3,12 +3,12 @@ import deleteDirectory from '../util/deleteDirectory.js'
 import versionRegEx from '../util/versionRegEx.js'
 import getInstalledVersions from '../util/getInstalledVersions.js'
 import getDirectoriesObj from '../util/getDirectoriesObj.js'
-import checkTFVMDir from "../util/checkTFVMDir.js"
+import verifySetup from "../util/verifySetup.js"
 import getErrorMessage from "../util/errorChecker.js"
 
 async function uninstall (uninstallVersion) {
   try {
-    await checkTFVMDir()
+    await verifySetup()
     uninstallVersion = 'v' + uninstallVersion
     if (!versionRegEx.test(uninstallVersion)) {
       console.log(
@@ -34,4 +34,4 @@ async function uninstall (uninstallVersion) {
   }
 }
 
-export default uninstall;
+export default uninstall

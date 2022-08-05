@@ -12,8 +12,8 @@ async function getTerraformVersion () {
       return response
     }
   } catch (e) {
-    return null;
+    return null
   }
 }
 
-export default getTerraformVersion;
+export default getTerraformVersion

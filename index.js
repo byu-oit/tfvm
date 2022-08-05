@@ -6,6 +6,7 @@ import list from './commands/list.js'
 import uninstall from './commands/uninstall.js'
 import use from './commands/use.js'
 import install from './commands/install.js'
+import getTFVMVersion from "./util/getTFVMVersion.js";
 
 program
   .command('uninstall <version>')
@@ -27,4 +28,6 @@ program
   .description('Use a version of terraform')
   .action(install)
 
-program.parse();
+program.version(await getTFVMVersion(), '-v, --version', 'Output the current version')
+
+program.parse()
