@@ -3,6 +3,7 @@
 import { Command } from 'commander'
 const program = new Command()
 import list from './commands/list.js'
+import current from './commands/current.js'
 import uninstall from './commands/uninstall.js'
 import use from './commands/use.js'
 import install from './commands/install.js'
@@ -18,6 +19,11 @@ program
   .command('list')
   .description('List all downloaded version of terraform')
   .action(list)
+
+program
+  .command('current')
+  .description('Display current version of terraform. Does the same thing as `terraform -v`')
+  .action(current)
 
 program
   .command('use <version>')
