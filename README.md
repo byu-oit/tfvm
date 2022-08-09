@@ -1,5 +1,5 @@
 # TFVM - Terraform Version Manager for Windows
-##A NodeJS-based CLI tool to manage terraform versions on windows (that actaully works)
+## A NodeJS-based CLI tool to manage terraform versions on windows (that actaully works)
 
 ## Usage
 
