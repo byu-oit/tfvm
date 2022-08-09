@@ -17,15 +17,17 @@ tfvm will auto-create directories and an environment variable for terraform setu
 ### Step 3: Use TFVM
 run `tfvm` in any command line, followed by one of these commands:
 - `install`: installs terraform version and sets up folder inside your tfvm folder.
-  Ex: `tfvm install 1.0.3` or `tfvm install latest`
+  - Ex: `tfvm install 1.0.3` or `tfvm install latest`
 - `list`: lists all versions of terraform you have saved in your tfvm folder.
-  Ex: `tfvm list`
+  - Ex: `tfvm list`
 - `uninstall`: Deletes terraform executable and folder inside your tfvm folder.
-  Ex: `tfvm uninstall 1.0.3`
+  - Ex: `tfvm uninstall 1.0.3`
 - `use`: sets specified terraform version to being the actively used version.
-  Ex: `tfvm use 1.0.3`
+  - Ex: `tfvm use 1.0.3`
 - `current`: displays the terraform version you are using.
-  Ex: `tfvm current`
+  - Ex: `tfvm current`
+- `tfvm config`: allows the user to change tfvm settings (currently the only setting is 'disableErrors', a boolean)
+  - Ex: `tfvm config disableErrors=true`
 - `help`: prints usage information. Run `tfvm help <command>` to see information about the other tfvm commands.
 
 ## FAQ
