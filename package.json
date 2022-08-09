@@ -1,6 +1,6 @@
 {
   "name": "tfvm-windows",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "main": "ind.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -23,7 +23,14 @@
     "node-stream-zip": "^1.15.0",
     "util": "^0.12.4"
   },
-  "keywords": ["terraform", "cli", "terraform-manager", "terraform-version-manager", "windows", "tfvm"],
+  "keywords": [
+    "terraform",
+    "cli",
+    "terraform-manager",
+    "terraform-version-manager",
+    "windows",
+    "tfvm"
+  ],
   "description": "",
   "bin": {
     "tfvm": "./index.js"
