@@ -8,8 +8,8 @@ import fs from 'node:fs/promises'
 import verifySetup from "../util/verifySetup.js"
 import getOSBits from '../util/getOSBits.js'
 import getErrorMessage from "../util/errorChecker.js"
-import getTerraformVersion from "../util/tfVersion.js";
-import getLatest from "../util/getLatest.js";
+import getTerraformVersion from "../util/tfVersion.js"
+import getLatest from "../util/getLatest.js"
 
 async function install (installVersion) {
 

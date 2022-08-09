@@ -1,6 +1,6 @@
 import utils from 'util'
 import { exec } from 'node:child_process'
-import chalk from "chalk";
+import chalk from "chalk"
 export const execute = utils.promisify(exec)
 
 async function getTerraformVersion () {

@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
 import chalk from 'chalk'
 import getDirectoriesObj from "./getDirectoriesObj.js"
-import getSettings from "./getSettings.js";
+import getSettings from "./getSettings.js"
 
 async function verifySetup () {
   const appDataDir = getDirectoriesObj().appDataDir

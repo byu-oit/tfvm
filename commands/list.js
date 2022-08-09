@@ -4,6 +4,7 @@ import getTerraformVersion from '../util/tfVersion.js'
 import getInstalledVersions from '../util/getInstalledVersions.js'
 import verifySetup from "../util/verifySetup.js"
 import getErrorMessage from "../util/errorChecker.js"
+import getOSBits from "../util/getOSBits.js";
 
 async function list () {
   try {
@@ -17,9 +18,10 @@ async function list () {
       tfList.sort(compareVersions).reverse()
       for (const versionDir of tfList) {
         if (versionDir === currentTFVersion) {
+          const bitType = getOSBits() === 'AMD64' ? '64' : '32'
           let printVersion = '  * '
           printVersion = printVersion + versionDir.substring(1, versionDir.length)
-          printVersion = printVersion + ' (Currently using 64-bit executable)'
+          printVersion = printVersion + ` (Currently using ${bitType}-bit executable)`
           printList.push(printVersion)
         } else {
           let printVersion = '    '
