@@ -5,6 +5,7 @@ import getInstalledVersions from "../util/getInstalledVersions.js"
 import getDirectoriesObj from "../util/getDirectoriesObj.js"
 import verifySetup from "../util/verifySetup.js"
 import getErrorMessage from "../util/errorChecker.js"
+import getOSBits from "../util/getOSBits.js";
 
 async function use (useVersion) {
   try {
@@ -31,9 +32,10 @@ async function use (useVersion) {
           await fs.rmdir(terraformDir)
         }
 
+        const bitType = getOSBits() === 'AMD64' ? '64' : '32'
         await fs.symlink(useVerDir, terraformDir, 'dir')
         console.log(
-          chalk.cyan.bold(`Now using terraform ${useVersion} (64-bit)`)
+          chalk.cyan.bold(`Now using terraform ${useVersion} (${bitType}-bit)`)
         )
       }
     }

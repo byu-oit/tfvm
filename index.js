@@ -7,8 +7,8 @@ import current from './commands/current.js'
 import uninstall from './commands/uninstall.js'
 import use from './commands/use.js'
 import install from './commands/install.js'
-import getTFVMVersion from "./util/getTFVMVersion.js";
-import config from "./commands/config.js";
+import getTFVMVersion from "./util/getTFVMVersion.js"
+import config from "./commands/config.js"
 
 program
   .command('uninstall <version>')
