@@ -1,24 +1,13 @@
-import utils from 'util'
-import { exec } from 'node:child_process'
-import chalk from "chalk"
-export const execute = utils.promisify(exec)
+import runShell from '../util/runShell.js'
 
 async function getTerraformVersion () {
-  let response = ''
-  try {
-    response = await execute('terraform -v')
-    if (!response.stderr) {
-      response = response.stdout.split('\n')[0]
-      response = response.split(' ')[1]
-      return response
-    } else {
-      console.log(
-        chalk.red.bold(response.stderr)
-      )
-    }
-  } catch (e) {
+  let response = (await runShell('terraform -v'))
+  if (response == null) {
     return null
   }
+  response = response.split('\n')[0]
+  response = response.split(' ')[1]
+  return response
 }
 
 export default getTerraformVersion
