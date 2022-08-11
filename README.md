@@ -31,7 +31,7 @@ run `tfvm` in any command line that has admin privileges (e.g. 'Run as Administr
   - Ex: `tfvm list`
 - `uninstall`: Deletes terraform executable and folder inside your tfvm folder.
   - Ex: `tfvm uninstall 1.0.3`
-- `use`: sets specified terraform version to being the actively used version. 
+- `use`: sets specified terraform version to being the actively used version.
   - Ex: `tfvm use 1.0.3`
  > FYI: `use` is the only command that actually requires admin rights to run.
 - `current`: displays the terraform version you are using.
