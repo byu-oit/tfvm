@@ -21,7 +21,7 @@ tfvm will auto-create directories and an environment variable for terraform setu
 1. Open up any command line (command prompt, Powershell, Git Bash, etc) that has admin privileges (e.g. 'Run as Administrator).
 2. Run any tfvm command. If you know what version you want to use first, you can run `tfvm install <that version>` and then `tfvm use <that version>`. If you don't have a version in mind, you could run something like `tfvm list` or `tfvm install latest`. If you are using powershell and run into any script execution errors, see the second question in the [FAQ](#faq). 
 > You should see some lines appear saying that tfvm has automatically added a directory pointing to its terraform installation folder to your Path. This means it is working correctly
-3. Restart your terminal. In order to start using terraform now, you'll have to open up a new terminal so that your Path can be refreshed and your CLI can actually find terraform.
+3. Restart your terminal(s). In order to start using terraform now, you'll have to open up a new terminal so that your Path can be refreshed and your CLI can actually find terraform. Any terminals (includuing those built into IDEs) that were open before you installed tfvm will have to be restarted to use the versions of terraform that tfvm install. This may require you to also restart your IDE.
 
 ## Usage
 run `tfvm` in any command line that has admin privileges (e.g. 'Run as Administrator), followed by one of these commands:
