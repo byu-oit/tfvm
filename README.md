@@ -1,29 +1,39 @@
 # TFVM - Terraform Version Manager for Windows
-### A NodeJS-based CLI tool to manage terraform versions on windows (that actaully works)
+### A NodeJS-based CLI tool to manage terraform versions on windows (that actually works)
 
-## Usage
+## Setup
 
 ### Step 1: Installation
-Users must first install tfvm
+Users must first install tfvm. You will need to have node installed.
   ```shell
   npm i -g tfvm-windows
   ```
+> If you frequently change versions of node and you wish to use tfvm in other node versions, you will need to re-install tfvm in this way for each version.
+>
+> Fortunately, any installed terraform versions and your selected terraform version will be maintained for each node version that you switch to, as they are stored on your system and not in node's files.
 
 ### Step 2: Delete existing terraform setup
 tfvm will auto-create directories and an environment variable for terraform setup. This will conflict with anything you already have.
-- If you already have terraform set up on your computer, delete your entry for your terraform directory in the PATH environment variable.
-- You could leave your terraform.exe file(s), but you might as well delete them. tfvm will download its own files.
+1. If you already have terraform set up on your computer, delete your entry for your terraform directory in the PATH environment variable.
+2. You could leave your terraform.exe file(s), but you might as well delete them. tfvm will download its own files.
 
-### Step 3: Use TFVM
-run `tfvm` in any command line, followed by one of these commands:
+### Step 3: Run tfvm for the first time
+1. Open up any command line (command prompt, Powershell, Git Bash, etc) that has admin privileges (e.g. 'Run as Administrator).
+2. Run any tfvm command. If you know what version you want to use first, you can run `tfvm install <that version>` and then `tfvm use <that version>`. If you don't have a version in mind, you could run something like `tfvm list` or `tfvm install latest`. If you are using powershell and run into any script execution errors, see the second question in the [FAQ](#faq). 
+> You should see some lines appear saying that tfvm has automatically added a directory pointing to its terraform installation folder to your Path. This means it is working correctly
+3. Restart your terminal. In order to start using terraform now, you'll have to open up a new terminal so that your Path can be refreshed and your CLI can actually find terraform.
+
+## Usage
+run `tfvm` in any command line that has admin privileges (e.g. 'Run as Administrator), followed by one of these commands:
 - `install`: installs terraform version and sets up folder inside your tfvm folder.
   - Ex: `tfvm install 1.0.3` or `tfvm install latest`
 - `list`: lists all versions of terraform you have saved in your tfvm folder.
   - Ex: `tfvm list`
 - `uninstall`: Deletes terraform executable and folder inside your tfvm folder.
   - Ex: `tfvm uninstall 1.0.3`
-- `use`: sets specified terraform version to being the actively used version.
+- `use`: sets specified terraform version to being the actively used version. 
   - Ex: `tfvm use 1.0.3`
+ > FYI: `use` is the only command that actually requires admin rights to run.
 - `current`: displays the terraform version you are using.
   - Ex: `tfvm current`
 - `tfvm config`: allows the user to change tfvm settings (currently the only setting is 'disableErrors', a boolean)
