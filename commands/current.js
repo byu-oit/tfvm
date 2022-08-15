@@ -15,8 +15,8 @@ async function current () {
       console.log(chalk.white.bold(currentTFVersion + ` (Currently using ${bitType}-bit executable)`))
     } else {
       console.log(
-        chalk.cyan.bold('It appears you have no Terraform versions downloaded.', '\n',
-          chalk.green.bold('Run tfvm install <version> to install a new version'))
+        chalk.cyan.bold('It appears there is no terraform version running on your computer.', '\n',
+          chalk.green.bold('Run tfvm use <version> to set your terraform version'))
       )
     }
   } catch (error) {

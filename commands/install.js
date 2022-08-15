@@ -21,7 +21,7 @@ async function install (installVersion) {
       console.log(
         chalk.red.bold('Invalid version syntax')
       )
-    } else if (versionNum == 'latest') {
+    } else if (versionNum === 'latest') {
       const installedVersions = await getInstalledVersions()
       const latest = await getLatest()
       const currentVersion = await getTerraformVersion()
