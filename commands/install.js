@@ -27,11 +27,11 @@ async function install (installVersion) {
       const currentVersion = await getTerraformVersion()
       if (latest) {
         const versionLatest = 'v' + latest
-        if (installedVersions.includes(versionLatest) && currentVersion !== versionLatest) {
+        if (installedVersions && installedVersions.includes(versionLatest) && currentVersion !== versionLatest) {
           console.log(
             chalk.bold.cyan(`The lastest terraform version is ${latest} and is already installed on your computer. Run 'tfvm use ${latest} to use.`)
           )
-        } else if (installedVersions.includes(versionLatest) && currentVersion === versionLatest) {
+        } else if (installedVersions && installedVersions.includes(versionLatest) && currentVersion === versionLatest) {
           const currentVersion = await getTerraformVersion()
           console.log(
             chalk.bold.cyan(`The lastest terraform version is ${currentVersion} and is already installed and in use on your computer.`)
