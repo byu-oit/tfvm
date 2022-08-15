@@ -31,8 +31,7 @@
     "windows",
     "tfvm"
   ],
-  "description": ",,
-
+  "description": "",
   "bin": {
     "tfvm": "./index.js"
   },
