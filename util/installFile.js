@@ -1,4 +1,5 @@
 import * as https from 'https'
+import * as http from 'http'
 import chalk from 'chalk'
 import fs from 'node:fs'
 
