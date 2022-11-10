@@ -7,10 +7,9 @@ import { dirname, resolve} from 'path'
 import { fileURLToPath } from 'url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-const tfPathString = `C:\\Program Files\\terraform`
+const {appDataDir, terraformDir} = getDirectoriesObj()
 
 async function verifySetup () {
-  const appDataDir = getDirectoriesObj().appDataDir
 
   // STEP 1: Check that the appdata/roaming/tfvm folder exists
   const appDataDirFiles = await fs.readdir(appDataDir)
@@ -28,8 +27,8 @@ async function verifySetup () {
   let pathVars = PATH.split(';')
   let pathVarDoesntExist = true
   for (const variable of pathVars) {
-    if (variable === tfPathString) pathVarDoesntExist = false
-    if (variable.toLowerCase().includes('terraform') && variable.replace(/[\r\n]/gm, '') !== tfPathString) { // strip newlines
+    if (variable === terraformDir) pathVarDoesntExist = false
+    if (variable.toLowerCase().includes('terraform') && variable.replace(/[\r\n]/gm, '') !== terraformDir) { // strip newlines
       tfPaths.push(variable)
     }
   }
@@ -43,7 +42,7 @@ async function verifySetup () {
   const settings = await getSettings()
   if (settings.disableErrors === 'false') {
     if (tfPaths.length === 1) {
-      if (tfPaths[0] !== tfPathString) {
+      if (tfPaths[0] !== terraformDir) {
         console.log(
           chalk.red.bold(`It appears you have ${tfPaths[0]} in your Path system environmental variables.`)
         )
