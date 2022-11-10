@@ -16,10 +16,7 @@ async function use (useVersion) {
         chalk.red.bold('Invalid version syntax')
       )
     } else {
-      const directories = getDirectoriesObj()
-      const terraformDir = directories.terraformDir
-      const programFilesDir = directories.programFilesdDir
-      const tfvmDir = directories.tfvmDir
+      const { terraformDir, appDataDir, tfvmDir } = getDirectoriesObj()
       const useVerDir = tfvmDir.concat('\\').concat(useVersion)
       const installedVersions = await getInstalledVersions()
       if (installedVersions === null || !installedVersions.includes(useVersion)) {
@@ -27,7 +24,7 @@ async function use (useVersion) {
           chalk.white.bold(`Terraform ${useVersion} is not installed. Type "tfvm list" to see what is installed.`)
         )
       } else {
-        const programFiles = await fs.readdir(programFilesDir)
+        const programFiles = await fs.readdir(appDataDir)
         if (programFiles.includes('terraform')) {
           await fs.rmdir(terraformDir)
         }
