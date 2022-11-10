@@ -17,6 +17,7 @@ program
 
 program
   .command('list')
+  .alias('ls')
   .description('List all downloaded version of terraform')
   .action(list)
 
@@ -27,6 +28,7 @@ program
 
 program
   .command('use <version>')
+  .alias('u')
   .description('Use a version of terraform')
   .action(use)
 
@@ -37,7 +39,8 @@ program
 
 program
   .command('install <version>')
-  .description('Use a version of terraform')
+  .alias('i')
+  .description('Install a version of terraform')
   .action(install)
 
 
