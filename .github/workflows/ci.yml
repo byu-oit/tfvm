@@ -35,5 +35,8 @@ jobs:
         with:
           node-version: ${{ env.node_version }}
 
+      - name: Install Packages
+        run: npm install
+
       - name: Lint App
         run: npm run lint
