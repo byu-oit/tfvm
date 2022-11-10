@@ -12,6 +12,7 @@ import enquirer from 'enquirer'
 async function use (useVersion) {
   try {
     if (!await verifySetup()) return
+    const versionNum = useVersion
     useVersion = 'v' + useVersion
     if (!versionRegEx.test(useVersion)) {
       console.log(
@@ -23,25 +24,36 @@ async function use (useVersion) {
       const installedVersions = await getInstalledVersions()
       if (installedVersions === null || !installedVersions.includes(useVersion)) {
         console.log(
-          chalk.white.bold(`Terraform ${useVersion} is not installed. Type "tfvm list" to see what is installed.`)
+          chalk.white.bold(`Terraform ${useVersion} is not installed. Would you like to install it?`)
         )
-      } else {
-        // if appdata/roaming/terraform doesn't exist, create it
-        const appDataFiles = await fs.readdir(appDataDir)
-        if (!appDataFiles.includes('terraform')) {
-          await fs.mkdir(terraformDir)
+        const installToggle = new enquirer.Toggle({
+          disabled: 'Yes',
+          enabled: 'No'
+        })
+        if (await installToggle.run()) {
+          console.log(
+            chalk.white.bold(`No action taken. Use 'tfvm install ${versionNum}' to install terraform ${useVersion}`)
+          )
+          return
+        } else {
+          await installFromWeb(useVersion, versionNum, false)
         }
-        // if appdata/roaming/terraform/terraform.exe exists, delete it
-        if ((await fs.readdir(terraformDir)).includes('terraform.exe')) {
-          await fs.unlink(terraformDir + '\\terraform.exe')
-        }
-
-        const bitType = getOSBits() === 'AMD64' ? '64' : '32'
-        await fs.copyFile(useVerDir + '\\terraform.exe', terraformDir + '\\terraform.exe')
-        console.log(
-          chalk.cyan.bold(`Now using terraform ${useVersion} (${bitType}-bit)`)
-        )
       }
+      // if appdata/roaming/terraform doesn't exist, create it
+      const appDataFiles = await fs.readdir(appDataDir)
+      if (!appDataFiles.includes('terraform')) {
+        await fs.mkdir(terraformDir)
+      }
+      // if appdata/roaming/terraform/terraform.exe exists, delete it
+      if ((await fs.readdir(terraformDir)).includes('terraform.exe')) {
+        await fs.unlink(terraformDir + '\\terraform.exe')
+      }
+
+      const bitType = getOSBits() === 'AMD64' ? '64' : '32'
+      await fs.copyFile(useVerDir + '\\terraform.exe', terraformDir + '\\terraform.exe')
+      console.log(
+        chalk.cyan.bold(`Now using terraform ${useVersion} (${bitType}-bit)`)
+      )
     }
   } catch (error) {
     getErrorMessage(error)

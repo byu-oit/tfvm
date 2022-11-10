@@ -59,7 +59,7 @@ async function install (installVersion) {
 
 export default install
 
-async function installFromWeb (installVersion, versionNum) {
+export async function installFromWeb (installVersion, versionNum, printMessage = true) {
   const tfvmDir = getDirectoriesObj().tfvmDir
   const zipPath = tfvmDir.concat('\\').concat(`${installVersion}.zip`)
   const newVersionDir = tfvmDir.concat('\\').concat(installVersion)
@@ -69,7 +69,9 @@ async function installFromWeb (installVersion, versionNum) {
   await fs.mkdir(newVersionDir)
   await unzipFile(zipPath, newVersionDir)
   await fs.unlink(zipPath)
-  process.stdout.write(
-    chalk.bold.cyan(`Installation complete. If you want to use this version, type\n\ntfvm use ${versionNum}`)
-  )
+  if (printMessage) {
+    process.stdout.write(
+      chalk.bold.cyan(`Installation complete. If you want to use this version, type\n\ntfvm use ${versionNum}`)
+    )
+  }
 }
