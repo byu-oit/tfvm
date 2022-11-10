@@ -27,7 +27,7 @@ async function verifySetup () {
   let pathVars = PATH.split(';')
   let pathVarDoesntExist = true
   for (const variable of pathVars) {
-    if (variable === terraformDir) pathVarDoesntExist = false
+    if (variable.replace(/[\r\n]/gm, '') === terraformDir) pathVarDoesntExist = false
     if (variable.toLowerCase().includes('terraform') && variable.replace(/[\r\n]/gm, '') !== terraformDir) { // strip newlines
       tfPaths.push(variable)
     }
@@ -43,9 +43,10 @@ async function verifySetup () {
       )
     } else {
       console.log(
-        chalk.red.bold(`We couldn't find the right path variable for terraform, so we just added it. Please restart your terminal, or open a new one, for terraform to work correctly.\n`)
+        chalk.red.bold(`We couldn't find the right path variable for terraform, so we just added it.\nPlease restart your terminal, or open a new one, for terraform to work correctly.\n`)
       )
     }
+    return false
   }
   const settings = await getSettings()
   if (settings.disableErrors === 'false') {
@@ -55,12 +56,13 @@ async function verifySetup () {
           chalk.red.bold(`It appears you have ${tfPaths[0]} in your Path system environmental variables.`)
         )
         console.log(
-          chalk.red.bold('This may stop tfvm from working correctly, so please remove this from the path. If you make changes to the path, make sure to restart your terminal.')
+          chalk.red.bold('This may stop tfvm from working correctly, so please remove this from the path.\nIf you make changes to the path, make sure to restart your terminal.')
         )
         // todo prompt the user with an option in the program to remove those lines for them, with a 'I know what I am doing' check?
         console.log(
           chalk.cyan.bold(`To disable this error run 'tfvm config disableErrors=true'`)
         )
+        return false
       }
     } else if (tfPaths.length > 1) {
       console.log(
@@ -74,13 +76,15 @@ async function verifySetup () {
         )
       }
       console.log(
-        chalk.red.bold(`This may stop tfvm from working correctly, so please remove these from the path. If you make changes to the path, make sure to restart your terminal.`)
+        chalk.red.bold(`This may stop tfvm from working correctly, so please remove these from the path.\nIf you make changes to the path, make sure to restart your terminal.`)
       )
       console.log(
         chalk.cyan.bold(`To disable this error run 'tfvm config disableErrors=true'`)
       )
+      return false
     }
   }
+  return true
 }
 
 export default verifySetup

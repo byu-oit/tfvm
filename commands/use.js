@@ -24,13 +24,18 @@ async function use (useVersion) {
           chalk.white.bold(`Terraform ${useVersion} is not installed. Type "tfvm list" to see what is installed.`)
         )
       } else {
-        const programFiles = await fs.readdir(appDataDir)
-        if (programFiles.includes('terraform')) {
-          await fs.rmdir(terraformDir)
+        // if appdata/roaming/terraform doesn't exist, create it
+        const appDataFiles = await fs.readdir(appDataDir)
+        if (!appDataFiles.includes('terraform')) {
+          await fs.mkdir(terraformDir)
+        }
+        // if appdata/roaming/terraform/terraform.exe exists, delete it
+        if ((await fs.readdir(terraformDir)).includes('terraform.exe')) {
+          await fs.unlink(terraformDir + '\\terraform.exe')
         }
 
         const bitType = getOSBits() === 'AMD64' ? '64' : '32'
-        await fs.symlink(useVerDir, terraformDir, 'dir')
+        await fs.copyFile(useVerDir + '\\terraform.exe', terraformDir + '\\terraform.exe')
         console.log(
           chalk.cyan.bold(`Now using terraform ${useVersion} (${bitType}-bit)`)
         )
