@@ -32,7 +32,7 @@ async function verifySetup () {
     }
   }
   if (pathVarDoesntExist) {
-    // add to system and local paths, if possible path. If you are not in an admin shell, it will only add to local.
+    // add to local paths
     if (await runShell(resolve(__dirname, './../scripts/addToPath.ps1'), { shell: 'powershell.exe' }) == null) {
       console.log(
         chalk.red.bold('tfvm script failed to run. Please run the following command in a powershell window:\n')
