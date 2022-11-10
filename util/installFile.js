@@ -3,7 +3,7 @@ import * as http from 'http'
 import chalk from 'chalk'
 import fs from 'node:fs'
 
-async function download(url, filePath, version) {
+async function download (url, filePath, version) {
   const proto = !url.charAt(4).localeCompare('s') ? https : http
 
   return new Promise((resolve, reject) => {
@@ -22,7 +22,7 @@ async function download(url, filePath, version) {
 
       fileInfo = {
         mime: response.headers['content-type'],
-        size: parseInt(response.headers['content-length'], 10),
+        size: parseInt(response.headers['content-length'], 10)
       }
 
       response.pipe(file)

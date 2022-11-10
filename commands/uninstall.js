@@ -3,8 +3,8 @@ import deleteDirectory from '../util/deleteDirectory.js'
 import versionRegEx from '../util/versionRegEx.js'
 import getInstalledVersions from '../util/getInstalledVersions.js'
 import getDirectoriesObj from '../util/getDirectoriesObj.js'
-import verifySetup from "../util/verifySetup.js"
-import getErrorMessage from "../util/errorChecker.js"
+import verifySetup from '../util/verifySetup.js'
+import getErrorMessage from '../util/errorChecker.js'
 
 async function uninstall (uninstallVersion) {
   try {

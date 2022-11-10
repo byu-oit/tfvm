@@ -1,8 +1,8 @@
 import chalk from 'chalk'
 import getTerraformVersion from '../util/tfVersion.js'
-import verifySetup from "../util/verifySetup.js"
-import getErrorMessage from "../util/errorChecker.js"
-import getOSBits from "../util/getOSBits.js";
+import verifySetup from '../util/verifySetup.js'
+import getErrorMessage from '../util/errorChecker.js'
+import getOSBits from '../util/getOSBits.js'
 
 async function current () {
   try {

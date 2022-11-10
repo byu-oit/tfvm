@@ -3,7 +3,6 @@ import versionRegEx from './versionRegEx.js'
 import getDirectoriesObj from '../util/getDirectoriesObj.js'
 
 async function getInstalledVersions () {
-
   const directoriesObj = getDirectoriesObj()
   const tfList = []
 
@@ -15,8 +14,7 @@ async function getInstalledVersions () {
       }
     })
     return tfList
-  }
-  else {
+  } else {
     return null
   }
 }

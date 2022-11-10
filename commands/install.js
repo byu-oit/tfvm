@@ -5,11 +5,11 @@ import getDirectoriesObj from '../util/getDirectoriesObj.js'
 import download from '../util/installFile.js'
 import unzipFile from '../util/unzipFile.js'
 import fs from 'node:fs/promises'
-import verifySetup from "../util/verifySetup.js"
+import verifySetup from '../util/verifySetup.js'
 import getOSBits from '../util/getOSBits.js'
-import getErrorMessage from "../util/errorChecker.js"
-import getTerraformVersion from "../util/tfVersion.js"
-import getLatest from "../util/getLatest.js"
+import getErrorMessage from '../util/errorChecker.js'
+import getTerraformVersion from '../util/tfVersion.js'
+import getLatest from '../util/getLatest.js'
 
 async function install (installVersion) {
   try {
@@ -18,7 +18,7 @@ async function install (installVersion) {
     installVersion = 'v' + installVersion
     if (!versionRegEx.test(installVersion) && versionNum !== 'latest') {
       console.log(
-        chalk.red.bold('Invalid version syntax')
+        chalk.red.bold('Invalid version syntax.')
       )
     } else if (versionNum === 'latest') {
       const installedVersions = await getInstalledVersions()
@@ -28,20 +28,18 @@ async function install (installVersion) {
         const versionLatest = 'v' + latest
         if (installedVersions && installedVersions.includes(versionLatest) && currentVersion !== versionLatest) {
           console.log(
-            chalk.bold.cyan(`The lastest terraform version is ${latest} and is already installed on your computer. Run 'tfvm use ${latest} to use.`)
+            chalk.bold.cyan(`The latest terraform version is ${latest} and is already installed on your computer. Run 'tfvm use ${latest} to use.`)
           )
         } else if (installedVersions && installedVersions.includes(versionLatest) && currentVersion === versionLatest) {
           const currentVersion = await getTerraformVersion()
           console.log(
             chalk.bold.cyan(`The lastest terraform version is ${currentVersion} and is already installed and in use on your computer.`)
           )
-        }
-        else {
+        } else {
           await installFromWeb(versionLatest, latest)
         }
       }
-    }
-    else {
+    } else {
       const installedVersions = await getInstalledVersions()
       if (installedVersions && installedVersions.includes(installVersion)) {
         console.log(
@@ -52,7 +50,7 @@ async function install (installVersion) {
       }
     }
   } catch (error) {
-      getErrorMessage(error)
+    getErrorMessage(error)
   }
 }
 

@@ -3,7 +3,8 @@
   "version": "1.5.1",
   "main": "ind.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "standard"
   },
   "repository": {
     "type": "git",
@@ -31,5 +32,8 @@
   "bin": {
     "tfvm": "./index.js"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "standard": "^17.0.0"
+  }
 }

@@ -2,14 +2,14 @@ import chalk from 'chalk'
 import compareVersions from 'compare-versions'
 import getTerraformVersion from '../util/tfVersion.js'
 import getInstalledVersions from '../util/getInstalledVersions.js'
-import verifySetup from "../util/verifySetup.js"
-import getErrorMessage from "../util/errorChecker.js"
-import getOSBits from "../util/getOSBits.js";
+import verifySetup from '../util/verifySetup.js'
+import getErrorMessage from '../util/errorChecker.js'
+import getOSBits from '../util/getOSBits.js'
 
 async function list () {
   try {
     if (!await verifySetup()) return
-    let printList = []
+    const printList = []
     const tfList = await getInstalledVersions()
 
     if (tfList !== null) {

@@ -1,14 +1,14 @@
 #! /usr/bin/env node
 
 import { Command } from 'commander'
-const program = new Command()
 import list from './commands/list.js'
 import current from './commands/current.js'
 import uninstall from './commands/uninstall.js'
 import use from './commands/use.js'
 import install from './commands/install.js'
-import getTFVMVersion from "./util/getTFVMVersion.js"
-import config from "./commands/config.js"
+import getTFVMVersion from './util/getTFVMVersion.js'
+import config from './commands/config.js'
+const program = new Command()
 
 program
   .command('uninstall <version>')

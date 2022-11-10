@@ -1,5 +1,5 @@
 import fs from 'node:fs/promises'
-import { dirname, resolve} from 'path'
+import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 
 export default async function () {

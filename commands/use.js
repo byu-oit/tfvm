@@ -1,11 +1,13 @@
 import chalk from 'chalk'
 import fs from 'node:fs/promises'
-import versionRegEx from "../util/versionRegEx.js"
-import getInstalledVersions from "../util/getInstalledVersions.js"
-import getDirectoriesObj from "../util/getDirectoriesObj.js"
-import verifySetup from "../util/verifySetup.js"
-import getErrorMessage from "../util/errorChecker.js"
-import getOSBits from "../util/getOSBits.js";
+import versionRegEx from '../util/versionRegEx.js'
+import getInstalledVersions from '../util/getInstalledVersions.js'
+import getDirectoriesObj from '../util/getDirectoriesObj.js'
+import verifySetup from '../util/verifySetup.js'
+import getErrorMessage from '../util/errorChecker.js'
+import getOSBits from '../util/getOSBits.js'
+import { installFromWeb } from './install.js'
+import enquirer from 'enquirer'
 
 async function use (useVersion) {
   try {
