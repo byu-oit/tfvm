@@ -4,17 +4,28 @@ on:
   push:
     branches: [prd]
 
+env:
+  node_version: "16"
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v2
+
       - name: setup node
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: ${{ env.node_version }}
           registry-url: https://registry.npmjs.org
+
+      - name: Lint App
+        run: npm run lint
+
+#      - name: Test
+#        run: npm test
+
       - name: publish
         run: npm publish --access public
         env:
