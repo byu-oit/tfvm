@@ -4,5 +4,5 @@ import { fileURLToPath } from 'url'
 
 export default async function () {
   const __dirname = dirname(fileURLToPath(import.meta.url))
-  return dataJSON.parse(await fs.readFile(resolve(__dirname, './../settings.txt'), { encoding: 'utf8' }))
+  return JSON.parse(await fs.readFile(resolve(__dirname, './../settings.txt'), { encoding: 'utf8' }))
 }

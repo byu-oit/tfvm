@@ -42,8 +42,7 @@ program
   .alias('i')
   .description('Install a version of terraform')
   .action(install)
-  .addHelpText('after','Get a list of all current terraform versions here: https://releases.hashicorp.com/terraform/')
-
+  .addHelpText('after', 'Get a list of all current terraform versions here: https://releases.hashicorp.com/terraform/')
 
 program.version(await getTFVMVersion(), '-v, --version', 'Output the current version')
 
