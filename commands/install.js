@@ -20,6 +20,9 @@ async function install (installVersion) {
       console.log(
         chalk.red.bold('Invalid version syntax.')
       )
+      console.log(
+        chalk.white.bold('Version should be formatted as \'vX.X.X\'\nGet a list of all current terraform versions here: https://releases.hashicorp.com/terraform/')
+      )
     } else if (versionNum === 'latest') {
       const installedVersions = await getInstalledVersions()
       const latest = await getLatest()
