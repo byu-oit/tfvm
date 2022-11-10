@@ -9,7 +9,7 @@ import getOSBits from "../util/getOSBits.js";
 
 async function use (useVersion) {
   try {
-    await verifySetup()
+    if (!await verifySetup()) return
     useVersion = 'v' + useVersion
     if (!versionRegEx.test(useVersion)) {
       console.log(

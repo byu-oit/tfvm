@@ -12,9 +12,8 @@ import getTerraformVersion from "../util/tfVersion.js"
 import getLatest from "../util/getLatest.js"
 
 async function install (installVersion) {
-
   try {
-    await verifySetup()
+    if (!await verifySetup()) return
     const versionNum = installVersion
     installVersion = 'v' + installVersion
     if (!versionRegEx.test(installVersion) && versionNum !== 'latest') {

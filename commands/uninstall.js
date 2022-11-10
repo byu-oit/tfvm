@@ -8,7 +8,7 @@ import getErrorMessage from "../util/errorChecker.js"
 
 async function uninstall (uninstallVersion) {
   try {
-    await verifySetup()
+    if (!await verifySetup()) return
     uninstallVersion = 'v' + uninstallVersion
     if (!versionRegEx.test(uninstallVersion)) {
       console.log(

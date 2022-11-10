@@ -6,7 +6,7 @@ import getOSBits from "../util/getOSBits.js";
 
 async function current () {
   try {
-    await verifySetup()
+    if (!await verifySetup()) return
     const currentTFVersion = await getTerraformVersion()
     const bitType = getOSBits() === 'AMD64' ? '64' : '32'
     if (currentTFVersion !== null) {

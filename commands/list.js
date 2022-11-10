@@ -8,7 +8,7 @@ import getOSBits from "../util/getOSBits.js";
 
 async function list () {
   try {
-    await verifySetup()
+    if (!await verifySetup()) return
     let printList = []
     const tfList = await getInstalledVersions()
 
