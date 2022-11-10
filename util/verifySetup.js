@@ -34,10 +34,18 @@ async function verifySetup () {
   }
   if (pathVarDoesntExist) {
     // add to system and local paths, if possible path. If you are not in an admin shell, it will only add to local.
-    await runShell(resolve(__dirname, './../scripts/addToPath.ps1'), {'shell':'powershell.exe'})
-    console.log(
-      chalk.red.bold(`We couldn't find the right path variable for terraform, so we just added it. Please restart your terminal, or open a new one, for terraform to work correctly.`)
-    )
+    if (await runShell(resolve(__dirname, './../scripts/addToPath.ps1'), {'shell': 'powershell.exe'}) == null) {
+      console.log(
+        chalk.red.bold(`tfvm script failed to run. Please run the following command in a powershell window:\n`)
+      )
+      console.log(
+        chalk.red.bold(`Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`)
+      )
+    } else {
+      console.log(
+        chalk.red.bold(`We couldn't find the right path variable for terraform, so we just added it. Please restart your terminal, or open a new one, for terraform to work correctly.\n`)
+      )
+    }
   }
   const settings = await getSettings()
   if (settings.disableErrors === 'false') {

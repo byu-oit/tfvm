@@ -4,7 +4,12 @@
 ## Setup
 
 ### Step 1: Installation
-Users must first install tfvm. You will need to have node installed.
+In order to use tfvm-windows, you must be able to run powershell scripts. To enable powershell scripts to run on your machine, **run the following command in a powershell window:**
+  ```shell
+  Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+  ```
+
+Next, users must install tfvm. You will need to have node installed.
   ```shell
   npm i -g tfvm-windows
   ```
