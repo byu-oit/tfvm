@@ -4,36 +4,38 @@
 ## Setup
 
 ### Step 1: Installation
-In order to use tfvm-windows, you must be able to run powershell scripts. To enable powershell scripts to run on your machine, **run the following command in a powershell window:**
-  ```shell
-  Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-  ```
+In order to use tfvm-windows, you must be able to run powershell scripts.
+To enable powershell scripts to run on your machine, **run the following command in a powershell window**. (You do *not* need admin access to run this command)
+```shell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
 
 Next, install tfvm. You will need to have node installed.
-  ```shell
-  npm i -g tfvm-windows
-  ```
+```shell
+npm i -g tfvm-windows
+```
+
 > If you frequently change versions of node and you wish to use tfvm in other node versions, you will need to re-install tfvm in this way for each version.
 >
 > Fortunately, any installed terraform versions and your selected terraform version will be maintained for each node version that you switch to, as they are stored on your system and not in node's files.
 
 ### Step 2: Delete existing terraform setup
-tfvm will auto-create directories and an environment variable for terraform setup. This will conflict with anything you already have.
-1. If you already have terraform set up on your computer, delete your entry for your terraform directory in your PATH environment variables.
+tfvm will auto-create directories and a variable in your 'Path' system environment variable for terraform setup. This will conflict with anything you already have.
+1. If you already have terraform set up on your computer, delete your entry for your terraform directory in your system path.
 2. You could leave your terraform.exe file(s), but you might as well delete them. tfvm will download its own files.
 
 ### Step 3: Run tfvm for the first time
 1. Open up any command line (command prompt, Powershell, Git Bash, etc).
 2. Run any tfvm command. If you know what version you want to use first, you can run `tfvm install <that version>` and then `tfvm use <that version>`.
-   If you don't have a version in mind, you could run something like `tfvm list` or `tfvm install latest`. 
-> You should see some lines appear saying that tfvm has automatically added a directory pointing to its terraform installation folder to your Path. This means it is working correctly
-3. Restart your terminal(s). In order to start using terraform now, you'll have to open up a new terminal so that your Path can be refreshed and your CLI can actually find terraform.
+   If you don't have a version in mind, you could run something like `tfvm install latest`. 
+    > You should see some lines appear saying that tfvm has automatically added a directory pointing to its terraform installation folder to your Path. This means it is working correctly
+3. Restart your terminal(s) where you want to use terraform so that your system path can be refreshed and your CLI can actually find terraform.
    Any terminals (including those built into IDEs) that were open before you installed tfvm will have to be restarted to use the versions of terraform that tfvm install.
-   This may require you to also restart your IDE.
-4. in your new terminal, run `terraform --version` to verify that you are using the version of terraform that you installed with tfvm.
+   This may require you to also restart your IDE if you are using a terminal from within your IDE.
+4. In your new terminal, run `terraform --version` to verify that you are using the version of terraform that you installed with tfvm.
 
 ## Usage
-run `tfvm` in any command line that has admin privileges (e.g. 'Run as Administrator), followed by one of these commands:
+Run `tfvm` in any command line, followed by one of these commands:
 - `install` or `i`: installs terraform version and sets up folder inside your tfvm folder.
   - Ex: `tfvm install 1.0.3` or `tfvm install latest`
 - `list` or `ls`: lists all versions of terraform you have saved in your tfvm folder.
@@ -63,4 +65,5 @@ run `tfvm` in any command line that has admin privileges (e.g. 'Run as Administr
 
 **Q:** What terraform versions are supported?
 
-**A:** tfvm will install and use any major version that is available in the [Hashicorp Terraform Releases archive](https://releases.hashicorp.com/terraform/). At this time, tfvm will not allow you to select alpha, beta, or rc releases (though this is planned for a future update).
+**A:** tfvm will install and use any major version that is available in the [Hashicorp Terraform Releases archive](https://releases.hashicorp.com/terraform/).
+At this time, tfvm will not allow you to select alpha, beta, or rc releases.
