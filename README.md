@@ -1,20 +1,23 @@
-# TFVM - Terraform Version Manager for Windows
-### A NodeJS-based CLI tool to manage terraform versions on windows without needing admin access (that actually works)
+# TFVM - Terraform Version Manager
 
+### A NodeJS-based CLI tool to manage terraform versions without admin access
+
+**This currently works for windows but mac/linux compatibility is a work in progress.**
+
+**TODO: host in the BYU npm registry**
 
 ## Setup
 
 ### Step 1: Installation
-In order to use tfvm-windows, you must be able to run powershell scripts.
+In order to use tfvm on windows, you must be able to run powershell scripts.
 To enable powershell scripts to run on your machine, **run the following command in a powershell window**. (You do *not* need admin access to run this command)
 ```shell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
 Next, install tfvm. You will need to have node installed.
-```shell
-npm i -g tfvm-windows
-```
+
+**TODO: add official installation instructions after publishing to nvm.**
 
 > If you frequently change versions of node and you wish to use tfvm in other node versions, you will need to re-install tfvm in this way for each version.
 >
@@ -26,7 +29,7 @@ tfvm will auto-create directories and a variable in your 'Path' system environme
 2. You could leave your terraform.exe file(s), but you might as well delete them. tfvm will download its own files.
 
 ### Step 3: Run tfvm for the first time
-1. Open up any command line (command prompt, Powershell, Git Bash, etc).
+1. Open up any command line
 2. Run any tfvm command. If you know what version you want to use first, you can run `tfvm install <that version>` and then `tfvm use <that version>`.
    If you don't have a version in mind, you could run something like `tfvm install latest`. 
     > You should see some lines appear saying that tfvm has automatically added a directory pointing to its terraform installation folder to your Path. This means it is working correctly
@@ -55,7 +58,7 @@ Run `tfvm` in any command line, followed by one of these commands:
 ## FAQ
 **Q:** Why use this app instead of one of the other terrform version managers you can find?
 
-**A:** It is the simplest to use for Windows. Most don't support windows, and those that do are unintuitive. This one is simple and works, especially for beginners to terraform.
+**A:** It is the simplest to use for Windows and is fully cross-compatible. Most don't support windows, and those that do are unintuitive. This one is simple and works, especially for beginners to terraform.
 
 **Q:** I'm getting this error when running tfvm in powershell: `File C:\Program Files\nodejs\tfvm.ps1 cannot be loaded because running scripts is disabled on this system.`
 
