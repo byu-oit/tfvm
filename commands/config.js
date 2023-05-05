@@ -22,6 +22,20 @@ async function config (setting) {
             )
           }
           break
+        case 'disableAWSWarnings':
+          if (settings[1] === 'true' || settings[1] === 'false') {
+            settingsObj.disableAWSWarnings = settings[1]
+            await fs.writeFile(resolve(__dirname, './../settings.txt'), JSON.stringify(settingsObj), 'utf8')
+          } else {
+            console.log(
+              chalk.red.bold('Invalid input for disableAWSWarnings setting. Should be either \'tfvm config disableAWSWarnings=true\' or \'tfvm config disableAWSWarnings=false\'')
+            )
+          }
+          break
+        default:
+          console.log(
+            chalk.red.bold('Invalid setting. See the README.md file for all configurable settings.')
+          )
       }
     } else {
       console.log(

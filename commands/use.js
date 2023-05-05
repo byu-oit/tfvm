@@ -8,6 +8,8 @@ import getErrorMessage from '../util/errorChecker.js'
 import getOSBits from '../util/getOSBits.js'
 import { installFromWeb } from './install.js'
 import enquirer from 'enquirer'
+import getSettings from '../util/getSettings.js'
+import requiresOldAWSAuth from '../util/requiresOldAWSAuth.js'
 
 async function use (useVersion) {
   try {
@@ -54,6 +56,14 @@ async function use (useVersion) {
       console.log(
         chalk.cyan.bold(`Now using terraform ${useVersion} (${bitType}-bit)`)
       )
+      if (requiresOldAWSAuth(versionNum) && !(await getSettings()).disableAWSWarnings) {
+        console.log(
+          chalk.yellow.bold('Warning: This tf version is not compatible with the newest AWS CLI authentication methods (e.g. aws sso login). Use short-term credentials instead.')
+        )
+        console.log(
+          chalk.yellow.bold('To disable this error run \'tfvm config disableAWSWarnings=true\'')
+        )
+      }
     }
   } catch (error) {
     getErrorMessage(error)
