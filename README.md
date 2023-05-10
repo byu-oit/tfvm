@@ -17,7 +17,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 Next, install tfvm. You will need to have node installed.
 
-**TODO: add official installation instructions after publishing to nvm.**
+**TODO: add official installation instructions after publishing to npm.** (for now, `npm i -g tfvm-windows` works)
 
 > If you frequently change versions of node and you wish to use tfvm in other node versions, you will need to re-install tfvm in this way for each version.
 >
