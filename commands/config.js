@@ -4,8 +4,10 @@ import getSettings from '../util/getSettings.js'
 import getErrorMessage from '../util/errorChecker.js'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
+import { logger } from '../util/logger.js'
 
-async function config (setting) {
+async function config (setting, options) {
+  logger.level = options.level
   const __dirname = dirname(fileURLToPath(import.meta.url))
   try {
     if (setting.includes('=')) {
@@ -33,18 +35,22 @@ async function config (setting) {
           }
           break
         default:
+          logger.warn(`Invalid setting change attempt with setting=${setting} and __dirname=${__dirname}`)
           console.log(
             chalk.red.bold('Invalid setting. See the README.md file for all configurable settings.')
           )
       }
     } else {
+      logger.warn(`Invalid setting change format attempt with setting=${setting} and __dirname=${__dirname}`)
       console.log(
         chalk.red.bold('Invalid config format. Command should be formatted config \'<setting=value>\'')
       )
     }
   } catch (error) {
+    logger.fatal(error, `Fatal error when running "config" command where setting=${setting} and __dirname=${__dirname}: `)
     getErrorMessage(error)
   }
+  logger.debug('Execution of "config" command finished.')
 }
 
 export default config

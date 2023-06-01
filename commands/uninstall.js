@@ -5,6 +5,7 @@ import getInstalledVersions from '../util/getInstalledVersions.js'
 import getDirectoriesObj from '../util/getDirectoriesObj.js'
 import verifySetup from '../util/verifySetup.js'
 import getErrorMessage from '../util/errorChecker.js'
+import { logger } from '../util/logger.js'
 
 async function uninstall (uninstallVersion) {
   try {
@@ -30,8 +31,10 @@ async function uninstall (uninstallVersion) {
       }
     }
   } catch (error) {
+    logger.fatal(error, `Fatal error when running "uninstall" command where uninstallVersion=${uninstallVersion}: `)
     getErrorMessage(error)
   }
+  logger.debug('Execution of "uninstall" command finished.')
 }
 
 export default uninstall

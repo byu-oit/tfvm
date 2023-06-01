@@ -10,6 +10,7 @@ import { installFromWeb } from './install.js'
 import enquirer from 'enquirer'
 import getSettings from '../util/getSettings.js'
 import requiresOldAWSAuth from '../util/requiresOldAWSAuth.js'
+import { logger } from '../util/logger.js'
 
 async function use (useVersion) {
   try {
@@ -66,8 +67,10 @@ async function use (useVersion) {
       }
     }
   } catch (error) {
+    logger.fatal(error, `Fatal error when running "use" command where useVersion=${useVersion}: `)
     getErrorMessage(error)
   }
+  logger.debug('Execution of "use" command finished.')
 }
 
 export default use

@@ -71,3 +71,13 @@ Run `tfvm` in any command line, followed by one of these commands:
 
 **A:** tfvm will install and use any major version that is available in the [Hashicorp Terraform Releases archive](https://releases.hashicorp.com/terraform/).
 At this time, tfvm will not allow you to select alpha, beta, or rc releases.
+
+**Q:** I'm seeing weird behavior or errors. Where can I view tfvm's logs for debugging?
+<br>
+**A:** The logs are stored in the same directory as tfvm's other source files.
+Go to your node folder (or nvm folder, if applicable) and go to 'node_modules/tfvm-windows/logs'.
+
+> <sup>To generate more detailed logs, run tfvm with the `LOG_LEVEL` environment variable set to `debug` or `trace`.
+Alternatively, you can also use the `--log-level <level>` or `-l <level>` argument.
+The CLI argument will take precedence over the environment variable if set.</sup>
+

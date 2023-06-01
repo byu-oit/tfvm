@@ -1,6 +1,9 @@
 import fs from 'node:fs/promises'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
+import { logger } from './logger.js'
+
+let settings
 
 export default async function () {
   const __dirname = dirname(fileURLToPath(import.meta.url))

@@ -5,6 +5,7 @@ import getInstalledVersions from '../util/getInstalledVersions.js'
 import verifySetup from '../util/verifySetup.js'
 import getErrorMessage from '../util/errorChecker.js'
 import getOSBits from '../util/getOSBits.js'
+import { logger } from '../util/logger.js'
 
 async function list () {
   try {
@@ -41,8 +42,10 @@ async function list () {
       )
     }
   } catch (error) {
+    logger.fatal(error, 'Fatal error when running "list" command: ')
     getErrorMessage(error)
   }
+  logger.debug('Execution of "list" command finished.')
 }
 
 export default list

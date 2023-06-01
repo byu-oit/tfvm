@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 import versionRegEx from './versionRegEx.js'
 import getDirectoriesObj from '../util/getDirectoriesObj.js'
+import { logger } from './logger.js'
 
 async function getInstalledVersions () {
   const directoriesObj = getDirectoriesObj()
@@ -15,6 +16,7 @@ async function getInstalledVersions () {
     })
     return tfList
   } else {
+    logger.debug(`Unable to find installed versions of terraform with directoriesObj=${JSON.stringify(directoriesObj)} and files=${JSON.stringify(files)}`)
     return null
   }
 }
