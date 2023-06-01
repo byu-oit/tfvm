@@ -73,7 +73,6 @@ async function use (useVersion) {
     logger.fatal(error, `Fatal error when running "use" command where useVersion=${useVersion}: `)
     getErrorMessage(error)
   }
-  logger.debug('Execution of "use" command finished.')
 }
 
 export default use

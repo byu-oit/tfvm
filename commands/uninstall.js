@@ -34,7 +34,6 @@ async function uninstall (uninstallVersion) {
     logger.fatal(error, `Fatal error when running "uninstall" command where uninstallVersion=${uninstallVersion}: `)
     getErrorMessage(error)
   }
-  logger.debug('Execution of "uninstall" command finished.')
 }
 
 export default uninstall

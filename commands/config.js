@@ -6,8 +6,7 @@ import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 import { logger } from '../util/logger.js'
 
-async function config (setting, options) {
-  logger.level = options.level
+async function config (setting) {
   const __dirname = dirname(fileURLToPath(import.meta.url))
   try {
     if (setting.includes('=')) {
@@ -60,7 +59,6 @@ async function config (setting, options) {
     logger.fatal(error, `Fatal error when running "config" command where setting=${setting} and __dirname=${__dirname}: `)
     getErrorMessage(error)
   }
-  logger.debug('Execution of "config" command finished.')
 }
 
 export default config

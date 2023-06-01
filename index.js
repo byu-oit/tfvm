@@ -10,15 +10,18 @@ import getTFVMVersion from './util/getTFVMVersion.js'
 import config from './commands/config.js'
 import { logger } from './util/logger.js'
 
-logger.debug('Beginning Execution...')
-
 const program = new Command()
 
 program
-  .option('-l, --log-level <level>', 'specify log level')
+  .option('-l, --log-level <level>', 'specify log level (default "info")')
   .hook('preAction', (thisCommand) => {
     const logLevel = thisCommand.opts().logLevel
     logger.level = logLevel || process.env.LOG_LEVEL || 'info'
+    logger.debug(`Beginning execution of command "${thisCommand.args.join(' ')}":`)
+    logger.trace(`Raw Args: ${JSON.stringify(thisCommand.rawArgs.join(' '))}`)
+  })
+  .hook('postAction', (thisCommand) => {
+    logger.debug(`Execution of "${thisCommand.args.join(' ')}" command finished.\n\n\n`)
   })
 
 program

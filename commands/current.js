@@ -24,7 +24,6 @@ async function current () {
     logger.fatal(error, 'Fatal error when running "current" command: ')
     getErrorMessage(error)
   }
-  logger.debug('Execution of "current" command finished.')
 }
 
 export default current

@@ -58,7 +58,6 @@ async function install (installVersion) {
     logger.fatal(error, `Fatal error when running "install" command where installVersion=${installVersion}: `)
     getErrorMessage(error)
   }
-  logger.debug('Execution of "install" command finished.')
 }
 
 export default install

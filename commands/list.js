@@ -45,7 +45,6 @@ async function list () {
     logger.fatal(error, 'Fatal error when running "list" command: ')
     getErrorMessage(error)
   }
-  logger.debug('Execution of "list" command finished.')
 }
 
 export default list
