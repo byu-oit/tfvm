@@ -1,8 +1,10 @@
 name: Publish
 
 on:
-  push:
-    branches: [main]
+  release:
+    types:
+      - published
+  workflow_dispatch:
 
 env:
   node_version: "16.x"
@@ -32,8 +34,8 @@ jobs:
 
       - name: Install Packages
         run: npm install
-#        env:
-#          NODE_AUTH_TOKEN: ${{ secrets[matrix.registry.token] }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets[matrix.registry.token] }}
 
       - name: Lint App
         run: npm run lint
