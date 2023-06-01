@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jsterner30/tfvm-windows"
+    "url": "https://github.com/byu-oit/tfvm"
   },
   "contributors": [
     "Jaden Sterner <jts234@byu.edu>",
     "Caleb Hill <cah34@byu.edu>"
   ],
   "license": "Apache-2.0",
-  "homepage": "",
+  "homepage": "https://github.com/byu-oit/tfvm#readme",
   "dependencies": {
     "axios": "^0.27.2",
     "chalk": "^5.0.1",
