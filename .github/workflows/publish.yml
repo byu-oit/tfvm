@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  node_version: "16.x"
+  node_version: "18.x"
 
 jobs:
   publish:
@@ -14,32 +14,25 @@ jobs:
     strategy:
       matrix:
         registry:
-          - name: npm
-            token: NPM_TOKEN
+          - token: NPM_TOKEN
             url: https://registry.npmjs.org
-          - name: GitHub
-            token: GITHUB_TOKEN
+          - token: GITHUB_TOKEN
             url: https://npm.pkg.github.com
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: setup node
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ env.node_version }}
           registry-url: ${{ matrix.registry.url }}
           scope: '@byu-oit'
 
-      - name: Install Packages
-        run: npm install
+      - run: npm install
         env:
           NODE_AUTH_TOKEN: ${{ secrets[matrix.registry.token] }}
 
-      - name: Lint App
-        run: npm run lint
+      - run: npm run lint
 
-      - name: Publish
-        run: npm publish --access public
+      - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets[matrix.registry.token] }}
