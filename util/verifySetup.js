@@ -13,7 +13,7 @@ const { appDataDir, terraformDir } = getDirectoriesObj()
 async function verifySetup () {
   // STEP 1: Check that the appdata/roaming/tfvm folder exists
   const appDataDirFiles = await fs.readdir(appDataDir)
-  logger.trace('appDataDirFiles:' + appDataDirFiles.join(','))
+  logger.trace('appDataDirFiles: ' + appDataDirFiles.join(','))
   // check to make sure that there is a tfvm folder
   if (!appDataDirFiles.includes('tfvm')) {
     // if the tfvm folder in AppData doesn't exist, create it
@@ -24,7 +24,7 @@ async function verifySetup () {
   // STEP 2: Check that the path is set
   const tfPaths = []
   const PATH = await runShell('echo %path%')
-  logger.trace(PATH, 'PATH in verifySetup(): ')
+  logger.trace(`PATH in verifySetup(): ${PATH}`)
   if (PATH == null) {
     logger.fatal('Error fetching path from console')
     throw new Error('Error fetching path from console')
@@ -39,6 +39,7 @@ async function verifySetup () {
   }
   if (pathVarDoesntExist) {
     // add to local paths
+    logger.warn(`Couldn't find tfvm in path where this is the path: ${PATH}`)
     logger.debug('Attempting to run addToPath.ps1...')
     if (await runShell(resolve(__dirname, './../scripts/addToPath.ps1'), { shell: 'powershell.exe' }) == null) {
       console.log(
@@ -48,7 +49,7 @@ async function verifySetup () {
         chalk.red.bold('Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser')
       )
     } else {
-      logger.error(PATH, 'Couldnt find tfvm in path where this is the path:')
+      logger.debug('Successfully ran addToPath.ps1, added to path.')
       console.log(
         chalk.red.bold('We couldn\'t find the right path variable for terraform, so we just added it.\nPlease restart your terminal, or open a new one, for terraform to work correctly.\n')
       )
