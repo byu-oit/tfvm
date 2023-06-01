@@ -1,7 +1,8 @@
 {
-  "name": "tfvm-windows",
-  "version": "1.6.2",
-  "main": "ind.js",
+  "name": "@byu-oit/tfvm",
+  "version": "1.7.0",
+  "description": "A CLI app for easily switching between Terraform versions",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "standard"
@@ -10,7 +11,10 @@
     "type": "git",
     "url": "https://github.com/jsterner30/tfvm-windows"
   },
-  "author": "Jaden Sterner",
+  "contributors": [
+    "Jaden Sterner <jts234@byu.edu>",
+    "Caleb Hill <cah34@byu.edu>"
+  ],
   "license": "Apache-2.0",
   "homepage": "",
   "dependencies": {
@@ -31,7 +35,6 @@
     "windows",
     "tfvm"
   ],
-  "description": "",
   "bin": {
     "tfvm": "./index.js"
   },

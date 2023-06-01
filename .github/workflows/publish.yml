@@ -1,35 +1,44 @@
-name: Publish tfv to npm registry
+name: Publish
 
 on:
   push:
-    branches: [prd]
+    branches: [main]
 
 env:
-  node_version: "16"
+  node_version: "16.x"
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        registry:
+          - name: npm
+            token: NPM_TOKEN
+            url: https://registry.npmjs.org
+          - name: GitHub
+            token: GITHUB_TOKEN
+            url: https://npm.pkg.github.com
     steps:
-      - name: checkout
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.node_version }}
-          registry-url: https://registry.npmjs.org
+          registry-url: ${{ matrix.registry.url }}
+          scope: '@byu-oit'
 
       - name: Install Packages
         run: npm install
+#        env:
+#          NODE_AUTH_TOKEN: ${{ secrets[matrix.registry.token] }}
 
       - name: Lint App
         run: npm run lint
 
-#      - name: Test
-#        run: npm test
-
-      - name: publish
+      - name: Publish
         run: npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets[matrix.registry.token] }}
