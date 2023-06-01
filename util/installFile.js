@@ -2,6 +2,7 @@ import * as https from 'https'
 import * as http from 'http'
 import chalk from 'chalk'
 import fs from 'node:fs'
+import { logger } from './logger.js'
 
 async function download (url, filePath, version) {
   const proto = !url.charAt(4).localeCompare('s') ? https : http
@@ -32,10 +33,12 @@ async function download (url, filePath, version) {
     file.on('finish', () => resolve(fileInfo))
 
     request.on('error', err => {
+      logger.error(err, `Error on request while downloading file where file=${file}, url=${url}, and version=${version}:`)
       fs.unlink(filePath, () => reject(err))
     })
 
     file.on('error', err => {
+      logger.error(err, `Error on file while downloading file where file=${file}, url=${url}, and version=${version}:`)
       fs.unlink(filePath, () => reject(err))
     })
 

@@ -10,6 +10,7 @@ import { installFromWeb } from './install.js'
 import enquirer from 'enquirer'
 import getSettings from '../util/getSettings.js'
 import requiresOldAWSAuth from '../util/requiresOldAWSAuth.js'
+import { logger } from '../util/logger.js'
 
 async function use (useVersion) {
   try {
@@ -56,16 +57,20 @@ async function use (useVersion) {
       console.log(
         chalk.cyan.bold(`Now using terraform ${useVersion} (${bitType}-bit)`)
       )
-      if (requiresOldAWSAuth(versionNum) && !(await getSettings()).disableAWSWarnings) {
+      const settings = await getSettings()
+      if (requiresOldAWSAuth(versionNum) && !settings.disableAWSWarnings) {
         console.log(
           chalk.yellow.bold('Warning: This tf version is not compatible with the newest AWS CLI authentication methods (e.g. aws sso login). Use short-term credentials instead.')
         )
-        console.log(
-          chalk.yellow.bold('To disable this error run \'tfvm config disableAWSWarnings=true\'')
-        )
+        if (!settings.disableSettingPrompts) {
+          console.log(
+            chalk.yellow.bold('To disable this error run \'tfvm config disableAWSWarnings=true\'')
+          )
+        }
       }
     }
   } catch (error) {
+    logger.fatal(error, `Fatal error when running "use" command where useVersion=${useVersion}: `)
     getErrorMessage(error)
   }
 }
