@@ -51,24 +51,26 @@ Run `tfvm` in any command line, followed by one of these commands:
   - If you attempt to use a version that you haven't installed, you will be prompted to install it.
 - `current`: displays the terraform version you are using.
   - Ex: `tfvm current`
-- `tfvm config`: allows the user to change tfvm settings (currently the only setting is 'disableErrors', a boolean)
-  - Ex: `tfvm config disableErrors=true`
+- `tfvm config <setting>=true/false`: allows the user to change tfvm settings.
+  - `tfvm config disableErrors=true` - disables configuration warnings.
+  - `tfvm config disableAWSWarnings=true` - disables AWS warnings that appear when using older terraform versions.
+  - `tfvm config disableSettingPrompts=true` - disables prompts that show how to hide some error messages.
 - `help`: prints usage information. Run `tfvm help <command>` to see information about the other tfvm commands.
 
 ## FAQ
 **Q:** Why use this app instead of one of the other terrform version managers you can find?
-
+<br>
 **A:** It is the simplest to use for Windows and is fully cross-compatible. Most don't support windows, and those that do are unintuitive. This one is simple and works, especially for beginners to terraform.
 
 **Q:** I'm getting this error when running tfvm in powershell: `File C:\Program Files\nodejs\tfvm.ps1 cannot be loaded because running scripts is disabled on this system.`
-
+<br>
 **A:** Most custom CLI apps will throw this error in Powershell. Run this command to update your powershell execution policy:
   ```shell
   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
   ```
 
 **Q:** What terraform versions are supported?
-
+<br>
 **A:** tfvm will install and use any major version that is available in the [Hashicorp Terraform Releases archive](https://releases.hashicorp.com/terraform/).
 At this time, tfvm will not allow you to select alpha, beta, or rc releases.
 

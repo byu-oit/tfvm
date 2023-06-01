@@ -57,13 +57,16 @@ async function use (useVersion) {
       console.log(
         chalk.cyan.bold(`Now using terraform ${useVersion} (${bitType}-bit)`)
       )
-      if (requiresOldAWSAuth(versionNum) && !(await getSettings()).disableAWSWarnings) {
+      const settings = await getSettings()
+      if (requiresOldAWSAuth(versionNum) && !settings.disableAWSWarnings) {
         console.log(
           chalk.yellow.bold('Warning: This tf version is not compatible with the newest AWS CLI authentication methods (e.g. aws sso login). Use short-term credentials instead.')
         )
-        console.log(
-          chalk.yellow.bold('To disable this error run \'tfvm config disableAWSWarnings=true\'')
-        )
+        if (!settings.disableSettingPrompts) {
+          console.log(
+            chalk.yellow.bold('To disable this error run \'tfvm config disableAWSWarnings=true\'')
+          )
+        }
       }
     }
   } catch (error) {

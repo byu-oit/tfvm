@@ -66,10 +66,11 @@ async function verifySetup () {
         console.log(
           chalk.red.bold('This may stop tfvm from working correctly, so please remove this from the path.\nIf you make changes to the path, make sure to restart your terminal.')
         )
-        // todo prompt the user with an option in the program to remove those lines for them, with a 'I know what I am doing' check?
-        console.log(
-          chalk.cyan.bold('To disable this error run \'tfvm config disableErrors=true\'')
-        )
+        if (!settings.disableSettingPrompts) {
+          console.log(
+            chalk.cyan.bold('To disable this error run \'tfvm config disableErrors=true\'')
+          )
+        }
         return false
       }
     } else if (tfPaths.length > 1) {
@@ -87,9 +88,12 @@ async function verifySetup () {
       console.log(
         chalk.red.bold('This may stop tfvm from working correctly, so please remove these from the path.\nIf you make changes to the path, make sure to restart your terminal.')
       )
-      console.log(
-        chalk.cyan.bold('To disable this error run \'tfvm config disableErrors=true\'')
-      )
+      if (!settings.disableSettingPrompts) {
+        console.log(
+          chalk.cyan.bold('To disable this error run \'tfvm config disableErrors=true\'')
+        )
+      }
+      logger.trace('verifySetup excited unsuccessfully')
       return false
     }
   }

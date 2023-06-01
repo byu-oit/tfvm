@@ -20,7 +20,7 @@ async function config (setting, options) {
             await fs.writeFile(resolve(__dirname, './../settings.txt'), JSON.stringify(settingsObj), 'utf8')
           } else {
             console.log(
-              chalk.red.bold('Invalid input for disableErrors setting. Should be either \'tfvm config disableErrors=true\' or \'tfvm config disableErrors=false\'')
+              chalk.red.bold('Invalid input for disableErrors setting. Use either \'tfvm config disableErrors=true\' or \'tfvm config disableErrors=false\'')
             )
           }
           break
@@ -30,7 +30,17 @@ async function config (setting, options) {
             await fs.writeFile(resolve(__dirname, './../settings.txt'), JSON.stringify(settingsObj), 'utf8')
           } else {
             console.log(
-              chalk.red.bold('Invalid input for disableAWSWarnings setting. Should be either \'tfvm config disableAWSWarnings=true\' or \'tfvm config disableAWSWarnings=false\'')
+              chalk.red.bold('Invalid input for disableAWSWarnings setting. Use either \'tfvm config disableAWSWarnings=true\' or \'tfvm config disableAWSWarnings=false\'')
+            )
+          }
+          break
+        case 'disableSettingPrompts':
+          if (settings[1] === 'true' || settings[1] === 'false') {
+            settingsObj.disableSettingPrompts = settings[1]
+            await fs.writeFile(resolve(__dirname, './../settings.txt'), JSON.stringify(settingsObj), 'utf8')
+          } else {
+            console.log(
+              chalk.red.bold('Invalid input for disableSettingPrompts setting. Use either \'tfvm config disableSettingPrompts=true\' or \'tfvm config disableSettingPrompts=false\'')
             )
           }
           break
