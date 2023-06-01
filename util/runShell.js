@@ -11,7 +11,7 @@ export default async function (command, options = {}) {
     if (!response.stderr) {
       return response.stdout
     } else {
-      logger.error(response.stderr, `stderr output in runShell(${command}, ${JSON.stringify(options)}):`)
+      logger.error(`stderr output in runShell(${command}, ${JSON.stringify(options)}): ${response.stderr}`)
     }
   } catch (e) {
     logger.error(e, `(potentially expected) error in runShell(${command}, ${JSON.stringify(options)}):`)
