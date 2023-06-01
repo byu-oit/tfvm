@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/byu-oit/tfvm"
+    "url": "git+https://github.com/byu-oit/tfvm.git"
   },
   "contributors": [
     "Jaden Sterner <jts234@byu.edu>",
