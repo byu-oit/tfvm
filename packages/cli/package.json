@@ -1,6 +1,6 @@
 {
   "name": "@byu-oit/tfvm",
-  "version": "0.0.2-beta.0",
+  "version": "0.0.1",
   "description": "A CLI app for easily switching between Terraform versions",
   "type": "module",
   "main": "lib/index.js",
