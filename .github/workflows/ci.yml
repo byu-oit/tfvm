@@ -2,41 +2,29 @@ name: CI
 
 on:
   pull_request:
-    branches: [ dev, prd ]
-
-env:
-  node_version: "16"
+    branches: [main, beta]
+    types: [opened, reopened, synchronize, edited]
 
 jobs:
-#  test:
-#    name: Test
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: checkout
-#        uses: actions/checkout@v2
-#
-#      - name: setup node
-#        uses: actions/setup-node@v1
-#        with:
-#          node-version: ${{ env.node_version }}
-#
-#      - name: Test App
-#        run: npm test
+  audit:
+    name: Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: 'package.json'
+      - run: npm audit --audit-level=critical
 
   lint:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v2
-
-      - name: setup node
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.node_version }}
-
-      - name: Install Packages
-        run: npm install
-
-      - name: Lint App
-        run: npm run lint
+          node-version-file: 'package.json'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      - run: npm ci
+      - run: npm run lint

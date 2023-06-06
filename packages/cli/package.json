@@ -1,0 +1,47 @@
+{
+  "name": "@byu-oit/tfvm",
+  "version": "0.0.1",
+  "description": "A CLI app for easily switching between Terraform versions",
+  "type": "module",
+  "main": "lib/index.js",
+  "bin": {
+    "tfvm": "lib/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/byu-oit/tfvm.git"
+  },
+  "contributors": [
+    "Jaden Sterner <jts234@byu.edu>",
+    "Caleb Hill <cah34@byu.edu>"
+  ],
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/byu-oit/tfvm#readme",
+  "keywords": [
+    "terraform",
+    "cli",
+    "terraform-manager",
+    "terraform-version-manager",
+    "windows",
+    "tfvm"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "axios": "^0.27.2",
+    "chalk": "^5.0.1",
+    "commander": "^9.4.0",
+    "compare-versions": "^4.1.4",
+    "enquirer": "^2.3.6",
+    "node-stream-zip": "^1.15.0",
+    "pino": "^8.14.1",
+    "pino-pretty": "^10.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

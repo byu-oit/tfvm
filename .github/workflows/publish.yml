@@ -1,38 +1,136 @@
+# Inspired by: https://dev.to/xcanchal/automatic-versioning-in-a-lerna-monorepo-using-github-actions-4hij
 name: Publish
 
 on:
-  push:
-    branches: [main]
-  workflow_dispatch:
+  # Runs on pull requests merged into the main and beta branches
+  pull_request:
+    types:
+      - 'closed'
+    branches:
+      - 'main'
+      - 'beta'
+
+# Allow one concurrent deployment
+concurrency:
+  group: "publish"
+  cancel-in-progress: false
 
 env:
   node_version: "18.x"
 
 jobs:
-  publish:
+  packages:
+    # According to the "on" attribute that we configured, this workflow will trigger on every "Pull Request closed" event
+    # against beta or main, but what we actually want is to execute it ONLY when the Pull Request has been merged
+    # (not discarded).
+    if: github.event.pull_request.merged == true
+    name: ${{ matrix.registry.name }} package
     runs-on: ubuntu-latest
+
+    # Publish to both NPM and GitHub Package Registry
     strategy:
       matrix:
         registry:
-          - token: NPM_TOKEN
+          - name: npm
+            token: NPM_TOKEN
             url: https://registry.npmjs.org
-#           - token: GITHUB_TOKEN
-#             url: https://npm.pkg.github.com
+          - name: GitHub
+            token: GITHUB_TOKEN
+            url: https://npm.pkg.github.com
+
     steps:
       - uses: actions/checkout@v3
+        with:
+          # Lerna needs the git history to automatically bump package versions
+          fetch-depth: 0
 
-      - uses: actions/setup-node@v3
+      - name: Restore Lerna
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.node_version }}
+          # Publish to the provided registry...
           registry-url: ${{ matrix.registry.url }}
+          # ...and under the byu-oit scope
           scope: '@byu-oit'
 
-      - run: npm install
+      # Install the root dependencies in production mode (see npm ci command) as well as the dependencies for each of
+      # our packages and create links between them.
+      - name: Install dependencies
+        run: npm ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets[matrix.registry.token] }}
 
-      - run: npm run lint
+      # Allow Lerna to make commits and create tags for the new versions in the repository. For that, we'll take
+      # advantage of the "github.actor" variable available in the environment.
+      - name: Set Git User
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
 
-      - run: npm publish --access public --verbose
+      # Lerna Version Command Docs: https://github.com/lerna/lerna/tree/main/libs/commands/version
+      - name: Beta Version
+        if: github.base_ref == 'beta'
+        run: npx lerna version --no-private --no-commit-hooks --no-push --conventional-commits --conventional-prerelease --preid beta --yes
+
+      - name: Version
+        if: github.base_ref == 'main'
+        run: npx lerna version --no-private --no-commit-hooks --no-push --conventional-commits --conventional-graduate --yes
+
+      # Lerna Publish Command Docs: https://github.com/lerna/lerna/tree/main/libs/commands/publish
+      - name: Publish Package
         env:
           NODE_AUTH_TOKEN: ${{ secrets[matrix.registry.token] }}
+        run: npx lerna publish from-git --yes --no-private
+
+  release:
+    name: GitHub Release
+    # According to the "on" attribute that we configured, this workflow will trigger on every "Pull Request closed" event
+    # against beta or main, but what we actually want is to execute it ONLY when the Pull Request has been merged
+    # (not discarded).
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    needs: [ packages ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # Lerna needs the git history to automatically bump package versions
+          fetch-depth: 0
+
+      - name: Restore Lerna
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.node_version }}
+
+      # Allow Lerna to make commits and create tags for the new versions in the repository. For that, we'll take
+      # advantage of the "github.actor" variable available in the environment.
+      - name: Set Git User
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor}}@users.noreply.github.com"
+
+      # Lerna Version Command Docs: https://github.com/lerna/lerna/tree/main/libs/commands/version
+      # The difference between this job and the "publish" job is that we add `--create-release github` and removed
+      # `--no-push` to the lerna version command options.
+      - name: Publish Beta Releases to GitHub
+        if: github.base_ref == 'beta'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx lerna version --no-private --no-commit-hooks --conventional-commits --create-release github --conventional-prerelease --preid beta --yes
+
+      - name: Publish Releases to GitHub
+        if: github.base_ref == 'main'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx lerna version --no-private --no-commit-hooks --conventional-commits --create-release github --conventional-graduate --yes

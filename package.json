@@ -1,50 +1,26 @@
 {
-  "name": "@byu-oit/tfvm",
-  "version": "0.0.1",
-  "description": "A CLI app for easily switching between Terraform versions",
-  "main": "index.js",
+  "name": "root",
+  "private": true,
+  "engines": {
+    "npm": ">=8",
+    "node": ">=18"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "standard"
+    "lint": "standard",
+    "lint:fix": "standard --fix"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/byu-oit/tfvm.git",
-    "directory": "packages/@byu-oit/tfvm"
-  },
-  "contributors": [
-    "Jaden Sterner <jts234@byu.edu>",
-    "Caleb Hill <cah34@byu.edu>"
+  "workspaces": [
+    "packages/*"
   ],
-  "license": "Apache-2.0",
-  "homepage": "https://github.com/byu-oit/tfvm#readme",
-  "dependencies": {
-    "axios": "^0.27.2",
-    "chalk": "^5.0.1",
-    "commander": "^9.4.0",
-    "compare-versions": "^4.1.4",
-    "enquirer": "^2.3.6",
-    "node-stream-zip": "^1.15.0",
-    "pino": "^8.14.1",
-    "pino-pretty": "^10.0.0"
-  },
-  "keywords": [
-    "terraform",
-    "cli",
-    "terraform-manager",
-    "terraform-version-manager",
-    "windows",
-    "tfvm"
-  ],
-  "bin": {
-    "tfvm": "./index.js"
-  },
-  "type": "module",
   "devDependencies": {
-    "standard": "^17.0.0"
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
+    "@commitlint/cli": "^17.2.0",
+    "@commitlint/config-angular": "^17.2.0",
+    "concurrently": "^8.0.1",
+    "conventional-changelog-cli": "^2.2.2",
+    "husky": "^8.0.2",
+    "lerna": "^6.6.1",
+    "nx": "^15.0.13",
+    "rimraf": "^5.0.0",
+    "standard": "^17.1.0"
   }
 }
