@@ -55,14 +55,13 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.node_version }}
+          node-version-file: 'package.json'
           # Publish to the provided registry...
           registry-url: ${{ matrix.registry.url }}
-          # ...and under the byu-oit scope
+          # ...and under the byu-oit-sdk scope
           scope: '@byu-oit'
 
-      # Install the root dependencies in production mode (see npm ci command) as well as the dependencies for each of
-      # our packages and create links between them.
+      # Install and link package dependencies
       - name: Install dependencies
         run: npm ci
         env:
@@ -78,17 +77,21 @@ jobs:
       # Lerna Version Command Docs: https://github.com/lerna/lerna/tree/main/libs/commands/version
       - name: Beta Version
         if: github.base_ref == 'beta'
-        run: npx lerna version --no-private --no-commit-hooks --no-push --conventional-commits --conventional-prerelease --preid beta --yes
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets[matrix.registry.token] }}
+        run: lerna version --no-private --no-commit-hooks --no-push --conventional-commits --conventional-prerelease --preid beta --yes
 
       - name: Version
         if: github.base_ref == 'main'
-        run: npx lerna version --no-private --no-commit-hooks --no-push --conventional-commits --conventional-graduate --yes
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets[matrix.registry.token] }}
+        run: lerna version --no-private --no-commit-hooks --no-push --conventional-commits --conventional-graduate --yes
 
       # Lerna Publish Command Docs: https://github.com/lerna/lerna/tree/main/libs/commands/publish
       - name: Publish Package
         env:
           NODE_AUTH_TOKEN: ${{ secrets[matrix.registry.token] }}
-        run: npx lerna publish from-git --yes --no-private
+        run: lerna publish from-git --yes --no-private
 
   release:
     name: GitHub Release
@@ -98,11 +101,11 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     needs: [ packages ]
-    
-        # Allow GitHub Action to read repo and install/publish packages from GitHub Package Registry
+
+    # Allow GitHub Action to read repo and install/publish packages from GitHub Package Registry
     permissions:
-      contents: read
-      packages: write
+      contents: write
+      packages: read
 
     steps:
       - uses: actions/checkout@v3
@@ -119,7 +122,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.node_version }}
+          node-version-file: 'package.json'
 
       # Allow Lerna to make commits and create tags for the new versions in the repository. For that, we'll take
       # advantage of the "github.actor" variable available in the environment.
@@ -134,11 +137,13 @@ jobs:
       - name: Publish Beta Releases to GitHub
         if: github.base_ref == 'beta'
         env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx lerna version --no-private --no-commit-hooks --conventional-commits --create-release github --conventional-prerelease --preid beta --yes
+        run: lerna version --no-private --no-commit-hooks --conventional-commits --create-release github --conventional-prerelease --preid beta --yes
 
       - name: Publish Releases to GitHub
         if: github.base_ref == 'main'
         env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx lerna version --no-private --no-commit-hooks --conventional-commits --create-release github --conventional-graduate --yes
+        run: lerna version --no-private --no-commit-hooks --conventional-commits --create-release github --conventional-graduate --yes
