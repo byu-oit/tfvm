@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.2-beta.2](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.0.2-beta.1...@byu-oit/tfvm@0.0.2-beta.2) (2023-06-06)
+
+
+### Bug Fixes
+
+* update contributors ([#52](https://github.com/byu-oit/tfvm/issues/52)) ([ecd2b2a](https://github.com/byu-oit/tfvm/commit/ecd2b2a3f0b0d5ab53c6141b4bb0fd9acdcac3f6))
+
+
+
+
+
 ## 0.0.2-beta.1 (2023-06-06)
 
 
