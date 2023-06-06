@@ -2,7 +2,7 @@
 
 *A NodeJS-based CLI tool to manage terraform versions without needing admin access.*
 
-**This currently works for Windows but Mac/Linux compatibility is a work-in-progress.**
+**Currently, this only works on Windows. Mac/Linux compatibility is a work-in-progress.**
 
 ## Setup
 
