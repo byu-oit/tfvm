@@ -58,7 +58,7 @@ jobs:
           node-version-file: 'package.json'
           # Publish to the provided registry...
           registry-url: ${{ matrix.registry.url }}
-          # ...and under the byu-oit-sdk scope
+          # ...and under the byu-oit scope
           scope: '@byu-oit'
 
       # Install and link package dependencies
