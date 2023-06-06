@@ -15,9 +15,6 @@ concurrency:
   group: "publish"
   cancel-in-progress: false
 
-env:
-  node_version: "18.x"
-
 jobs:
   packages:
     # According to the "on" attribute that we configured, this workflow will trigger on every "Pull Request closed" event
@@ -27,13 +24,18 @@ jobs:
     name: ${{ matrix.registry.name }} package
     runs-on: ubuntu-latest
 
+    # Allow GitHub Action to read repo and install/publish packages from GitHub Package Registry
+    permissions:
+      contents: read
+      packages: write
+
     # Publish to both NPM and GitHub Package Registry
     strategy:
       matrix:
         registry:
           - name: npm
             token: NPM_TOKEN
-            url: https://registry.npmjs.com
+            url: https://registry.npmjs.org
           - name: GitHub
             token: GITHUB_TOKEN
             url: https://npm.pkg.github.com
@@ -96,6 +98,12 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     needs: [ packages ]
+    
+        # Allow GitHub Action to read repo and install/publish packages from GitHub Package Registry
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - uses: actions/checkout@v3
         with:
