@@ -33,7 +33,7 @@ jobs:
         registry:
           - name: npm
             token: NPM_TOKEN
-            url: https://registry.npmjs.com
+            url: https://registry.npmjs.org
           - name: GitHub
             token: GITHUB_TOKEN
             url: https://npm.pkg.github.com
