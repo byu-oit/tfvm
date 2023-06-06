@@ -4,6 +4,6 @@ import { fileURLToPath } from 'url'
 
 export default async function () {
   const __dirname = dirname(fileURLToPath(import.meta.url))
-  const data = JSON.parse(await fs.readFile(resolve(__dirname, './../package.json'), { encoding: 'utf8' }))
+  const data = JSON.parse(await fs.readFile(resolve(__dirname, './../../package.json'), { encoding: 'utf8' }))
   return data.version
 }
