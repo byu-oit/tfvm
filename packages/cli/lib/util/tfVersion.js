@@ -1,4 +1,4 @@
-import runShell from '../util/runShell.js'
+import runShell from './runShell.js'
 import { logger } from './logger.js'
 
 async function getTerraformVersion () {
