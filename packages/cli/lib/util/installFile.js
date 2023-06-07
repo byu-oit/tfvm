@@ -15,7 +15,7 @@ async function download (url, filePath, version) {
       if (response.statusCode !== 200) {
         fs.unlink(filePath, () => {
           console.log(
-            chalk.red.bold(`Terraform ${version}  is not yet released or available.`)
+            chalk.red.bold(`Terraform ${version} is not yet released or available.`)
           )
         })
         return

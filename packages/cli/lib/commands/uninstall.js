@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 import deleteDirectory from '../util/deleteDirectory.js'
-import versionRegEx from '../util/versionRegEx.js'
+import { versionRegEx } from '../util/constants.js'
 import getInstalledVersions from '../util/getInstalledVersions.js'
 import getDirectoriesObj from '../util/getDirectoriesObj.js'
 import verifySetup from '../util/verifySetup.js'
