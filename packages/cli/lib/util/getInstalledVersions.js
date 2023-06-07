@@ -7,7 +7,7 @@ async function getInstalledVersions () {
   const directoriesObj = getDirectoriesObj()
   const tfList = []
 
-  const files = await fs.readdir(directoriesObj.tfvmDir)
+  const files = await fs.readdir(directoriesObj.tfVersionsDir)
   if (files && files.length) {
     files.forEach(file => {
       if (versionRegEx.test(file)) {

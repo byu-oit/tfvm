@@ -1,17 +1,20 @@
 import pino from 'pino'
-import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
-import fs from 'node:fs'
-const logsPath = resolve(dirname(fileURLToPath(import.meta.url)), './../logs/')
-if (!fs.existsSync(logsPath)) fs.mkdirSync(logsPath)
-const destination = resolve(logsPath, `./${new Date().toISOString().split('T')[0]}.txt`)
+import getDirectoriesObj from './getDirectoriesObj.js'
+
+// today's date in YYYY-MM-DD format
+const date = new Date().toISOString().split('T')[0]
+// store logs in AppData so that they are maintained when switching node versions
+const { logsDir } = getDirectoriesObj()
+// at most one log file is created per day
+const todaysLogFile = `${logsDir}\\${date}.log`
 
 export const logger = pino({
   transport: {
     target: 'pino-pretty',
     options: {
       colorize: false,
-      destination,
+      destination: todaysLogFile,
       translateTime: 'SYS:yyyy-mm-dd\' \'HH:MM:ss.l'
     }
   },
@@ -26,4 +29,5 @@ export function printDebugInfo (err) {
   logger.info(`process.platform: ${process.platform}`)
   logger.info(`process.env.HOME: ${process.env.HOME}`)
   logger.info(`fileURLToPath(import.meta.url): ${fileURLToPath(import.meta.url)}`)
+  logger.info(`getDirectoriesObj(): ${JSON.stringify(getDirectoriesObj())}`)
 }

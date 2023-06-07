@@ -16,7 +16,7 @@ async function uninstall (uninstallVersion) {
         chalk.red.bold('Invalid version syntax')
       )
     } else {
-      const tfvmDir = getDirectoriesObj().tfvmDir
+      const tfvmDir = getDirectoriesObj().tfVersionsDir
       const installedVersions = await getInstalledVersions()
       if (installedVersions === null || !installedVersions.includes(uninstallVersion)) {
         console.log(
