@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import versionRegEx from '../util/versionRegEx.js'
+import { versionRegEx } from '../util/constants.js'
 import getInstalledVersions from '../util/getInstalledVersions.js'
 import getDirectoriesObj from '../util/getDirectoriesObj.js'
 import download from '../util/installFile.js'
@@ -63,7 +63,7 @@ async function install (installVersion) {
 export default install
 
 export async function installFromWeb (installVersion, versionNum, printMessage = true) {
-  const tfvmDir = getDirectoriesObj().tfvmDir
+  const tfvmDir = getDirectoriesObj().tfVersionsDir
   const zipPath = tfvmDir.concat('\\').concat(`${installVersion}.zip`)
   const newVersionDir = tfvmDir.concat('\\').concat(installVersion)
   const bitType = getOSBits() === 'AMD64' ? 'windows_amd64' : 'windows_386'

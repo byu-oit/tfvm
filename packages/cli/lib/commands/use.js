@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 import fs from 'node:fs/promises'
-import versionRegEx from '../util/versionRegEx.js'
+import { versionRegEx } from '../util/constants.js'
 import getInstalledVersions from '../util/getInstalledVersions.js'
 import getDirectoriesObj from '../util/getDirectoriesObj.js'
 import verifySetup from '../util/verifySetup.js'
@@ -22,8 +22,8 @@ async function use (useVersion) {
         chalk.red.bold('Invalid version syntax')
       )
     } else {
-      const { terraformDir, appDataDir, tfvmDir } = getDirectoriesObj()
-      const useVerDir = tfvmDir.concat('\\').concat(useVersion)
+      const { terraformDir, appDataDir, tfVersionsDir } = getDirectoriesObj()
+      const useVerDir = tfVersionsDir.concat('\\').concat(useVersion)
       const installedVersions = await getInstalledVersions()
       if (installedVersions === null || !installedVersions.includes(useVersion)) {
         console.log(

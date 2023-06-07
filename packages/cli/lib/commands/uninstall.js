@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 import deleteDirectory from '../util/deleteDirectory.js'
-import versionRegEx from '../util/versionRegEx.js'
+import { versionRegEx } from '../util/constants.js'
 import getInstalledVersions from '../util/getInstalledVersions.js'
 import getDirectoriesObj from '../util/getDirectoriesObj.js'
 import verifySetup from '../util/verifySetup.js'
@@ -16,7 +16,7 @@ async function uninstall (uninstallVersion) {
         chalk.red.bold('Invalid version syntax')
       )
     } else {
-      const tfvmDir = getDirectoriesObj().tfvmDir
+      const tfvmDir = getDirectoriesObj().tfVersionsDir
       const installedVersions = await getInstalledVersions()
       if (installedVersions === null || !installedVersions.includes(uninstallVersion)) {
         console.log(
