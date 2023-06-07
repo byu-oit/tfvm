@@ -1,3 +1,4 @@
 node_modules
 .idea
 packages/cli/lib/logs/*
+packages/cli/lib/settings.txt
