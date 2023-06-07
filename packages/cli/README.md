@@ -87,8 +87,8 @@ At this time, tfvm will not allow you to select alpha, beta, or rc releases.
 
 **Q:** I'm seeing weird behavior or errors. Where can I view tfvm's logs for debugging?
 <br>
-**A:** The logs are stored in the same directory as tfvm's other source files.
-Go to your node folder (or nvm folder, if applicable) and go to 'node_modules/@byu-oit/tfvm/lib/logs'.
+**A:** The logs are stored separately from node so that they are maintained when you switch node versions.
+This should be somewhere like `~/AppData/Roaming/tfvm/logs`.
 
 > <sup>To generate more detailed logs, run tfvm with the `LOG_LEVEL` environment variable set to `debug` or `trace`.
 Alternatively, you can also use the `--log-level <level>` or `-l <level>` argument.
