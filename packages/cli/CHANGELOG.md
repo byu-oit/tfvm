@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-beta.0](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.0.2-beta.3...@byu-oit/tfvm@0.1.0-beta.0) (2023-06-07)
+
+
+### Features
+
+* store files in appdata ([#54](https://github.com/byu-oit/tfvm/issues/54)) ([54bf07a](https://github.com/byu-oit/tfvm/commit/54bf07a1a6d8a9a4afd40ddf3709170defc55a0e))
+
+
+
+
+
 ## [0.0.2-beta.3](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.0.2-beta.2...@byu-oit/tfvm@0.0.2-beta.3) (2023-06-07)
 
 
