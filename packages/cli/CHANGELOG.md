@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-beta.1](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.1.0-beta.0...@byu-oit/tfvm@0.1.0-beta.1) (2023-06-12)
+
+
+### Bug Fixes
+
+* robustly extract version ([#56](https://github.com/byu-oit/tfvm/issues/56)) ([24ca4c9](https://github.com/byu-oit/tfvm/commit/24ca4c9fdac0493972f276d0d2208a78980b00b2))
+
+
+
+
+
 # [0.1.0-beta.0](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.0.2-beta.3...@byu-oit/tfvm@0.1.0-beta.0) (2023-06-07)
 
 
