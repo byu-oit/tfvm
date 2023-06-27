@@ -1,4 +1,5 @@
 import fs from 'node:fs'
+import { settingsFileName } from './constants.js'
 
 let directoriesObj
 
@@ -12,13 +13,15 @@ function getDirectoriesObj () {
     if (!fs.existsSync(tfVersionsDir)) fs.mkdirSync(tfVersionsDir)
     if (!fs.existsSync(logsDir)) fs.mkdirSync(logsDir)
     const terraformDir = appDataDir.concat('\\terraform')
+    const settingsDir = tfvmDir.concat(`\\${settingsFileName}`)
 
     directoriesObj = {
       appDataDir,
       tfvmDir,
       logsDir,
       tfVersionsDir,
-      terraformDir
+      terraformDir,
+      settingsDir
     }
   }
   return directoriesObj
