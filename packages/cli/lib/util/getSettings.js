@@ -1,6 +1,5 @@
 import fs from 'node:fs/promises'
 import { logger } from './logger.js'
-import { settingsFileName } from './constants.js'
 import getDirectoriesObj from './getDirectoriesObj.js'
 
 let settings
@@ -9,7 +8,7 @@ export default async function () {
   if (settings) return settings
   else {
     // store settings in AppData so that they are maintained when switching node versions
-    const settingsFilePath = `${getDirectoriesObj().tfvmDir}\\${settingsFileName}`
+    const settingsFilePath = getDirectoriesObj().settingsDir
     try {
       settings = JSON.parse(await fs.readFile(settingsFilePath, { encoding: 'utf8' }))
       logger.trace(settings, 'Settings: ')
