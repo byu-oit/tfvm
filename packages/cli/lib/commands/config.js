@@ -2,12 +2,14 @@ import chalk from 'chalk'
 import fs from 'node:fs/promises'
 import getSettings from '../util/getSettings.js'
 import getErrorMessage from '../util/errorChecker.js'
-import { dirname, resolve } from 'path'
+import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { logger } from '../util/logger.js'
+import getDirectoriesObj from '../util/getDirectoriesObj.js'
 
 async function config (setting) {
   const __dirname = dirname(fileURLToPath(import.meta.url))
+  const settingsFilePath = getDirectoriesObj().settingsDir
   try {
     if (setting.includes('=')) {
       const settings = setting.split('=')
@@ -16,7 +18,7 @@ async function config (setting) {
         case 'disableErrors':
           if (settings[1] === 'true' || settings[1] === 'false') {
             settingsObj.disableErrors = settings[1]
-            await fs.writeFile(resolve(__dirname, './../settings.txt'), JSON.stringify(settingsObj), 'utf8')
+            await fs.writeFile(settingsFilePath, JSON.stringify(settingsObj), 'utf8')
           } else {
             console.log(
               chalk.red.bold('Invalid input for disableErrors setting. Use either \'tfvm config disableErrors=true\' or \'tfvm config disableErrors=false\'')
@@ -26,7 +28,7 @@ async function config (setting) {
         case 'disableAWSWarnings':
           if (settings[1] === 'true' || settings[1] === 'false') {
             settingsObj.disableAWSWarnings = settings[1]
-            await fs.writeFile(resolve(__dirname, './../settings.txt'), JSON.stringify(settingsObj), 'utf8')
+            await fs.writeFile(settingsFilePath, JSON.stringify(settingsObj), 'utf8')
           } else {
             console.log(
               chalk.red.bold('Invalid input for disableAWSWarnings setting. Use either \'tfvm config disableAWSWarnings=true\' or \'tfvm config disableAWSWarnings=false\'')
@@ -36,7 +38,7 @@ async function config (setting) {
         case 'disableSettingPrompts':
           if (settings[1] === 'true' || settings[1] === 'false') {
             settingsObj.disableSettingPrompts = settings[1]
-            await fs.writeFile(resolve(__dirname, './../settings.txt'), JSON.stringify(settingsObj), 'utf8')
+            await fs.writeFile(settingsFilePath, JSON.stringify(settingsObj), 'utf8')
           } else {
             console.log(
               chalk.red.bold('Invalid input for disableSettingPrompts setting. Use either \'tfvm config disableSettingPrompts=true\' or \'tfvm config disableSettingPrompts=false\'')
