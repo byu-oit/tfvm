@@ -1,66 +1,62 @@
 import chalk from 'chalk'
 import fs from 'node:fs/promises'
-import getSettings from '../util/getSettings.js'
+
+import getSettings, { defaultSettings } from '../util/getSettings.js'
 import getErrorMessage from '../util/errorChecker.js'
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
 import { logger } from '../util/logger.js'
-import getDirectoriesObj from '../util/getDirectoriesObj.js'
+import { TfvmFS } from '../util/getDirectoriesObj.js'
 
 async function config (setting) {
-  const __dirname = dirname(fileURLToPath(import.meta.url))
-  const settingsFilePath = getDirectoriesObj().settingsDir
+  const settingsFilePath = TfvmFS.settingsDir
   try {
-    if (setting.includes('=')) {
-      const settings = setting.split('=')
-      const settingsObj = await getSettings()
-      switch (settings[0]) {
-        case 'disableErrors':
-          if (settings[1] === 'true' || settings[1] === 'false') {
-            settingsObj.disableErrors = settings[1]
+    const settingsObj = await getSettings()
+    if (typeof setting === 'string') {
+      if (setting.includes('=')) {
+        const [settingKey, value] = setting.split('=')
+
+        // if the settings is a valid setting, handle it.
+        if (Object.keys(defaultSettings).includes(settingKey)) {
+          if (value === 'true' || value === 'false') {
+            // we need to store logical true or false, not the string 'true' or 'false'. This converts to a boolean:
+            settingsObj[settingKey] = value === 'true'
             await fs.writeFile(settingsFilePath, JSON.stringify(settingsObj), 'utf8')
           } else {
-            console.log(
-              chalk.red.bold('Invalid input for disableErrors setting. Use either \'tfvm config disableErrors=true\' or \'tfvm config disableErrors=false\'')
-            )
+            console.log(chalk.red.bold(`Invalid input for ${settingKey} setting. ` +
+              `Use either 'tfvm config ${settingKey}=true' or 'tfvm config ${settingKey}=false'`))
           }
-          break
-        case 'disableAWSWarnings':
-          if (settings[1] === 'true' || settings[1] === 'false') {
-            settingsObj.disableAWSWarnings = settings[1]
-            await fs.writeFile(settingsFilePath, JSON.stringify(settingsObj), 'utf8')
-          } else {
-            console.log(
-              chalk.red.bold('Invalid input for disableAWSWarnings setting. Use either \'tfvm config disableAWSWarnings=true\' or \'tfvm config disableAWSWarnings=false\'')
-            )
-          }
-          break
-        case 'disableSettingPrompts':
-          if (settings[1] === 'true' || settings[1] === 'false') {
-            settingsObj.disableSettingPrompts = settings[1]
-            await fs.writeFile(settingsFilePath, JSON.stringify(settingsObj), 'utf8')
-          } else {
-            console.log(
-              chalk.red.bold('Invalid input for disableSettingPrompts setting. Use either \'tfvm config disableSettingPrompts=true\' or \'tfvm config disableSettingPrompts=false\'')
-            )
-          }
-          break
-        default:
-          logger.warn(`Invalid setting change attempt with setting=${setting} and __dirname=${__dirname}`)
-          console.log(
-            chalk.red.bold('Invalid setting. See the README.md file for all configurable settings.')
-          )
+          console.log(chalk.cyan.bold(`Successfully set ${setting}`))
+        } else {
+          logger.warn(`Invalid setting change attempt with setting=${setting}`)
+          console.log(chalk.red.bold('Invalid setting. See the README.md file for all configurable settings.'))
+        }
+      } else {
+        logger.warn(`Invalid setting change format attempt with setting=${setting}`)
+        console.log(chalk.red.bold('Invalid config format. Command should be formatted config \'<setting=value>\''))
       }
     } else {
-      logger.warn(`Invalid setting change format attempt with setting=${setting} and __dirname=${__dirname}`)
-      console.log(
-        chalk.red.bold('Invalid config format. Command should be formatted config \'<setting=value>\'')
-      )
+      await printSettings(settingsObj)
     }
   } catch (error) {
-    logger.fatal(error, `Fatal error when running "config" command where setting=${setting} and __dirname=${__dirname}: `)
+    logger.fatal(error, `Fatal error when running "config" command where setting=${setting}: `)
     getErrorMessage(error)
   }
 }
 
 export default config
+
+async function printSettings (settingsObj) {
+  console.log(chalk.cyan.bold('Current Settings: '))
+  // turn object into an array of objects to append default values and then back into an object for displaying
+  // https://stackoverflow.com/a/53653088/6901706
+  const settingsData = Object.keys(settingsObj).map(key => ({
+    key,
+    value: settingsObj[key],
+    '(default)': defaultSettings[key]
+  })).reduce((accumulator, { key, ...restOfObj }) => {
+    accumulator[key] = restOfObj
+    return accumulator
+  }, {})
+  console.table(settingsData)
+
+  console.log(chalk.yellow('Get more information about config settings by running `tfvm config -h`'))
+}

@@ -56,8 +56,12 @@ Run `tfvm` in any command line, followed by one of these commands:
 - `use` or `u`: sets specified terraform version to being the actively used version.
     - Ex: `tfvm use 1.0.3`
     - If you attempt to use a version that you haven't installed, you will be prompted to install it.
+- `detect` (or no command): scans `.tf` files in the current directory for a terraform version constraint and uses that version
+    - Ex: `tfvm detect` or `tfvm`
+    - *This is the default command, and will be run if no command is specified*
 - `current`: displays the terraform version you are using.
     - Ex: `tfvm current`
+    - This does the same thing as running `terraform --version`
 - `tfvm config <setting>=true/false`: allows the user to change tfvm settings.
     - `tfvm config disableErrors=true` - disables configuration warnings.
     - `tfvm config disableAWSWarnings=true` - disables AWS warnings that appear when using older terraform versions.

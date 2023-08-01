@@ -5,9 +5,7 @@ function getErrorMessage (error) {
   if (error.code === 'EPERM') {
     // TODO remove on next version if we don't see this anymore
     logger.error(error, 'Unexpected elevation requirement error: ')
-    console.log(
-      chalk.red.bold('tfvm has to be ran from the console as an administrator for changing versions.')
-    )
+    console.log(chalk.red.bold('Unexpected EPERM error while trying to copy files.'))
   } else {
     logger.fatal(error, `Unexpected error in getErrorMessage(${error}):`)
     console.error(error)

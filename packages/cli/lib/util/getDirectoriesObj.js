@@ -1,30 +1,84 @@
+import fsp from 'node:fs/promises'
 import fs from 'node:fs'
-import { settingsFileName } from './constants.js'
 
-let directoriesObj
+const settingsFileName = 'settings.json'
+const logFolderName = 'logs'
+const tfVersionsFolderName = 'versions'
+const tfvmAppDataFolderName = 'tfvm'
+const dirSeparator = '\\'
 
-function getDirectoriesObj () {
-  if (!directoriesObj) {
-    const appDataDir = process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + '/.local/share')
-    const tfvmDir = appDataDir.concat('\\tfvm')
-    const tfVersionsDir = tfvmDir.concat('\\versions')
-    const logsDir = tfvmDir.concat('\\logs')
-    if (!fs.existsSync(tfvmDir)) fs.mkdirSync(tfvmDir)
-    if (!fs.existsSync(tfVersionsDir)) fs.mkdirSync(tfVersionsDir)
-    if (!fs.existsSync(logsDir)) fs.mkdirSync(logsDir)
-    const terraformDir = appDataDir.concat('\\terraform')
-    const settingsDir = tfvmDir.concat(`\\${settingsFileName}`)
+/**
+ * TFVM File System Class
+ */
+export class TfvmFS {
+  static appDataDir = process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + '/.local/share')
+  static tfvmDir = this.appDataDir.concat(dirSeparator + tfvmAppDataFolderName) // where tfvms own files are in AppData
+  static tfVersionsDir = this.tfvmDir.concat(dirSeparator + tfVersionsFolderName) // where all the versions of terraform are stored
+  static logsDir = this.tfvmDir.concat(dirSeparator + logFolderName) // where tfvm logs are stored (in appdata)=
+  static terraformDir = this.appDataDir.concat(dirSeparator + 'terraform') // where the path is looking for terraform.exe to be found
+  static settingsDir = this.tfvmDir.concat(dirSeparator + settingsFileName) // where the tfvm settings file can be located
+  static architecture = process.env.PROCESSOR_ARCHITECTURE === 'AMD64' ? 'windows_amd64' : 'windows_386'
+  static bitWidth = process.env.PROCESSOR_ARCHITECTURE === 'AMD64' ? '64' : '32'
 
-    directoriesObj = {
-      appDataDir,
-      tfvmDir,
-      logsDir,
-      tfVersionsDir,
-      terraformDir,
-      settingsDir
+  static getDirectoriesObj () {
+    return {
+      appDataDir: this.appDataDir,
+      tfvmDir: this.tfvmDir,
+      logsDir: this.logsDir,
+      tfVersionsDir: this.tfVersionsDir,
+      terraformDir: this.terraformDir,
+      settingsDir: this.settingsDir
     }
   }
-  return directoriesObj
-}
 
-export default getDirectoriesObj
+  /**
+   * Creates appdata/roaming/terraform of it doesn't already exist
+   * @returns {Promise<void>}
+   */
+  static async createTfAppDataDir () {
+    if (!fs.existsSync(this.terraformDir)) fs.mkdirSync(TfvmFS.terraformDir)
+  }
+
+  /**
+   * Deletes the terraform exe so that a new one can be copied in
+   * @returns {Promise<void>}
+   */
+  static async deleteCurrentTfExe () {
+    // if appdata/roaming/terraform/terraform.exe exists, delete it
+    if ((await fsp.readdir(this.terraformDir)).includes('terraform.exe')) {
+      await fsp.unlink(this.terraformDir + dirSeparator + 'terraform.exe')
+    }
+  }
+
+  /**
+   * Creates a 'path' by joining the arguments together with the system-specific dirSeparator
+   * @param {...string} items
+   * @returns {string}
+   */
+  static getPath = (...items) => items.join(dirSeparator)
+
+  /**
+   * removes the file name from a given path
+   * @param {string} path
+   * @returns {unknown}
+   */
+  static getFileNameFromPath = (path) => path.split(dirSeparator).pop()
+
+  /**
+   * Delete a directory (and all containing files) from a parent directory
+   * @param {string} baseDirectory path of the parent directory
+   * @param {string} removeDir path of the directory to remove (relative to the baseDirectory)
+   * @returns {Promise<void>}
+   */
+  static async deleteDirectory (baseDirectory, removeDir) {
+    const baseDirFiles = await fsp.readdir(baseDirectory)
+    if (baseDirFiles.includes(removeDir)) {
+      const fullPath = baseDirectory + dirSeparator + removeDir
+      const files = await fsp.readdir(fullPath)
+      for (const file of files) {
+        await fsp.unlink(fullPath + dirSeparator + file)
+      }
+      await fsp.rmdir(fullPath)
+    }
+  }
+}
