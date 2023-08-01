@@ -14,9 +14,7 @@ async function download (url, filePath, version) {
     const request = proto.get(url, response => {
       if (response.statusCode !== 200) {
         fs.unlink(filePath, () => {
-          console.log(
-            chalk.red.bold(`Terraform ${version} is not yet released or available.`)
-          )
+          console.log(chalk.red.bold(`Terraform ${version} is not yet released or available.`))
         })
         return
       }

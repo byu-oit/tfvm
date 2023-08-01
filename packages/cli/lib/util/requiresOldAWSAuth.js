@@ -1,4 +1,4 @@
-import compareVersions from 'compare-versions'
+import { compareVersions } from 'compare-versions'
 
 /**
  * Any version before this will require you to use older AWS authentication methods.
