@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.1.0 (2023-08-01)
+
+
+### Bug Fixes
+
+* clean up beta ([#48](https://github.com/byu-oit/tfvm/issues/48)) ([902c71c](https://github.com/byu-oit/tfvm/commit/902c71caa0ece54402da33ae7baeb333ce822079))
+* correctly save settings ([#58](https://github.com/byu-oit/tfvm/issues/58)) ([af30799](https://github.com/byu-oit/tfvm/commit/af3079996081b2e76d958db8027fda4f66715fa8))
+* finalize readme and include script ([#53](https://github.com/byu-oit/tfvm/issues/53)) ([40c9e8a](https://github.com/byu-oit/tfvm/commit/40c9e8a5d7c6994cdce5c08d21c60ba003134f9e))
+* fix grammar in readme ([#51](https://github.com/byu-oit/tfvm/issues/51)) ([f9253b8](https://github.com/byu-oit/tfvm/commit/f9253b8f5cf2330b171c4343ce77af06fa91591a))
+* manual version bump ([#49](https://github.com/byu-oit/tfvm/issues/49)) ([7ad27a9](https://github.com/byu-oit/tfvm/commit/7ad27a9b02f8f971b56c154f4d7d790e875af2f2))
+* robustly extract version ([#56](https://github.com/byu-oit/tfvm/issues/56)) ([9dcc326](https://github.com/byu-oit/tfvm/commit/9dcc32670008cfb7b8b0786c7986d0c60089cf6a))
+* update contributors ([#52](https://github.com/byu-oit/tfvm/issues/52)) ([aa25605](https://github.com/byu-oit/tfvm/commit/aa25605e377981145d2db7027729ac08d2e11fa6))
+
+
+### Features
+
+* store files in appdata ([#54](https://github.com/byu-oit/tfvm/issues/54)) ([6d3abd9](https://github.com/byu-oit/tfvm/commit/6d3abd9e3bbd5a9f921511710f7123c160b521a6))
+
+
+
+
+
 # [0.1.0-beta.2](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.1.0-beta.1...@byu-oit/tfvm@0.1.0-beta.2) (2023-06-27)
 
 
