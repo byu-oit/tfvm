@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.1.0...@byu-oit/tfvm@0.2.0) (2023-08-01)
+
+
+### Features
+
+* implement auto-detect ([a52a490](https://github.com/byu-oit/tfvm/commit/a52a4904cff44afabd6c0d280925c702ac2fcf29))
+
+
+
+
+
 # 0.1.0 (2023-08-01)
 
 
