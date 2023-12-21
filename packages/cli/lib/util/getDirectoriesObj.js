@@ -1,22 +1,22 @@
 import fsp from 'node:fs/promises'
 import fs from 'node:fs'
+import path from 'path'
 
 const settingsFileName = 'settings.json'
 const logFolderName = 'logs'
 const tfVersionsFolderName = 'versions'
 const tfvmAppDataFolderName = 'tfvm'
-const dirSeparator = '\\'
 
 /**
  * TFVM File System Class
  */
 export class TfvmFS {
   static appDataDir = process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + '/.local/share')
-  static tfvmDir = this.appDataDir.concat(dirSeparator + tfvmAppDataFolderName) // where tfvms own files are in AppData
-  static tfVersionsDir = this.tfvmDir.concat(dirSeparator + tfVersionsFolderName) // where all the versions of terraform are stored
-  static logsDir = this.tfvmDir.concat(dirSeparator + logFolderName) // where tfvm logs are stored (in appdata)=
-  static terraformDir = this.appDataDir.concat(dirSeparator + 'terraform') // where the path is looking for terraform.exe to be found
-  static settingsDir = this.tfvmDir.concat(dirSeparator + settingsFileName) // where the tfvm settings file can be located
+  static tfvmDir = this.appDataDir.concat(path.sep + tfvmAppDataFolderName) // where tfvms own files are in AppData
+  static tfVersionsDir = this.tfvmDir.concat(path.sep + tfVersionsFolderName) // where all the versions of terraform are stored
+  static logsDir = this.tfvmDir.concat(path.sep + logFolderName) // where tfvm logs are stored (in appdata)=
+  static terraformDir = this.appDataDir.concat(path.sep + 'terraform') // where the path is looking for terraform.exe to be found
+  static settingsDir = this.tfvmDir.concat(path.sep + settingsFileName) // where the tfvm settings file can be located
   static architecture = process.env.PROCESSOR_ARCHITECTURE === 'AMD64' ? 'windows_amd64' : 'windows_386'
   static bitWidth = process.env.PROCESSOR_ARCHITECTURE === 'AMD64' ? '64' : '32'
 
@@ -46,7 +46,7 @@ export class TfvmFS {
   static async deleteCurrentTfExe () {
     // if appdata/roaming/terraform/terraform.exe exists, delete it
     if ((await fsp.readdir(this.terraformDir)).includes('terraform.exe')) {
-      await fsp.unlink(this.terraformDir + dirSeparator + 'terraform.exe')
+      await fsp.unlink(this.terraformDir + path.sep + 'terraform.exe')
     }
   }
 
@@ -55,14 +55,14 @@ export class TfvmFS {
    * @param {...string} items
    * @returns {string}
    */
-  static getPath = (...items) => items.join(dirSeparator)
+  static getPath = (...items) => items.join(path.sep)
 
   /**
    * removes the file name from a given path
    * @param {string} path
    * @returns {unknown}
    */
-  static getFileNameFromPath = (path) => path.split(dirSeparator).pop()
+  static getFileNameFromPath = (path) => path.split(path.sep).pop()
 
   /**
    * Delete a directory (and all containing files) from a parent directory
@@ -73,10 +73,10 @@ export class TfvmFS {
   static async deleteDirectory (baseDirectory, removeDir) {
     const baseDirFiles = await fsp.readdir(baseDirectory)
     if (baseDirFiles.includes(removeDir)) {
-      const fullPath = baseDirectory + dirSeparator + removeDir
+      const fullPath = baseDirectory + path.sep + removeDir
       const files = await fsp.readdir(fullPath)
       for (const file of files) {
-        await fsp.unlink(fullPath + dirSeparator + file)
+        await fsp.unlink(fullPath + path.sep + file)
       }
       await fsp.rmdir(fullPath)
     }

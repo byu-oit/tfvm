@@ -11,7 +11,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 
 async function verifySetup () {
   // STEP 1: Check that the appdata/roaming/tfvm folder exists
-  if (!fs.existsSync(TfvmFS.tfVersionsDir)) fs.mkdirSync(TfvmFS.tfVersionsDir)
+  if (!fs.existsSync(TfvmFS.tfVersionsDir)) {
+    fs.mkdirSync(TfvmFS.tfVersionsDir)
+  }
 
   // STEP 2: Check that the path is set
   const tfPaths = []
