@@ -20,9 +20,17 @@ export class TfvmOS {
   logFolderName = 'logs'
   tfVersionsFolderName = 'versions'
   tfvmAppDataFolderName = 'tfvm'
-  getOSName () {
-    // This is whatever Terraform expects, not what node's process.platform returns
-    throw new Error('Not implemented in parent class')
+
+  static getOS () {
+    const osClassBinding = {
+      darwin: Mac,
+      win32: Windows,
+      linux: Linux
+      //  TODO add more operating systems
+    }
+    const OSClass = osClassBinding[process.platform]
+    if (OSClass == null) throw new Error('Operating system not supported')
+    return new OSClass()
   }
 
   getTfvmDir () {
@@ -45,43 +53,22 @@ export class TfvmOS {
     return this.getTfvmDir().concat(sep + this.settingsFileName)
   }
 
-  getArchitecture () {
-    throw new Error('Not implemented in parent class')
-  }
-
-  getBitWidth () {
-    throw new Error('Not implemented in parent class')
-  }
-
-  getPathCommand () {
-    throw new Error('Not implemented in parent class')
-  }
-
-  getPathDelimiter () {
-    throw new Error('Not implemented in parent class')
-  }
-
-  addToPath () {
-    throw new Error('Not implemented in parent class')
-  }
-
-  getAppDataDir () {
-    throw new Error('Not implemented in parent class')
-  }
-
-  handleAddPathError () {
-    throw new Error('Not Implemented in parent class')
-  }
-
-  getTFExecutableName () {
-    throw new Error('Not Implemented in parent class')
-  }
-
   /**
    * Returns arguments for the runShell() function and prepares the script for being run, if necessary
    */
-  getAddToPathShellArgs () {
-    throw new Error('Not Implemented in parent class')
+  getAddToPathShellArgs () { throw new Error('Not implemented in parent class') }
+  getArchitecture () { throw new Error('Not implemented in parent class') }
+  getBitWidth () { throw new Error('Not implemented in parent class') }
+  getPathCommand () { throw new Error('Not implemented in parent class') }
+  getPathDelimiter () { throw new Error('Not implemented in parent class') }
+  addToPath () { throw new Error('Not implemented in parent class') }
+  getAppDataDir () { throw new Error('Not implemented in parent class') }
+  handleAddPathError () { throw new Error('Not implemented in parent class') }
+  getTFExecutableName () { throw new Error('Not implemented in parent class') }
+  async prepareExecutable () { throw new Error('Not Implemented in parent class') }
+  getOSName () {
+    // This is whatever Terraform expects, not what node's process.platform returns
+    throw new Error('Not implemented in parent class')
   }
 
   getDirectories () {
@@ -93,21 +80,6 @@ export class TfvmOS {
       settingsDir: this.getSettingsDir(),
       appDataDir: this.getAppDataDir()
     }
-  }
-
-  async prepareExecutable () {
-    throw new Error('Not Implemented in parent class')
-  }
-
-  static getOS () {
-    const osClassBinding = {
-      darwin: Mac,
-      win32: Windows
-    //  TODO add more operating systems
-    }
-    const OSClass = osClassBinding[process.platform]
-    if (OSClass == null) throw new Error('Operating system not supported')
-    return new OSClass()
   }
 
   /**
@@ -214,15 +186,48 @@ export class Linux extends TfvmOS {
     return ':'
   }
 
-  async getPathAdd () {
-    return await runShell(resolve(__dirname, './../scripts/addToPathLinux.sh'))
-  }
-
   getAppDataDir () {
     return process.env.HOME + '/.local/share'
   }
 
   handleAddPathError () {
     throw new Error('Bash script failed to add terraform directory to the path')
+  }
+
+  async getAddToPathShellArgs () {
+    const scriptPath = resolve(__dirname, './../scripts/addToPathLinux.sh')
+    await fsp.chmod(scriptPath, EXECUTE_PERM_CODE)
+    return [scriptPath, {}]
+  }
+
+  getArchitecture () {
+    // 'arm' or 'arm64', 'amd64', '386'
+    const arches = {
+      arm: 'arm',
+      x64: 'amd64',
+      arm64: 'arm64',
+      x32: '386',
+      ia32: '386'
+    }
+    const arch = arches[process.arch]
+    if (arch == null) throw new Error('Operating system not supported')
+    return arch
+  }
+
+  getBitWidth () {
+    return process.arch.includes('64') ? '64' : '32'
+  }
+
+  getOSName () {
+    return 'linux'
+  }
+
+  getTFExecutableName () {
+    return 'terraform'
+  }
+
+  async prepareExecutable (version) {
+    const exeLoc = resolve(this.getTfVersionsDir(), `v${version}/${this.getTFExecutableName()}`)
+    await fsp.chmod(exeLoc, EXECUTE_PERM_CODE)
   }
 }
