@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0-beta.2](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.3.0-beta.1...@byu-oit/tfvm@0.3.0-beta.2) (2024-02-15)
+
+
+### Bug Fixes
+
+* bash script ([03f3b84](https://github.com/byu-oit/tfvm/commit/03f3b842c025d15a9d9d15000f3d76197d528d40))
+* lint ([20b6a8a](https://github.com/byu-oit/tfvm/commit/20b6a8a9738526ecbd35dcee0fcf5476574258dd))
+
+
+### Features
+
+* add linux ([30c37de](https://github.com/byu-oit/tfvm/commit/30c37de1484f66bc342ecb22fb6470f6bd6dc9dd))
+* enable linux support ([471b88b](https://github.com/byu-oit/tfvm/commit/471b88bce5b86ff73c125900de8fd834c4be3e2a))
+
+
+
+
+
 # [0.3.0-beta.1](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.3.0-beta.0...@byu-oit/tfvm@0.3.0-beta.1) (2024-02-15)
 
 
