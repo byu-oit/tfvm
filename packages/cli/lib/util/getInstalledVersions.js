@@ -24,7 +24,7 @@ async function getInstalledVersions () {
       })
       installedVersions = tfList
     } else {
-      logger.debug(`Unable to find installed versions of terraform with directoriesObj=${JSON.stringify(os.getDirectoriesObj())} and files=${JSON.stringify(files)}`)
+      logger.debug(`Unable to find installed versions of terraform with directoriesObj=${JSON.stringify(os.getDirectories())} and files=${JSON.stringify(files)}`)
       return []
     }
   }

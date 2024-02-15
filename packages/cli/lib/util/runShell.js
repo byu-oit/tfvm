@@ -7,7 +7,7 @@ export default async function (command, options = {}) {
   let response = ''
   try {
     response = await execute(command, options)
-    // logger.debug(response, `Response from runShell(${command}, ${JSON.stringify(options)}):`)
+    logger.debug(response, `Response from runShell(${command}, ${JSON.stringify(options)}):`)
     if (!response.stderr) {
       return response.stdout
     } else {
