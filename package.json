@@ -3,7 +3,7 @@
   "private": true,
   "engines": {
     "npm": ">=8",
-    "node": ">=18"
+    "node": ">=20"
   },
   "scripts": {
     "lint": "standard",

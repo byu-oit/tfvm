@@ -1,7 +1,8 @@
 import fs from 'node:fs/promises'
 import { versionRegEx } from './constants.js'
-import { TfvmFS } from './getDirectoriesObj.js'
 import { logger } from './logger.js'
+import { getOS } from './tfvmOS.js'
+const os = getOS()
 
 let installedVersions
 
@@ -14,7 +15,7 @@ async function getInstalledVersions () {
   if (!installedVersions) {
     const tfList = []
 
-    const files = await fs.readdir(TfvmFS.tfVersionsDir)
+    const files = await fs.readdir(os.getTfVersionsDir())
     if (files && files.length) {
       files.forEach(file => {
         if (versionRegEx.test(file)) {
@@ -23,7 +24,7 @@ async function getInstalledVersions () {
       })
       installedVersions = tfList
     } else {
-      logger.debug(`Unable to find installed versions of terraform with directoriesObj=${JSON.stringify(TfvmFS.getDirectoriesObj())} and files=${JSON.stringify(files)}`)
+      logger.debug(`Unable to find installed versions of terraform with directoriesObj=${JSON.stringify(os.getDirectoriesObj())} and files=${JSON.stringify(files)}`)
       return []
     }
   }

@@ -1,10 +1,11 @@
 import chalk from 'chalk'
-
 import { versionRegEx } from '../util/constants.js'
 import getInstalledVersions from '../util/getInstalledVersions.js'
-import { TfvmFS } from '../util/getDirectoriesObj.js'
+import { TfvmFS } from '../util/TfvmFS.js'
 import getErrorMessage from '../util/errorChecker.js'
 import { logger } from '../util/logger.js'
+import { getOS } from '../util/tfvmOS.js'
+const os = getOS()
 
 async function uninstall (uninstallVersion) {
   try {
@@ -17,7 +18,7 @@ async function uninstall (uninstallVersion) {
         console.log(chalk.white.bold(`terraform ${uninstallVersion} is not installed. Type "tfvm list" to see what is installed.`))
       } else {
         console.log(chalk.white.bold(`Uninstalling terraform ${uninstallVersion}...`))
-        await TfvmFS.deleteDirectory(TfvmFS.tfVersionsDir, uninstallVersion)
+        await TfvmFS.deleteDirectory(os.getTfVersionsDir(), uninstallVersion)
         console.log(chalk.cyan.bold(`Successfully uninstalled terraform ${uninstallVersion}`))
       }
     }
