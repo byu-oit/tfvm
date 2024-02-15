@@ -12,7 +12,7 @@ import { getAllFiles } from '../util/util.js'
 import getTerraformVersion from '../util/tfVersion.js'
 import { installNewVersion, switchVersionTo, useVersion } from './use.js'
 import { logger } from '../util/logger.js'
-import { TfvmFS } from '../util/getDirectoriesObj.js'
+import { TfvmFS } from '../util/TfvmFS.js'
 
 async function detect () {
   // set of objects that contain the constraints and the file name

@@ -1,15 +1,17 @@
 import chalk from 'chalk'
 import fs from 'node:fs/promises'
 import enquirer from 'enquirer'
-
 import { versionRegEx } from '../util/constants.js'
 import getInstalledVersions from '../util/getInstalledVersions.js'
-import { TfvmFS } from '../util/getDirectoriesObj.js'
+import { TfvmFS } from '../util/TfvmFS.js'
 import getErrorMessage from '../util/errorChecker.js'
 import { installFromWeb } from './install.js'
 import getSettings from '../util/getSettings.js'
 import requiresOldAWSAuth from '../util/requiresOldAWSAuth.js'
 import { logger } from '../util/logger.js'
+import { getOS } from '../util/tfvmOS.js'
+
+const os = getOS()
 
 async function use (version) {
   try {
@@ -73,10 +75,10 @@ export async function switchVersionTo (version) {
   await TfvmFS.deleteCurrentTfExe()
 
   await fs.copyFile(
-    TfvmFS.getPath(TfvmFS.tfVersionsDir, 'v' + version, 'terraform.exe'), // source file
-    TfvmFS.getPath(TfvmFS.terraformDir, 'terraform.exe') // destination file
+    os.getPath(os.getTfVersionsDir(), 'v' + version, os.getTFExecutableName()), // source file
+    os.getPath(os.getTerraformDir(), os.getTFExecutableName()) // destination file
   )
-  console.log(chalk.cyan.bold(`Now using terraform v${version} (${TfvmFS.bitWidth}-bit)`))
+  console.log(chalk.cyan.bold(`Now using terraform v${version} (${os.getBitWidth()}-bit)`))
   const settings = await getSettings()
   if (requiresOldAWSAuth(version) && !settings.disableAWSWarnings) {
     console.log(chalk.yellow.bold('Warning: This tf version is not compatible with the newest ' +

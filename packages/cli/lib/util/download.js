@@ -6,7 +6,6 @@ import { logger } from './logger.js'
 
 async function download (url, filePath, version) {
   const proto = !url.charAt(4).localeCompare('s') ? https : http
-
   return new Promise((resolve, reject) => {
     const file = fs.createWriteStream(filePath)
     let fileInfo = null
