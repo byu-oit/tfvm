@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set the path to add
-path2add="$HOME/.tfvm/terraform"
+path2add="$HOME/.local/share/terraform"
 
 # Get the user's PATH
 userPath=$(echo $PATH)
