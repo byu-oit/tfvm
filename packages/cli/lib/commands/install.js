@@ -65,6 +65,8 @@ export async function installFromWeb (versionNum, printMessage = true) {
   // have an arm release (and they are on an Arm Mac), then just download the amd64 one instead.
   if (os instanceof Mac && arch === 'arm64' && compare(versionNum, LAST_TF_VERSION_WITHOUT_ARM, '<=')) {
     arch = 'amd64'
+    console.log(chalk.bold.yellow(`Warning: There is no available ARM release of Terraform for version ${versionNum}.
+    Installing the amd64 version instead (should run without issue via Rosetta)...`))
   }
   const url = `https://releases.hashicorp.com/terraform/${versionNum}/terraform_${versionNum}_${os.getOSName()}_${arch}.zip`
   await download(url, zipPath, versionNum)
