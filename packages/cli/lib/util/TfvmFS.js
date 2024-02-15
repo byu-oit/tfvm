@@ -9,7 +9,7 @@ const os = getOS()
  */
 export class TfvmFS {
   /**
-   * Creates appdata/roaming/terraform of it doesn't already exist
+   * Creates terraform directory of it doesn't already exist
    * @returns {Promise<void>}
    */
   static async createTfAppDataDir () {
