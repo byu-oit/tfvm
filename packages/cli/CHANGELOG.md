@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0-beta.0](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.2.0...@byu-oit/tfvm@0.3.0-beta.0) (2024-02-15)
+
+
+### Bug Fixes
+
+* add path.sep for all operatign systs ([db4ae03](https://github.com/byu-oit/tfvm/commit/db4ae03aabb1104c9a32257ee533437982b80fff))
+
+
+### Features
+
+* enable mac support ([86cfffa](https://github.com/byu-oit/tfvm/commit/86cfffac89785c8ca79ecb362e7c2b01d67c84d0))
+
+
+
+
+
 # [0.2.0](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.1.0...@byu-oit/tfvm@0.2.0) (2023-08-01)
 
 
