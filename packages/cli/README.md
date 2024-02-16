@@ -28,12 +28,13 @@ npm i -g @byu-oit/tfvm
 > Fortunately, any installed terraform versions and your selected terraform version will be maintained for each Node.js
 > version that you switch to, as they are stored on your system and not in Node.js's files.
 
-### Step 2: Delete existing terraform setup
+### Step 2: Delete existing terraform setup or terraform version manager setup
 tfvm will auto-create directories and a variable in your 'Path' system environment variable for terraform setup.
 This will conflict with any terraform paths or installations you already have.
 1. If you already have terraform set up on your computer, delete your entry for your terraform directory in your user path or from any `/bin` directories
    1. If you know you have terraform installed but don't know where, you can run `which terraform` to help find it.
 2. You could leave your terraform executable (e.g. `.exe`) file(s), but you might as well delete them. tfvm will download its own files.
+3. If you are switching from another terraform version manager, you will probably have to uninstall it or remove any reference of it from your user PATH to use this package correctly. 
 
 ### Step 3: Run tfvm for the first time
 1. Open up any command line
