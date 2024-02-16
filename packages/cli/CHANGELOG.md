@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0-beta.4](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.3.0-beta.3...@byu-oit/tfvm@0.3.0-beta.4) (2024-02-16)
+
+
+### Bug Fixes
+
+* linting ([9f08e22](https://github.com/byu-oit/tfvm/commit/9f08e22f051c202d619ba9f4a4733934b6952b52))
+* stop the hanging after failed downlaod ([0ab23b7](https://github.com/byu-oit/tfvm/commit/0ab23b78056d04651a48663c669099bca5ec4271))
+
+
+
+
+
 # [0.3.0-beta.3](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.3.0-beta.2...@byu-oit/tfvm@0.3.0-beta.3) (2024-02-15)
 
 
