@@ -56,25 +56,29 @@ async function install (versionNum) {
 export default install
 
 export async function installFromWeb (versionNum, printMessage = true) {
-  const zipPath = os.getPath(os.getTfVersionsDir(), `v${versionNum}.zip`)
-  const newVersionDir = os.getPath(os.getTfVersionsDir(), 'v' + versionNum)
-  let arch = os.getArchitecture()
+  try {
+    const zipPath = os.getPath(os.getTfVersionsDir(), `v${versionNum}.zip`)
+    const newVersionDir = os.getPath(os.getTfVersionsDir(), 'v' + versionNum)
+    let arch = os.getArchitecture()
 
-  // Only newer terraform versions include a release for ARM (Apple Silicon) hardware, but their chips *can*
-  // run the amd64 ones, it just isn't ideal. If the user requests to download a terraform version that doesn't
-  // have an arm release (and they are on an Arm Mac), then just download the amd64 one instead.
-  if (os instanceof Mac && arch === 'arm64' && compare(versionNum, LAST_TF_VERSION_WITHOUT_ARM, '<=')) {
-    arch = 'amd64'
-    console.log(chalk.bold.yellow(`Warning: There is no available ARM release of Terraform for version ${versionNum}.
+    // Only newer terraform versions include a release for ARM (Apple Silicon) hardware, but their chips *can*
+    // run the amd64 ones, it just isn't ideal. If the user requests to download a terraform version that doesn't
+    // have an arm release (and they are on an Arm Mac), then just download the amd64 one instead.
+    if (os instanceof Mac && arch === 'arm64' && compare(versionNum, LAST_TF_VERSION_WITHOUT_ARM, '<=')) {
+      arch = 'amd64'
+      console.log(chalk.bold.yellow(`Warning: There is no available ARM release of Terraform for version ${versionNum}.
     Installing the amd64 version instead (should run without issue via Rosetta)...`))
-  }
-  const url = `https://releases.hashicorp.com/terraform/${versionNum}/terraform_${versionNum}_${os.getOSName()}_${arch}.zip`
-  await download(url, zipPath, versionNum)
-  await fs.mkdir(newVersionDir)
-  await unzipFile(zipPath, newVersionDir)
-  await fs.unlink(zipPath)
-  await os.prepareExecutable(versionNum)
-  if (printMessage) {
-    console.log(chalk.bold.cyan(`Installation complete. If you want to use this version, type\n\ntfvm use ${versionNum}`))
+    }
+    const url = `https://releases.hashicorp.com/terraform/${versionNum}/terraform_${versionNum}_${os.getOSName()}_${arch}.zip`
+    await download(url, zipPath, versionNum)
+    await fs.mkdir(newVersionDir)
+    await unzipFile(zipPath, newVersionDir)
+    await fs.unlink(zipPath)
+    await os.prepareExecutable(versionNum)
+    if (printMessage) {
+      console.log(chalk.bold.cyan(`Installation complete. If you want to use this version, type\n\ntfvm use ${versionNum}`))
+    }
+  } catch (e) {
+    throw new Error()
   }
 }

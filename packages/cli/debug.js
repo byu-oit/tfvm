@@ -7,8 +7,8 @@
 // import current from './lib/commands/current.js'
 //
 // async function run () {
-//   await verifySetup()
-//   await current()
+//   // await verifySetup()
+//   await install('0.12.2233')
 // }
 //
 // void run()
