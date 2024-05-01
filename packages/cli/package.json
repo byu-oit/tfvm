@@ -39,7 +39,7 @@
     "compare-versions": "^6.0.0",
     "enquirer": "^2.3.6",
     "node-stream-zip": "^1.15.0",
-    "pino": "^8.14.1",
+    "pino": "^9.0.0",
     "pino-pretty": "^10.0.0"
   },
   "publishConfig": {
