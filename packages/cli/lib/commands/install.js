@@ -58,11 +58,11 @@ export async function installFromWeb (versionNum, printMessage = true) {
   const newVersionDir = TfvmFS.getPath(TfvmFS.tfVersionsDir, 'v' + versionNum)
   
   const settingsObj = await getSettings()
-  
+  let url
   if (settingsObj.useOpenTofu) {
-    const url = `https://github.com/opentofu/opentofu/releases/download/${versionNum}/tofu_${versionNum}_${TfvmFS.architecture}.zip`
+    url = `https://github.com/opentofu/opentofu/releases/download/${versionNum}/tofu_${versionNum}_${TfvmFS.architecture}.zip`
   } else {
-    const url = `https://releases.hashicorp.com/terraform/${versionNum}/terraform_${versionNum}_${TfvmFS.architecture}.zip`
+    url = `https://releases.hashicorp.com/terraform/${versionNum}/terraform_${versionNum}_${TfvmFS.architecture}.zip`
   }
   await download(url, zipPath, versionNum)
   await fs.mkdir(newVersionDir)
