@@ -10,6 +10,7 @@ import getErrorMessage from '../util/errorChecker.js'
 import getTerraformVersion from '../util/tfVersion.js'
 import getLatest from '../util/getLatest.js'
 import { logger } from '../util/logger.js'
+import { getSettings } from '../util/getSettings.js'
 
 async function install (versionNum) {
   try {
@@ -55,7 +56,14 @@ export default install
 export async function installFromWeb (versionNum, printMessage = true) {
   const zipPath = TfvmFS.getPath(TfvmFS.tfVersionsDir, `v${versionNum}.zip`)
   const newVersionDir = TfvmFS.getPath(TfvmFS.tfVersionsDir, 'v' + versionNum)
-  const url = `https://releases.hashicorp.com/terraform/${versionNum}/terraform_${versionNum}_${TfvmFS.architecture}.zip`
+  
+  const settingsObj = await getSettings()
+  
+  if (settingsObj.useOpenTofu) {
+    const url = `https://github.com/opentofu/opentofu/releases/download/${versionNum}/tofu_${versionNum}_${TfvmFS.architecture}.zip`
+  } else {
+    const url = `https://releases.hashicorp.com/terraform/${versionNum}/terraform_${versionNum}_${TfvmFS.architecture}.zip`
+  }
   await download(url, zipPath, versionNum)
   await fs.mkdir(newVersionDir)
   await unzipFile(zipPath, newVersionDir)
