@@ -14,7 +14,6 @@ async function list () {
 
     if (tfList.length > 0) {
       const currentTFVersion = await getTerraformVersion()
-      console.log('\n')
       tfList.sort(compareVersions).reverse()
       for (const versionDir of tfList) {
         if (versionDir === currentTFVersion) {
