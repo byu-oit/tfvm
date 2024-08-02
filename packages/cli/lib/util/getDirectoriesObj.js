@@ -16,9 +16,10 @@ export class TfvmFS {
   static tfvmDir = this.appDataDir.concat(dirSeparator + tfvmAppDataFolderName) // where tfvms own files are in AppData
   static otfvmDir = this.appDataDir.concat(dirSeparator + otfvmAppDataFolderName) // where open tofu version manager (still tfvm) are in AppData
   static tfVersionsDir = this.tfvmDir.concat(dirSeparator + tfVersionsFolderName) // where all the versions of terraform are stored
+  static openTofuVersionsDir = this.otfvmDir.concat(dirSeparator + tfVersionsFolderName) // where all the versions of terraform are stored
   static logsDir = this.tfvmDir.concat(dirSeparator + logFolderName) // where tfvm logs are stored (in appdata)=
   static terraformDir = this.appDataDir.concat(dirSeparator + 'terraform') // where the path is looking for terraform.exe to be found
-  static openTofuDir = this.appDataDir.concat(dirSeparator + 'OpenTofu') // where the path is looking for OpenTofu to be found
+  static openTofuDir = this.appDataDir.concat(dirSeparator + 'opentofu') // where the path is looking for OpenTofu to be found
   static settingsDir = this.tfvmDir.concat(dirSeparator + settingsFileName) // where the tfvm settings file can be located
   static architecture = process.env.PROCESSOR_ARCHITECTURE === 'AMD64' ? 'windows_amd64' : 'windows_386'
   static bitWidth = process.env.PROCESSOR_ARCHITECTURE === 'AMD64' ? '64' : '32'

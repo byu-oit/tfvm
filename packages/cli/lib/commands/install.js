@@ -10,7 +10,7 @@ import getErrorMessage from '../util/errorChecker.js'
 import getTerraformVersion from '../util/tfVersion.js'
 import getLatest from '../util/getLatest.js'
 import { logger } from '../util/logger.js'
-import { getSettings } from '../util/getSettings.js'
+import getSettings from '../util/getSettings.js'
 
 async function install (versionNum) {
   try {
