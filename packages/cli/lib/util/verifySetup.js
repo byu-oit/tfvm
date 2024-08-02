@@ -4,7 +4,6 @@ import getSettings from './getSettings.js'
 import runShell from './runShell.js'
 import { logger } from './logger.js'
 import { getOS } from './tfvmOS.js'
-import TfvmFS from './getDirectoriesObj.js'
 
 async function verifySetup () {
   const os = getOS()
@@ -54,7 +53,7 @@ async function verifySetup () {
           'Please restart your terminal, or open a new one, for terraform to work correctly.\n'))
       }
     } else {
-      if (await runShell(resolve(__dirname, './../scripts/addToPathOpenTofu.ps1'), { shell: 'powershell.exe' }) == null) {
+      if (await runShell(...(__dirname, './../scripts/addToPathOpenTofu.ps1'), { shell: 'powershell.exe' }) == null) {
         console.log(chalk.red.bold('tfvm script failed to run. Please run the following command in a powershell window:\n'))
         console.log(chalk.blue.bold('Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser'))
       } else {

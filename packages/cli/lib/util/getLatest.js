@@ -1,11 +1,11 @@
 import axios from 'axios'
-import {logger} from './logger.js'
-import getSettings from "./getSettings.js";
+import { logger } from './logger.js'
+import getSettings from './getSettings.js'
 
 export default async function () {
   const settings = await getSettings()
   try {
-    if (settings.useOpenTofu){
+    if (settings.useOpenTofu) {
       const response = await axios.get('https://api.github.com/repos/opentofu/opentofu/releases/latest')
       return response.data.name.replace('v', '')
     } else {
@@ -13,7 +13,7 @@ export default async function () {
       return response.data.current_version
     }
   } catch (e) {
-    if (settings.useOpenTofu){
+    if (settings.useOpenTofu) {
       logger.fatal(e, 'Error attempting to fetch latest opentofu version with GitHub API:')
     } else {
       logger.fatal(e, 'Error attempting to fetch latest terraform version with Checkpoint Hashicorp API:')
