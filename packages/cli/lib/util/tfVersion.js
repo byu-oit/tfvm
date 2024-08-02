@@ -1,6 +1,6 @@
 import runShell from './runShell.js'
 import { logger } from './logger.js'
-import { tfCurrVersionRegEx } from './constants.js'
+import { tfCurrVersionRegEx, openTofuCurrVersionRegEx } from './constants.js'
 import getSettings from './getSettings.js'
 
 let currentTfVersion
@@ -27,7 +27,11 @@ async function getTerraformVersion () {
     logger.error('Error getting terraform version')
     return null
   }
-  const versionExtractionResult = Array.from(response.matchAll(tfCurrVersionRegEx))
+
+  let versionExtractionResult
+  if (settings.useOpenTofu) versionExtractionResult = Array.from(response.matchAll(openTofuCurrVersionRegEx))
+  else versionExtractionResult = Array.from(response.matchAll(tfCurrVersionRegEx))
+
   if (versionExtractionResult.length === 0) {
     logger.error('Error extracting terraform version where this is the response from `terraform -v`:\n' + response)
     return null

@@ -47,13 +47,14 @@ export async function useVersion (version) {
  * @returns {Promise<boolean>} true if the user opted to install the version, false if they did not
  */
 export async function installNewVersion (version) {
-  console.log(chalk.white.bold(`Terraform v${version} is not installed. Would you like to install it?`))
+  const settings = getSettings()
+  console.log(chalk.white.bold(`${settings.useOpenTofu ? 'OpenTofu' : 'Terraform'} v${version} is not installed. Would you like to install it?`))
   const installToggle = new enquirer.Toggle({
     disabled: 'Yes',
     enabled: 'No'
   })
   if (await installToggle.run()) {
-    console.log(chalk.white.bold(`No action taken. Use 'tfvm install ${version}' to install terraform v${version}`))
+    console.log(chalk.white.bold(`No action taken. Use 'tfvm install ${version}' to install ${settings.useOpenTofu ? 'opentofu' : 'terraform'} v${version}`))
     return false
   } else {
     await installFromWeb(version, false)
@@ -84,7 +85,7 @@ export async function switchVersionTo (version) {
       TfvmFS.getPath(TfvmFS.terraformDir, 'terraform.exe') // destination file
     )
   }
-  console.log(chalk.cyan.bold(`Now using terraform v${version} (${TfvmFS.bitWidth}-bit)`))
+  console.log(chalk.cyan.bold(`Now using ${settings.useOpenTofu ? 'opentofu' : 'terraform'} v${version} (${TfvmFS.bitWidth}-bit)`))
   if (requiresOldAWSAuth(version) && !settings.disableAWSWarnings) {
     console.log(chalk.yellow.bold('Warning: This tf version is not compatible with the newest ' +
       'AWS CLI authentication methods (e.g. aws sso login). Use short-term credentials instead.'))
