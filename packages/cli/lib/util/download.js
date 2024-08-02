@@ -3,9 +3,11 @@ import * as http from 'http'
 import chalk from 'chalk'
 import fs from 'node:fs'
 import { logger } from './logger.js'
+import getSettings from "./getSettings.js";
 
 async function download (url, filePath, version) {
   const proto = !url.charAt(4).localeCompare('s') ? https : http
+  const settings = await getSettings()
 
   return new Promise((resolve, reject) => {
     const file = fs.createWriteStream(filePath)
@@ -14,7 +16,11 @@ async function download (url, filePath, version) {
     const request = proto.get(url, response => {
       if (response.statusCode !== 200) {
         fs.unlink(filePath, () => {
-          console.log(chalk.red.bold(`Terraform ${version} is not yet released or available.`))
+          if (settings.useOpenTofu){
+            console.log(chalk.red.bold(`OpenTofu ${version} is not yet released or available.`))
+          } else {
+            console.log(chalk.red.bold(`Terraform ${version} is not yet released or available.`))
+          }
         })
         return
       }

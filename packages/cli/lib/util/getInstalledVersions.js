@@ -2,6 +2,7 @@ import fs from 'node:fs/promises'
 import { versionRegEx } from './constants.js'
 import { TfvmFS } from './getDirectoriesObj.js'
 import { logger } from './logger.js'
+import getSettings from "./getSettings.js";
 
 let installedVersions
 
@@ -10,6 +11,7 @@ let installedVersions
  * @returns {Promise<string[]>}
  */
 async function getInstalledVersions () {
+  const settings = await getSettings()
   // return the list of installed versions if that is already cached
   if (!installedVersions) {
     const tfList = []
@@ -23,7 +25,11 @@ async function getInstalledVersions () {
       })
       installedVersions = tfList
     } else {
-      logger.debug(`Unable to find installed versions of terraform with directoriesObj=${JSON.stringify(TfvmFS.getDirectoriesObj())} and files=${JSON.stringify(files)}`)
+      if (settings.useOpenTofu){
+        logger.debug(`Unable to find installed versions of OpenTofu with directoriesObj=${JSON.stringify(TfvmFS.getDirectoriesObj())} and files=${JSON.stringify(files)}`)
+      } else {
+        logger.debug(`Unable to find installed versions of Terraform with directoriesObj=${JSON.stringify(TfvmFS.getDirectoriesObj())} and files=${JSON.stringify(files)}`)
+      }
       return []
     }
   }
