@@ -14,7 +14,7 @@ import getSettings from '../util/getSettings.js'
 
 async function install (versionNum) {
   try {
-    const settings = getSettings()
+    const settings = await getSettings()
     const installVersion = 'v' + versionNum
     if (!versionRegEx.test(installVersion) && versionNum !== 'latest') {
       logger.warn(`invalid version attempted to install with version ${installVersion}`)

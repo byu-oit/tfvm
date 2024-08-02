@@ -47,7 +47,7 @@ export async function useVersion (version) {
  * @returns {Promise<boolean>} true if the user opted to install the version, false if they did not
  */
 export async function installNewVersion (version) {
-  const settings = getSettings()
+  const settings = await getSettings()
   console.log(chalk.white.bold(`${settings.useOpenTofu ? 'OpenTofu' : 'Terraform'} v${version} is not installed. Would you like to install it?`))
   const installToggle = new enquirer.Toggle({
     disabled: 'Yes',
