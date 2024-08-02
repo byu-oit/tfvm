@@ -14,12 +14,18 @@ import getSettings from '../util/getSettings.js'
 
 async function install (versionNum) {
   try {
+    const settings = getSettings()
     const installVersion = 'v' + versionNum
     if (!versionRegEx.test(installVersion) && versionNum !== 'latest') {
       logger.warn(`invalid version attempted to install with version ${installVersion}`)
       console.log(chalk.red.bold('Invalid version syntax.'))
-      console.log(chalk.white.bold('Version should be formatted as \'vX.X.X\'\nGet a list of all current ' +
+      if (settings.useOpenTofu) {
+        console.log(chalk.white.bold('Version should be formatted as \'vX.X.X\'\nGet a list of all current ' +
+        'opentofu versions here: https://github.com/opentofu/opentofu/releases'))
+      } else {
+        console.log(chalk.white.bold('Version should be formatted as \'vX.X.X\'\nGet a list of all current ' +
         'terraform versions here: https://releases.hashicorp.com/terraform/'))
+      }
     } else if (versionNum === 'latest') {
       const installedVersions = await getInstalledVersions()
       const latest = await getLatest()
@@ -27,11 +33,11 @@ async function install (versionNum) {
       if (latest) {
         const versionLatest = 'v' + latest
         if (installedVersions.includes(versionLatest) && currentVersion !== versionLatest) {
-          console.log(chalk.bold.cyan(`The latest terraform version is ${latest} and is ` +
+          console.log(chalk.bold.cyan(`The latest ${settings.useOpenTofu ? 'opentofu' : 'terraform'} version is ${latest} and is ` +
             `already installed on your computer. Run 'tfvm use ${latest}' to use.`))
         } else if (installedVersions.includes(versionLatest) && currentVersion === versionLatest) {
           const currentVersion = await getTerraformVersion()
-          console.log(chalk.bold.cyan(`The latest terraform version is ${currentVersion} and ` +
+          console.log(chalk.bold.cyan(`The latest ${settings.useOpenTofu ? 'opentofu' : 'terraform'} version is ${currentVersion} and ` +
             'is already installed and in use on your computer.'))
         } else {
           await installFromWeb(latest)
@@ -40,7 +46,7 @@ async function install (versionNum) {
     } else {
       const installedVersions = await getInstalledVersions()
       if (installedVersions.includes(installVersion)) {
-        console.log(chalk.white.bold(`Terraform version ${installVersion} is already installed.`))
+        console.log(chalk.white.bold(`${settings.useOpenTofu ? 'OpenTofu' : 'Terraform'} version ${installVersion} is already installed.`))
       } else {
         await installFromWeb(versionNum)
       }
