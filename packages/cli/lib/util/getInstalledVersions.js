@@ -1,8 +1,9 @@
 import fs from 'node:fs/promises'
 import { versionRegEx } from './constants.js'
-import { TfvmFS } from './getDirectoriesObj.js'
 import { logger } from './logger.js'
 import getSettings from './getSettings.js'
+import { getOS } from './tfvmOS.js'
+const os = getOS()
 
 let installedVersions
 
@@ -14,12 +15,12 @@ async function getInstalledVersions () {
   const settings = await getSettings()
   // return the list of installed versions if that is already cached
   if (!installedVersions) {
-    let versionsList = []
+    const versionsList = []
     let files
     if (settings.useOpenTofu) {
-      files = await fs.readdir(TfvmFS.otfVersionsDir)
+      files = await fs.readdir(os.getOtfVersionsDir())
     } else {
-      files = await fs.readdir(TfvmFS.tfVersionsDir)
+      files = await fs.readdir(os.getTfVersionsDir())
     }
 
     if (files && files.length) {
@@ -31,9 +32,9 @@ async function getInstalledVersions () {
       installedVersions = versionsList
     } else {
       if (settings.useOpenTofu) {
-        logger.debug(`Unable to find installed versions of OpenTofu with directoriesObj=${JSON.stringify(TfvmFS.getDirectoriesObj())} and files=${JSON.stringify(files)}`)
+        logger.debug(`Unable to find installed versions of OpenTofu with directoriesObj=${JSON.stringify(os.getDirectories())} and files=${JSON.stringify(files)}`)
       } else {
-        logger.debug(`Unable to find installed versions of Terraform with directoriesObj=${JSON.stringify(TfvmFS.getDirectoriesObj())} and files=${JSON.stringify(files)}`)
+        logger.debug(`Unable to find installed versions of Terraform with directoriesObj=${JSON.stringify(os.getDirectories())} and files=${JSON.stringify(files)}`)
       }
       return []
     }

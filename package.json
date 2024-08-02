@@ -3,7 +3,7 @@
   "private": true,
   "engines": {
     "npm": ">=8",
-    "node": ">=18"
+    "node": ">=20"
   },
   "scripts": {
     "lint": "standard",
@@ -14,7 +14,7 @@
   ],
   "devDependencies": {
     "@commitlint/cli": "^17.2.0",
-    "@commitlint/config-angular": "^17.2.0",
+    "@commitlint/config-angular": "^17.7.0",
     "concurrently": "^8.0.1",
     "conventional-changelog-cli": "^2.2.2",
     "husky": "^8.0.2",

@@ -6,6 +6,7 @@ import { compareVersions } from 'compare-versions'
  */
 const oldestTfVersionWithNewAWSAuth = '0.14.6'
 
+// todo potentially switch compareVersions with compare (e.g. compare(version, oldestTfVersionWithNewAWSAuth, '<'))
 function requiresOldAWSAuth (versionNum) {
   return compareVersions(versionNum, oldestTfVersionWithNewAWSAuth) === -1
 }

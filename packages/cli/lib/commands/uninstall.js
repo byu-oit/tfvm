@@ -1,11 +1,12 @@
 import chalk from 'chalk'
-
 import { versionRegEx } from '../util/constants.js'
 import getInstalledVersions from '../util/getInstalledVersions.js'
-import { TfvmFS } from '../util/getDirectoriesObj.js'
 import getErrorMessage from '../util/errorChecker.js'
 import { logger } from '../util/logger.js'
 import getSettings from '../util/getSettings.js'
+import { getOS } from '../util/tfvmOS.js'
+import { TfvmFS } from '../util/TfvmFS.js'
+const os = getOS()
 
 async function uninstall (uninstallVersion) {
   try {
@@ -20,9 +21,9 @@ async function uninstall (uninstallVersion) {
       } else {
         console.log(chalk.white.bold(`Uninstalling ${settings.useOpenTofu ? 'opentofu' : 'terraform'} ${uninstallVersion}...`))
         if (settings.useOpenTofu) {
-          await TfvmFS.deleteDirectory(TfvmFS.otfVersionsDir, uninstallVersion)
+          await TfvmFS.deleteDirectory(os.getOtfVersionsDir(), uninstallVersion)
         } else {
-          await TfvmFS.deleteDirectory(TfvmFS.tfVersionsDir, uninstallVersion)
+          await TfvmFS.deleteDirectory(os.getTfVersionsDir(), uninstallVersion)
         }
         console.log(chalk.cyan.bold(`Successfully uninstalled ${settings.useOpenTofu ? 'opentofu' : 'terraform'} ${uninstallVersion}`))
       }

@@ -1,13 +1,13 @@
 import chalk from 'chalk'
 import fs from 'node:fs/promises'
-
 import getSettings, { defaultSettings } from '../util/getSettings.js'
 import getErrorMessage from '../util/errorChecker.js'
 import { logger } from '../util/logger.js'
-import { TfvmFS } from '../util/getDirectoriesObj.js'
+import { getOS } from '../util/tfvmOS.js'
+
+const os = getOS()
 
 async function config (setting) {
-  const settingsFilePath = TfvmFS.settingsDir
   try {
     const settingsObj = await getSettings()
     if (typeof setting === 'string') {
@@ -19,7 +19,7 @@ async function config (setting) {
           if (value === 'true' || value === 'false') {
             // we need to store logical true or false, not the string 'true' or 'false'. This converts to a boolean:
             settingsObj[settingKey] = value === 'true'
-            await fs.writeFile(settingsFilePath, JSON.stringify(settingsObj), 'utf8')
+            await fs.writeFile(os.getSettingsDir(), JSON.stringify(settingsObj), 'utf8')
           } else {
             console.log(chalk.red.bold(`Invalid input for ${settingKey} setting. ` +
               `Use either 'tfvm config ${settingKey}=true' or 'tfvm config ${settingKey}=false'`))

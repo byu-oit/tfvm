@@ -1,38 +1,42 @@
 import fs from 'node:fs'
 import chalk from 'chalk'
-import { dirname, resolve } from 'path'
-import { fileURLToPath } from 'url'
-
-import { TfvmFS } from './getDirectoriesObj.js'
 import getSettings from './getSettings.js'
 import runShell from './runShell.js'
 import { logger } from './logger.js'
-const __dirname = dirname(fileURLToPath(import.meta.url))
+import { getOS } from './tfvmOS.js'
+import TfvmFS from './getDirectoriesObj.js'
 
 async function verifySetup () {
+  const os = getOS()
+
   // STEP 1: Check that the appdata/roaming/tfvm folder exists
-  if (!fs.existsSync(TfvmFS.tfVersionsDir)) fs.mkdirSync(TfvmFS.tfVersionsDir)
-  if (!fs.existsSync(TfvmFS.otfVersionsDir)) fs.mkdirSync(TfvmFS.otfVersionsDir)
+  if (!fs.existsSync(os.getOtfVersionsDir())) fs.mkdirSync(os.getOtfVersionsDir())
+
+  // STEP 2: Check that the path is set
+  const otfPaths = []
+  if (!fs.existsSync(os.getTfVersionsDir())) {
+    fs.mkdirSync(os.getTfVersionsDir())
+  }
 
   // STEP 2: Check that the path is set
   const tfPaths = []
-  const otfPaths = []
-  const PATH = await runShell('echo %path%')
+
+  const PATH = await runShell(os.getPathCommand())
   logger.trace(`PATH in verifySetup(): ${PATH}`)
   if (PATH == null) {
     logger.fatal('Error fetching path from console')
     throw new Error('Error fetching path from console')
   } // do we want to have an error here?
-  const pathVars = PATH.split(';')
+  const pathVars = PATH.split(os.getPathDelimiter())
   let pathVarDoesntExist = true
   let pathVarDoesntExistOpenTofu = true
   for (const variable of pathVars) {
-    if (variable.replace(/[\r\n]/gm, '') === TfvmFS.terraformDir) pathVarDoesntExist = false
-    if (variable.toLowerCase().includes('terraform') && variable.replace(/[\r\n]/gm, '') !== TfvmFS.terraformDir) { // strip newlines
+    if (variable.replace(/[\r\n]/gm, '') === os.getTerraformDir()) pathVarDoesntExist = false
+    if (variable.toLowerCase().includes('terraform') && variable.replace(/[\r\n]/gm, '') !== os.getTerraformDir()) { // strip newlines
       tfPaths.push(variable)
     }
-    if (variable.replace(/[\r\n]/gm, '') === TfvmFS.openTofuDir) pathVarDoesntExistOpenTofu = false
-    if (variable.toLowerCase().includes('opentofu') && variable.replace(/[\r\n]/gm, '') !== TfvmFS.openTofuDir) { // strip newlines
+    if (variable.replace(/[\r\n]/gm, '') === os.getOpenTofuDir()) pathVarDoesntExistOpenTofu = false
+    if (variable.toLowerCase().includes('opentofu') && variable.replace(/[\r\n]/gm, '') !== os.getOpenTofuDir()) { // strip newlines
       otfPaths.push(variable)
     }
   }
@@ -41,14 +45,15 @@ async function verifySetup () {
     logger.warn(`Couldn't find tfvm in path where this is the path: ${PATH}`)
     logger.debug(`Attempting to run ${pathVarDoesntExist ? 'addToPath.ps1' : 'addToPath.ps1'}...`)
     if (pathVarDoesntExist) {
-      if (await runShell(resolve(__dirname, './../scripts/addToPath.ps1'), { shell: 'powershell.exe' }) == null) {
-        console.log(chalk.red.bold('tfvm script failed to run. Please run the following command in a powershell window:\n'))
-        console.log(chalk.blue.bold('Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser'))
+      logger.debug('Attempting to run addToPath script...')
+      if (await runShell(...(await os.getAddToPathShellArgs())) == null) {
+        os.handleAddPathError()
       } else {
-        logger.debug('Successfully ran addToPath.ps1, added to path.')
+        logger.debug('Successfully ran addToPath script, added to path.')
         console.log(chalk.red.bold('We couldn\'t find the right path variable for terraform, so we just added it.\n' +
           'Please restart your terminal, or open a new one, for terraform to work correctly.\n'))
       }
+    } else {
       if (await runShell(resolve(__dirname, './../scripts/addToPathOpenTofu.ps1'), { shell: 'powershell.exe' }) == null) {
         console.log(chalk.red.bold('tfvm script failed to run. Please run the following command in a powershell window:\n'))
         console.log(chalk.blue.bold('Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser'))
@@ -57,14 +62,14 @@ async function verifySetup () {
         console.log(chalk.red.bold('We couldn\'t find the right path variable for opentofu, so we just added it.\n' +
           'Please restart your terminal, or open a new one, for opentofu to work correctly.\n'))
       }
-      return false
     }
+    return false
   }
   const settings = await getSettings()
   // OpenTofu path check
   if (settings.disableErrors === 'false') {
     if (otfPaths.length === 1) {
-      if (otfPaths[0] !== TfvmFS.openTofuDir) {
+      if (otfPaths[0] !== os.getOpenTofuDir()) {
         logger.error(`Extra opentofu path in PATH: ${otfPaths[0]}.`)
         console.log(chalk.red.bold(`It appears you have ${otfPaths[0]} in your Path system environmental variables.`))
         console.log(chalk.red.bold('This may stop tfvm from working correctly, so please remove this from the path.\n' +
@@ -90,7 +95,7 @@ async function verifySetup () {
     }
     // Terraform path check
     if (tfPaths.length === 1) {
-      if (tfPaths[0] !== TfvmFS.terraformDir) {
+      if (tfPaths[0] !== os.getTerraformDir()) {
         logger.error(`Extra terraform path in PATH: ${tfPaths[0]}.`)
         console.log(chalk.red.bold(`It appears you have ${tfPaths[0]} in your Path system environmental variables.`))
         console.log(chalk.red.bold('This may stop tfvm from working correctly, so please remove this from the path.\n' +
