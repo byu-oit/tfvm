@@ -38,6 +38,7 @@
     "commander": "^9.4.0",
     "compare-versions": "^6.0.0",
     "enquirer": "^2.3.6",
+    "follow-redirects": "^1.15.6",
     "node-stream-zip": "^1.15.0",
     "pino": "^8.14.1",
     "pino-pretty": "^10.0.0"

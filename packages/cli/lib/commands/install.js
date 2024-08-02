@@ -61,9 +61,9 @@ export async function installFromWeb (versionNum, printMessage = true) {
   let newVersionDir
 
   if (settingsObj.useOpenTofu) {
-    zipPath = TfvmFS.getPath(TfvmFS.openTofuVersionsDir, `v${versionNum}.zip`)
-    newVersionDir = TfvmFS.getPath(TfvmFS.openTofuVersionsDir, 'v' + versionNum)
-    url = `https://github.com/opentofu/opentofu/releases/download/${versionNum}/tofu_${versionNum}_${TfvmFS.architecture}.zip`
+    zipPath = TfvmFS.getPath(TfvmFS.otfVersionsDir, `v${versionNum}.zip`)
+    newVersionDir = TfvmFS.getPath(TfvmFS.otfVersionsDir, 'v' + versionNum)
+    url = `https://github.com/opentofu/opentofu/releases/download/v${versionNum}/tofu_${versionNum}_${TfvmFS.architecture}.zip`
   } else {
     zipPath = TfvmFS.getPath(TfvmFS.tfVersionsDir, `v${versionNum}.zip`)
     newVersionDir = TfvmFS.getPath(TfvmFS.tfVersionsDir, 'v' + versionNum)

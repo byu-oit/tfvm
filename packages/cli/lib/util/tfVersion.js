@@ -1,17 +1,28 @@
 import runShell from './runShell.js'
 import { logger } from './logger.js'
 import { tfCurrVersionRegEx } from './constants.js'
+import getSettings from './getSettings.js'
 
 let currentTfVersion
+let currentOtfVersion
 
 /**
  * Returns the current terraform version, if there is one. Returns null if there is no current version
  * @returns {Promise<string|null>}
  */
 async function getTerraformVersion () {
+  const settings = await getSettings()
   // cache current tf version during a single execution of tfvm
-  if (currentTfVersion) return currentTfVersion
-  const response = (await runShell('terraform -v'))
+  if (currentTfVersion && !settings.useOpenTofu) return currentTfVersion
+  if (currentOtfVersion && settings.useOpenTofu) return currentOtfVersion
+
+  let response
+  if (settings.useOpenTofu) {
+    response = (await runShell('tofu -v'))
+  } else {
+    response = (await runShell('terraform -v'))
+  }
+
   if (response == null) {
     logger.error('Error getting terraform version')
     return null

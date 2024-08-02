@@ -16,7 +16,7 @@ export class TfvmFS {
   static tfvmDir = this.appDataDir.concat(dirSeparator + tfvmAppDataFolderName) // where tfvms own files are in AppData
   static otfvmDir = this.appDataDir.concat(dirSeparator + otfvmAppDataFolderName) // where open tofu version manager (still tfvm) are in AppData
   static tfVersionsDir = this.tfvmDir.concat(dirSeparator + tfVersionsFolderName) // where all the versions of terraform are stored
-  static openTofuVersionsDir = this.otfvmDir.concat(dirSeparator + tfVersionsFolderName) // where all the versions of terraform are stored
+  static otfVersionsDir = this.otfvmDir.concat(dirSeparator + tfVersionsFolderName) // where all the versions of terraform are stored
   static logsDir = this.tfvmDir.concat(dirSeparator + logFolderName) // where tfvm logs are stored (in appdata)=
   static terraformDir = this.appDataDir.concat(dirSeparator + 'terraform') // where the path is looking for terraform.exe to be found
   static openTofuDir = this.appDataDir.concat(dirSeparator + 'opentofu') // where the path is looking for OpenTofu to be found

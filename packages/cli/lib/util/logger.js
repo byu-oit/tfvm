@@ -8,6 +8,7 @@ const date = new Date().toISOString().split('T')[0]
 
 // before creating a log file, make sure the logs folder exists (and its parent tfvm folder)
 if (!fs.existsSync(TfvmFS.tfvmDir)) fs.mkdirSync(TfvmFS.tfvmDir)
+if (!fs.existsSync(TfvmFS.otfvmDir)) fs.mkdirSync(TfvmFS.otfvmDir)
 if (!fs.existsSync(TfvmFS.logsDir)) fs.mkdirSync(TfvmFS.logsDir)
 
 // store logs in AppData so that they are maintained when switching node versions

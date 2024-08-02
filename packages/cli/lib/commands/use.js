@@ -67,17 +67,24 @@ export async function installNewVersion (version) {
  * @returns {Promise<void>}
  */
 export async function switchVersionTo (version) {
+  const settings = await getSettings()
   if (version[0] === 'v') version = version.substring(1)
 
   await TfvmFS.createTfAppDataDir()
   await TfvmFS.deleteCurrentTfExe()
 
-  await fs.copyFile(
-    TfvmFS.getPath(TfvmFS.tfVersionsDir, 'v' + version, 'terraform.exe'), // source file
-    TfvmFS.getPath(TfvmFS.terraformDir, 'terraform.exe') // destination file
-  )
+  if (settings.useOpenTofu) {
+    await fs.copyFile(
+      TfvmFS.getPath(TfvmFS.otfVersionsDir, 'v' + version, 'tofu.exe'), // source file
+      TfvmFS.getPath(TfvmFS.openTofuDir, 'tofu.exe') // destination file
+    )
+  } else {
+    await fs.copyFile(
+      TfvmFS.getPath(TfvmFS.tfVersionsDir, 'v' + version, 'terraform.exe'), // source file
+      TfvmFS.getPath(TfvmFS.terraformDir, 'terraform.exe') // destination file
+    )
+  }
   console.log(chalk.cyan.bold(`Now using terraform v${version} (${TfvmFS.bitWidth}-bit)`))
-  const settings = await getSettings()
   if (requiresOldAWSAuth(version) && !settings.disableAWSWarnings) {
     console.log(chalk.yellow.bold('Warning: This tf version is not compatible with the newest ' +
       'AWS CLI authentication methods (e.g. aws sso login). Use short-term credentials instead.'))

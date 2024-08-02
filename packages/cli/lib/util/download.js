@@ -1,9 +1,9 @@
-import * as https from 'https'
-import * as http from 'http'
 import chalk from 'chalk'
 import fs from 'node:fs'
 import { logger } from './logger.js'
-import getSettings from "./getSettings.js";
+import getSettings from './getSettings.js'
+import followRedirects from 'follow-redirects'
+const { http, https } = followRedirects
 
 async function download (url, filePath, version) {
   const proto = !url.charAt(4).localeCompare('s') ? https : http
@@ -16,11 +16,7 @@ async function download (url, filePath, version) {
     const request = proto.get(url, response => {
       if (response.statusCode !== 200) {
         fs.unlink(filePath, () => {
-          if (settings.useOpenTofu){
-            console.log(chalk.red.bold(`OpenTofu ${version} is not yet released or available.`))
-          } else {
-            console.log(chalk.red.bold(`Terraform ${version} is not yet released or available.`))
-          }
+          console.log(chalk.red.bold(`${settings.useOpenTofu ? 'OpenTofu' : 'Terraform'} ${version} is not yet released or available.`))
         })
         return
       }
