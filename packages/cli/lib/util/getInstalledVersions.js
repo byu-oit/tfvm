@@ -3,6 +3,7 @@ import { versionRegEx } from './constants.js'
 import { logger } from './logger.js'
 import getSettings from './getSettings.js'
 import { getOS } from './tfvmOS.js'
+import * as semver from 'semver'
 const os = getOS()
 
 let installedVersions
@@ -11,13 +12,18 @@ let installedVersions
  * Returns a list of installed tf versions.
  * @returns {Promise<string[]>}
  */
-async function getInstalledVersions () {
+async function getInstalledVersions (version = '') {
   const settings = await getSettings()
   // return the list of installed versions if that is already cached
   if (!installedVersions) {
     const versionsList = []
     let files
-    if (settings.useOpenTofu) {
+
+    let semverCheck = true
+    if (version !== '') {
+      semverCheck = semver.gte(version, '1.6.0')
+    }
+    if (settings.useOpenTofu && semverCheck) {
       files = await fs.readdir(os.getOtfVersionsDir())
     } else {
       files = await fs.readdir(os.getTfVersionsDir())

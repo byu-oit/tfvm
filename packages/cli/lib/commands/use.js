@@ -10,6 +10,7 @@ import getSettings from '../util/getSettings.js'
 import requiresOldAWSAuth from '../util/requiresOldAWSAuth.js'
 import { logger } from '../util/logger.js'
 import { getOS } from '../util/tfvmOS.js'
+import * as semver from "semver";
 
 const os = getOS()
 
@@ -34,7 +35,7 @@ export async function useVersion (version) {
   if (!versionRegEx.test(versionWithV)) {
     console.log(chalk.red.bold('Invalid version syntax'))
   } else {
-    const installedVersions = await getInstalledVersions()
+    const installedVersions = await getInstalledVersions(version)
     if (!installedVersions.includes(versionWithV)) {
       const successfullyInstalled = await installNewVersion(version)
       if (!successfullyInstalled) return
@@ -50,7 +51,7 @@ export async function useVersion (version) {
  */
 export async function installNewVersion (version) {
   const settings = await getSettings()
-  console.log(chalk.white.bold(`${settings.useOpenTofu ? 'OpenTofu' : 'Terraform'} v${version} is not installed. Would you like to install it?`))
+  console.log(chalk.white.bold(`${settings.useOpenTofu && semver.gte(version, '1.6.0') ? 'OpenTofu' : 'Terraform'} v${version} is not installed. Would you like to install it?`))
   const installToggle = new enquirer.Toggle({
     disabled: 'Yes',
     enabled: 'No'
@@ -73,23 +74,22 @@ export async function switchVersionTo (version) {
   const settings = await getSettings()
   if (version[0] === 'v') version = version.substring(1)
 
-  await TfvmFS.createTfAppDataDir()
-  await TfvmFS.deleteCurrentTfExe()
-  await TfvmFS.createOtfAppDataDir()
-  await TfvmFS.deleteCurrentOtfExe()
-
-  if (settings.useOpenTofu) {
+  if (settings.useOpenTofu && semver.gte(version, '1.6.0')) {
+    await TfvmFS.createOtfAppDataDir()
+    await TfvmFS.deleteCurrentOtfExe()
     await fs.copyFile(
       os.getPath(os.getOtfVersionsDir(), 'v' + version, os.getOtfExecutableName()), // source file
       os.getPath(os.getOpenTofuDir(), os.getOtfExecutableName()) // destination file
     )
   } else {
+    await TfvmFS.createTfAppDataDir()
+    await TfvmFS.deleteCurrentTfExe()
     await fs.copyFile(
       os.getPath(os.getTfVersionsDir(), 'v' + version, os.getTFExecutableName()), // source file
       os.getPath(os.getTerraformDir(), os.getTFExecutableName()) // destination file
     )
   }
-  console.log(chalk.cyan.bold(`Now using ${settings.useOpenTofu ? 'opentofu' : 'terraform'} v${version} (${os.getBitWidth()}-bit)`))
+  console.log(chalk.cyan.bold(`Now using ${settings.useOpenTofu && semver.gte(version, '1.6.0') ? 'opentofu' : 'terraform'} v${version} (${os.getBitWidth()}-bit)`))
   if (requiresOldAWSAuth(version) && !settings.disableAWSWarnings) {
     console.log(chalk.yellow.bold('Warning: This tf version is not compatible with the newest ' +
       'AWS CLI authentication methods (e.g. aws sso login). Use short-term credentials instead.'))

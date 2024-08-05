@@ -11,6 +11,7 @@ import { logger } from '../util/logger.js'
 import getSettings from '../util/getSettings.js'
 import { getOS, Mac } from '../util/tfvmOS.js'
 import { compare } from 'compare-versions'
+import * as semver from 'semver'
 const os = getOS()
 
 const LAST_TF_VERSION_WITHOUT_ARM = '1.0.1'
@@ -70,7 +71,7 @@ export async function installFromWeb (versionNum, printMessage = true) {
   let newVersionDir
   let arch = os.getArchitecture()
 
-  if (settingsObj.useOpenTofu) {
+  if (settingsObj.useOpenTofu && semver.gte(versionNum, '1.6.0')) {
     zipPath = os.getPath(os.getOtfVersionsDir(), `v${versionNum}.zip`)
     newVersionDir = os.getPath(os.getOtfVersionsDir(), 'v' + versionNum)
     url = `https://github.com/opentofu/opentofu/releases/download/v${versionNum}/tofu_${versionNum}_${os.getOSName()}_${arch}.zip`

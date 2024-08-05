@@ -41,7 +41,8 @@
     "follow-redirects": "^1.15.6",
     "node-stream-zip": "^1.15.0",
     "pino": "^8.15.1",
-    "pino-pretty": "^10.0.0"
+    "pino-pretty": "^10.0.0",
+    "semver": "^7.6.3"
   },
   "publishConfig": {
     "access": "public"
