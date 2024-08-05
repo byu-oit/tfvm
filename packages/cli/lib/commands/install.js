@@ -73,7 +73,7 @@ export async function installFromWeb (versionNum, printMessage = true) {
   if (settingsObj.useOpenTofu) {
     zipPath = os.getPath(os.getOtfVersionsDir(), `v${versionNum}.zip`)
     newVersionDir = os.getPath(os.getOtfVersionsDir(), 'v' + versionNum)
-    url = `https://github.com/opentofu/opentofu/releases/download/v${versionNum}/tofu_${versionNum}_${arch}.zip`
+    url = `https://github.com/opentofu/opentofu/releases/download/v${versionNum}/tofu_${versionNum}_${os.getOSName()}_${arch}.zip`
   } else {
     zipPath = os.getPath(os.getTfVersionsDir(), `v${versionNum}.zip`)
     newVersionDir = os.getPath(os.getTfVersionsDir(), 'v' + versionNum)
