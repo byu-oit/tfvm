@@ -11,7 +11,6 @@ import { logger } from '../util/logger.js'
 import getSettings from '../util/getSettings.js'
 import { getOS, Mac } from '../util/tfvmOS.js'
 import { compare } from 'compare-versions'
-import { TfvmFS } from '../util/getDirectoryObj.js'
 const os = getOS()
 
 const LAST_TF_VERSION_WITHOUT_ARM = '1.0.1'

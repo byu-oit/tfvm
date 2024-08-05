@@ -42,25 +42,22 @@ async function verifySetup () {
   if (pathVarDoesntExist || pathVarDoesntExistOpenTofu) {
     // add to local paths
     logger.warn(`Couldn't find tfvm in path where this is the path: ${PATH}`)
-    logger.debug(`Attempting to run ${pathVarDoesntExist ? 'addToPath.ps1' : 'addToPath.ps1'}...`)
+    logger.debug('Attempting to run addToPath script...')
+    let successfulAddToPath = false
     if (pathVarDoesntExist) {
-      logger.debug('Attempting to run addToPath script...')
-      if (await runShell(...(await os.getAddToPathShellArgs())) == null) {
+      if ((await runShell(...(await os.getAddToPathShellArgsTerraform())) == null)) {
         os.handleAddPathError()
-      } else {
-        logger.debug('Successfully ran addToPath script, added to path.')
-        console.log(chalk.red.bold('We couldn\'t find the right path variable for terraform, so we just added it.\n' +
+      } else successfulAddToPath = true
+    } else if (pathVarDoesntExistOpenTofu) {
+      if ((await runShell(...(await os.getAddToPathShellArgsOpenTofu())) == null)) {
+        os.handleAddPathError()
+      } else successfulAddToPath = true
+    }
+
+    if (successfulAddToPath) {
+      logger.debug('Successfully ran addToPath script, added to path.')
+      console.log(chalk.red.bold('We couldn\'t find the right path variable for terraform, so we just added it.\n' +
           'Please restart your terminal, or open a new one, for terraform to work correctly.\n'))
-      }
-    } else {
-      if (await runShell(...(__dirname, './../scripts/addToPathOpenTofu.ps1'), { shell: 'powershell.exe' }) == null) {
-        console.log(chalk.red.bold('tfvm script failed to run. Please run the following command in a powershell window:\n'))
-        console.log(chalk.blue.bold('Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser'))
-      } else {
-        logger.debug('Successfully ran addToPathOpenTofu.ps1, added to path.')
-        console.log(chalk.red.bold('We couldn\'t find the right path variable for opentofu, so we just added it.\n' +
-          'Please restart your terminal, or open a new one, for opentofu to work correctly.\n'))
-      }
     }
     return false
   }

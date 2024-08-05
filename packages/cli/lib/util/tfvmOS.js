@@ -68,7 +68,8 @@ export class TfvmOS {
   /**
    * Returns arguments for the runShell() function and prepares the script for being run, if necessary
    */
-  getAddToPathShellArgs () { throw new Error('Not implemented in parent class') }
+  getAddToPathShellArgsTerraform () { throw new Error('Not implemented in parent class') }
+  getAddToPathShellArgsOpenTofu () { throw new Error('Not implemented in parent class') }
   getArchitecture () { throw new Error('Not implemented in parent class') }
   getBitWidth () { throw new Error('Not implemented in parent class') }
   getPathCommand () { throw new Error('Not implemented in parent class') }
@@ -116,8 +117,14 @@ export class Mac extends TfvmOS {
     return ':'
   }
 
-  async getAddToPathShellArgs () {
+  async getAddToPathShellArgsTerraform () {
     const scriptPath = resolve(__dirname, './../scripts/addToPathMac.sh')
+    await fsp.chmod(scriptPath, EXECUTE_PERM_CODE)
+    return [scriptPath, {}]
+  }
+
+  async getAddToPathShellArgsOpenTofu () {
+    const scriptPath = resolve(__dirname, './../scripts/addToPathMacOpenTofu.sh')
     await fsp.chmod(scriptPath, EXECUTE_PERM_CODE)
     return [scriptPath, {}]
   }
@@ -171,8 +178,12 @@ export class Windows extends TfvmOS {
     return ';'
   }
 
-  async getAddToPathShellArgs () {
+  async getAddToPathShellArgsTerraform () {
     return [resolve(__dirname, './../scripts/addToPathWindows.ps1'), { shell: 'powershell.exe' }]
+  }
+
+  async getAddToPathShellArgsOpenTofu () {
+    return [resolve(__dirname, './../scripts/addToPathWindowsOpenTofu.ps1'), { shell: 'powershell.exe' }]
   }
 
   getAppDataDir () {
@@ -226,8 +237,14 @@ export class Linux extends TfvmOS {
     throw new Error('Bash script failed to add terraform directory to the path')
   }
 
-  async getAddToPathShellArgs () {
+  async getAddToPathShellArgsTerraform () {
     const scriptPath = resolve(__dirname, './../scripts/addToPathLinux.sh')
+    await fsp.chmod(scriptPath, EXECUTE_PERM_CODE)
+    return [scriptPath, {}]
+  }
+
+  async getAddToPathShellArgsOpenTofu () {
+    const scriptPath = resolve(__dirname, './../scripts/addToPathLinuxOpenTofu.sh')
     await fsp.chmod(scriptPath, EXECUTE_PERM_CODE)
     return [scriptPath, {}]
   }
