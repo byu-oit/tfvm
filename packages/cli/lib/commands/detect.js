@@ -13,7 +13,7 @@ import getTerraformVersion from '../util/tfVersion.js'
 import { installNewVersion, switchVersionTo, useVersion } from './use.js'
 import { logger } from '../util/logger.js'
 import { TfvmFS } from '../util/TfvmFS.js'
-import getSettings from "../util/getSettings.js";
+import getSettings from '../util/getSettings.js'
 
 async function detect () {
   const settings = await getSettings()
