@@ -10,7 +10,7 @@ import getSettings from '../util/getSettings.js'
 import requiresOldAWSAuth from '../util/requiresOldAWSAuth.js'
 import { logger } from '../util/logger.js'
 import { getOS } from '../util/tfvmOS.js'
-import * as semver from "semver";
+import * as semver from 'semver'
 
 const os = getOS()
 
