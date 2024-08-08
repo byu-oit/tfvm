@@ -4,6 +4,7 @@ import getSettings, { defaultSettings } from '../util/getSettings.js'
 import getErrorMessage from '../util/errorChecker.js'
 import { logger } from '../util/logger.js'
 import { getOS } from '../util/tfvmOS.js'
+import deleteExecutable from '../util/deleteExecutable.js'
 
 const os = getOS()
 
@@ -20,10 +21,15 @@ async function config (setting) {
             // we need to store logical true or false, not the string 'true' or 'false'. This converts to a boolean:
             settingsObj[settingKey] = value === 'true'
             await fs.writeFile(os.getSettingsDir(), JSON.stringify(settingsObj), 'utf8')
+
+            if (settingKey === 'useOpenTofu') {
+              await deleteExecutable(settingsObj[settingKey], os)
+            }
           } else {
             console.log(chalk.red.bold(`Invalid input for ${settingKey} setting. ` +
               `Use either 'tfvm config ${settingKey}=true' or 'tfvm config ${settingKey}=false'`))
           }
+
           console.log(chalk.cyan.bold(`Successfully set ${setting}`))
         } else {
           logger.warn(`Invalid setting change attempt with setting=${setting}`)

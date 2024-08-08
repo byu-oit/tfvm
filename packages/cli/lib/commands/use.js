@@ -38,7 +38,7 @@ export async function useVersion (version) {
     console.log(chalk.red.bold('Invalid version syntax'))
   } else {
     const installedVersions = await getInstalledVersions(version)
-    const settings = getSettings()
+    const settings = await getSettings()
     openTofuCheck = settings.useOpenTofu && semver.gte(version, LOWEST_OTF_VERSION)
     if (!installedVersions.includes(versionWithV)) {
       const successfullyInstalled = await installNewVersion(version)
