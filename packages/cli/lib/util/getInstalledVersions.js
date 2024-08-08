@@ -25,6 +25,12 @@ async function getInstalledVersions (version = '') {
     }
     if (settings.useOpenTofu && semverCheck) {
       files = await fs.readdir(os.getOtfVersionsDir())
+      const terraformFiles = await fs.readdir(os.getTfVersionsDir())
+      terraformFiles.forEach(file => {
+        if (semver.lt(file, '1.6.0')) {
+          files.push(file)
+        }
+      })
     } else {
       files = await fs.readdir(os.getTfVersionsDir())
     }
