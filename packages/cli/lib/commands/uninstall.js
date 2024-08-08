@@ -6,6 +6,7 @@ import { logger } from '../util/logger.js'
 import getSettings from '../util/getSettings.js'
 import { getOS } from '../util/tfvmOS.js'
 import { TfvmFS } from '../util/TfvmFS.js'
+import * as semver from 'semver'
 const os = getOS()
 
 async function uninstall (uninstallVersion) {
@@ -16,16 +17,19 @@ async function uninstall (uninstallVersion) {
     } else {
       const settings = await getSettings()
       const installedVersions = await getInstalledVersions()
+      const semverCheck = semver.gte(uninstallVersion, '1.6.0')
+      const openTofuCheck = settings.useOpenTofu && semverCheck
+
       if (!installedVersions.includes(uninstallVersion)) {
-        console.log(chalk.white.bold(`${settings.useOpenTofu ? 'opentofu' : 'terraform'} ${uninstallVersion} is not installed. Type "tfvm list" to see what is installed.`))
+        console.log(chalk.white.bold(`${openTofuCheck ? 'opentofu' : 'terraform'} ${uninstallVersion} is not installed. Type "tfvm list" to see what is installed.`))
       } else {
-        console.log(chalk.white.bold(`Uninstalling ${settings.useOpenTofu ? 'opentofu' : 'terraform'} ${uninstallVersion}...`))
-        if (settings.useOpenTofu) {
+        console.log(chalk.white.bold(`Uninstalling ${openTofuCheck ? 'opentofu' : 'terraform'} ${uninstallVersion}...`))
+        if (openTofuCheck) {
           await TfvmFS.deleteDirectory(os.getOtfVersionsDir(), uninstallVersion)
         } else {
           await TfvmFS.deleteDirectory(os.getTfVersionsDir(), uninstallVersion)
         }
-        console.log(chalk.cyan.bold(`Successfully uninstalled ${settings.useOpenTofu ? 'opentofu' : 'terraform'} ${uninstallVersion}`))
+        console.log(chalk.cyan.bold(`Successfully uninstalled ${openTofuCheck ? 'opentofu' : 'terraform'} ${uninstallVersion}`))
       }
     }
   } catch (error) {

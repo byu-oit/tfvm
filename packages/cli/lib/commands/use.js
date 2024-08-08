@@ -90,6 +90,7 @@ export async function switchVersionTo (version) {
     )
   }
   console.log(chalk.cyan.bold(`Now using ${settings.useOpenTofu && semver.gte(version, '1.6.0') ? 'opentofu' : 'terraform'} v${version} (${os.getBitWidth()}-bit)`))
+
   if (requiresOldAWSAuth(version) && !settings.disableAWSWarnings) {
     console.log(chalk.yellow.bold('Warning: This tf version is not compatible with the newest ' +
       'AWS CLI authentication methods (e.g. aws sso login). Use short-term credentials instead.'))
