@@ -69,6 +69,10 @@ export default install
 export async function installFromWeb (versionNum, printMessage = true) {
   const settings = await getSettings()
   const openTofuCheck = settings.useOpenTofu && semver.gte(versionNum, LOWEST_OTF_VERSION)
+  const openTofuCheckLessThan = settings.useOpenTofu && semver.lte(versionNum, LOWEST_OTF_VERSION)
+  if (openTofuCheckLessThan) {
+    console.log(chalk.magenta.bold('Note: With the useOpenTofu flag, versions below 1.6.0 will be downloaded as Terraform since OpenTofu only has versions beginning at version 1.6.0'))
+  }
   let url
   let zipPath
   let newVersionDir

@@ -13,6 +13,8 @@ import { getOS } from '../util/tfvmOS.js'
 import * as semver from 'semver'
 
 const os = getOS()
+const LOWEST_OTF_VERSION = '1.6.0'
+let openTofuCheck = false
 
 async function use (version) {
   try {
@@ -36,6 +38,8 @@ export async function useVersion (version) {
     console.log(chalk.red.bold('Invalid version syntax'))
   } else {
     const installedVersions = await getInstalledVersions(version)
+    const settings = getSettings()
+    openTofuCheck = settings.useOpenTofu && semver.gte(version, LOWEST_OTF_VERSION)
     if (!installedVersions.includes(versionWithV)) {
       const successfullyInstalled = await installNewVersion(version)
       if (!successfullyInstalled) return
@@ -51,7 +55,8 @@ export async function useVersion (version) {
  */
 export async function installNewVersion (version) {
   const settings = await getSettings()
-  console.log(chalk.white.bold(`${settings.useOpenTofu && semver.gte(version, '1.6.0') ? 'OpenTofu' : 'Terraform'} v${version} is not installed. Would you like to install it?`))
+  const openTofuCheck = settings.useOpenTofu && semver.gte(version, LOWEST_OTF_VERSION)
+  console.log(chalk.white.bold(`${openTofuCheck ? 'OpenTofu' : 'Terraform'} v${version} is not installed. Would you like to install it?`))
   const installToggle = new enquirer.Toggle({
     disabled: 'Yes',
     enabled: 'No'
@@ -74,7 +79,7 @@ export async function switchVersionTo (version) {
   const settings = await getSettings()
   if (version[0] === 'v') version = version.substring(1)
 
-  if (settings.useOpenTofu && semver.gte(version, '1.6.0')) {
+  if (openTofuCheck) {
     await TfvmFS.createOtfAppDataDir()
     await TfvmFS.deleteCurrentOtfExe()
     await fs.copyFile(
@@ -89,7 +94,7 @@ export async function switchVersionTo (version) {
       os.getPath(os.getTerraformDir(), os.getTFExecutableName()) // destination file
     )
   }
-  console.log(chalk.cyan.bold(`Now using ${settings.useOpenTofu && semver.gte(version, '1.6.0') ? 'opentofu' : 'terraform'} v${version} (${os.getBitWidth()}-bit)`))
+  console.log(chalk.cyan.bold(`Now using ${openTofuCheck ? 'opentofu' : 'terraform'} v${version} (${os.getBitWidth()}-bit)`))
 
   if (requiresOldAWSAuth(version) && !settings.disableAWSWarnings) {
     console.log(chalk.yellow.bold('Warning: This tf version is not compatible with the newest ' +
