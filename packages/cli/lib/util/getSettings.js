@@ -10,7 +10,8 @@ export const defaultSettings = {
   disableErrors: false,
   disableAWSWarnings: false,
   disableSettingPrompts: false,
-  useOpenTofu: false
+  useOpenTofu: false,
+  disableTofuWarnings: false
 }
 
 /**

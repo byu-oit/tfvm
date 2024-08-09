@@ -23,7 +23,7 @@ async function config (setting) {
             await fs.writeFile(os.getSettingsDir(), JSON.stringify(settingsObj), 'utf8')
 
             if (settingKey === 'useOpenTofu') {
-              await deleteExecutable(settingsObj[settingKey], os)
+              await deleteExecutable(settingsObj[settingKey])
             }
           } else {
             console.log(chalk.red.bold(`Invalid input for ${settingKey} setting. ` +

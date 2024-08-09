@@ -26,23 +26,29 @@ export class TfvmFS {
 
   /**
    * Deletes the terraform exe so that a new one can be copied in
-   * @returns {Promise<void>}
+   * @returns {Promise<boolean>}
    */
   static async deleteCurrentTfExe () {
     // if appdata/roaming/terraform/terraform.exe exists, delete it
     if ((await fsp.readdir(os.getTerraformDir())).includes(os.getTFExecutableName())) {
       await fsp.unlink(os.getTerraformDir() + path.sep + os.getTFExecutableName())
+      return true
+    } else {
+      return false
     }
   }
 
   /**
    * Deletes the opentofu exe so that a new one can be copied in
-   * @returns {Promise<void>}
+   * @returns {Promise<boolean>}
    */
   static async deleteCurrentOtfExe () {
     // if appdata/roaming/opentofu/tofu.exe exists, delete it
     if ((await fsp.readdir(os.getOpenTofuDir())).includes(os.getOtfExecutableName())) {
       await fsp.unlink(os.getOpenTofuDir() + path.sep + os.getOtfExecutableName())
+      return true
+    } else {
+      return false
     }
   }
 

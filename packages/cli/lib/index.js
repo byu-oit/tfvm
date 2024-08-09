@@ -69,7 +69,8 @@ program
     'disableErrors - Disables some recurrent warning messages\n' +
     'disableAWSWarnings - Disables warnings about needing old AWS authentication with tf versions older than 0.14.6\n' +
     'disableSettingsPrompts - Disables prompts to turn off warnings by enabling these settings\n' +
-    'useOpenTofu - Uses OpenTofu instead of Terraform')
+    'useOpenTofu - Uses OpenTofu instead of Terraform\n' +
+    'disableTofuWarnings - Disables warnings related to using Tofu (deleting executables, using Tofu instead of Terraform, etc.)'  )
 
 program
   .command('install <version>')

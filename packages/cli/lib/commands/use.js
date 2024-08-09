@@ -1,4 +1,5 @@
 import chalk from 'chalk'
+import deleteExecutable from '../util/deleteExecutable.js'
 import fs from 'node:fs/promises'
 import enquirer from 'enquirer'
 import { versionRegEx } from '../util/constants.js'
@@ -40,6 +41,12 @@ export async function useVersion (version) {
     const installedVersions = await getInstalledVersions(version)
     const settings = await getSettings()
     openTofuCheck = settings.useOpenTofu && semver.gte(version, LOWEST_OTF_VERSION)
+    // delete tofu executable if using a version lower than 1.6.0
+    if (settings.useOpenTofu && semver.lt(version, LOWEST_OTF_VERSION)) {
+      await deleteExecutable(false)
+    } else if (openTofuCheck) {
+      await deleteExecutable(true)
+    }
     if (!installedVersions.includes(versionWithV)) {
       const successfullyInstalled = await installNewVersion(version)
       if (!successfullyInstalled) return
@@ -94,6 +101,7 @@ export async function switchVersionTo (version) {
       os.getPath(os.getTerraformDir(), os.getTFExecutableName()) // destination file
     )
   }
+
   console.log(chalk.cyan.bold(`Now using ${openTofuCheck ? 'opentofu' : 'terraform'} v${version} (${os.getBitWidth()}-bit)`))
 
   if (requiresOldAWSAuth(version) && !settings.disableAWSWarnings) {

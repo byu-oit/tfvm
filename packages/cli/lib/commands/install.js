@@ -1,4 +1,5 @@
 import chalk from 'chalk'
+import deleteExecutable from '../util/deleteExecutable.js'
 import fs from 'node:fs/promises'
 import { versionRegEx } from '../util/constants.js'
 import getInstalledVersions from '../util/getInstalledVersions.js'
@@ -69,9 +70,11 @@ export default install
 export async function installFromWeb (versionNum, printMessage = true) {
   const settings = await getSettings()
   const openTofuCheck = settings.useOpenTofu && semver.gte(versionNum, LOWEST_OTF_VERSION)
-  const openTofuCheckLessThan = settings.useOpenTofu && semver.lte(versionNum, LOWEST_OTF_VERSION)
+  const openTofuCheckLessThan = settings.useOpenTofu && semver.lt(versionNum, LOWEST_OTF_VERSION)
   if (openTofuCheckLessThan) {
-    console.log(chalk.magenta.bold('Note: With the useOpenTofu flag, versions below 1.6.0 will be downloaded as Terraform since OpenTofu only has versions beginning at version 1.6.0'))
+    await deleteExecutable(false)
+  } else if (openTofuCheck) {
+    await deleteExecutable(true)
   }
   let url
   let zipPath
