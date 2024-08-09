@@ -2,11 +2,9 @@ import runShell from './runShell.js'
 import { logger } from './logger.js'
 import { tfCurrVersionRegEx, openTofuCurrVersionRegEx } from './constants.js'
 import getSettings from './getSettings.js'
-import * as semver from 'semver'
 
 let currentTfVersion
 let currentOtfVersion
-const LOWEST_OTF_VERSION = '1.6.0'
 
 /**
  * Returns the current terraform version, if there is one. Returns null if there is no current version
