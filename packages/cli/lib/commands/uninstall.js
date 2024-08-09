@@ -9,6 +9,7 @@ import { TfvmFS } from '../util/TfvmFS.js'
 import * as semver from 'semver'
 const os = getOS()
 
+const LOWEST_OTF_VERSION = '1.6.0'
 async function uninstall (uninstallVersion) {
   try {
     uninstallVersion = 'v' + uninstallVersion
@@ -17,7 +18,7 @@ async function uninstall (uninstallVersion) {
     } else {
       const settings = await getSettings()
       const installedVersions = await getInstalledVersions()
-      const semverCheck = semver.gte(uninstallVersion, '1.6.0')
+      const semverCheck = semver.gte(uninstallVersion, LOWEST_OTF_VERSION)
       const openTofuCheck = settings.useOpenTofu && semverCheck
 
       if (!installedVersions.includes(uninstallVersion)) {

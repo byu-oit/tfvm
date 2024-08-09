@@ -9,6 +9,7 @@ import * as semver from 'semver'
 import getSettings from '../util/getSettings.js'
 const os = getOS()
 
+const LOWEST_OTF_VERSION = '1.6.0'
 async function list () {
   try {
     const printList = []
@@ -26,9 +27,9 @@ async function list () {
           // logic to get the correct spacing
           const parsed = semver.parse(version)
           type += (parsed.minor.toString().length === 1 && parsed.patch.toString().length === 1 ? '  ' : ' ')
-          if (semver.gte(version, '1.6.0')) {
+          if (semver.gte(version, LOWEST_OTF_VERSION)) {
             type += '[OpenTofu]'
-          } else if (semver.lt(version, '1.6.0')) {
+          } else if (semver.lt(version, LOWEST_OTF_VERSION)) {
             type += '[Terraform]'
           }
         }

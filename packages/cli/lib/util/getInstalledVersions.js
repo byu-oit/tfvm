@@ -7,6 +7,7 @@ import * as semver from 'semver'
 const os = getOS()
 
 let installedVersions
+const LOWEST_OTF_VERSION = '1.6.0'
 
 /**
  * Returns a list of installed tf versions.
@@ -21,13 +22,13 @@ async function getInstalledVersions (version = '') {
 
     let semverCheck = true
     if (version !== '') {
-      semverCheck = semver.gte(version, '1.6.0')
+      semverCheck = semver.gte(version, LOWEST_OTF_VERSION)
     }
     if (settings.useOpenTofu && semverCheck) {
       files = await fs.readdir(os.getOtfVersionsDir())
       const terraformFiles = await fs.readdir(os.getTfVersionsDir())
       terraformFiles.forEach(file => {
-        if (semver.lt(file, '1.6.0')) {
+        if (semver.lt(file, LOWEST_OTF_VERSION)) {
           files.push(file)
         }
       })

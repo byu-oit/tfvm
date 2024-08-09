@@ -4,6 +4,8 @@ import axios from 'axios'
 import fs from 'node:fs/promises'
 import * as semver from 'semver'
 
+const LOWEST_OTF_VERSION = '1.6.0'
+
 const download = async (url, filePath, version) => {
   try {
     const response = await axios.get(url, { responseType: 'arraybuffer' })
@@ -11,7 +13,7 @@ const download = async (url, filePath, version) => {
     await fs.writeFile(filePath, fileData)
   } catch (err) {
     const settings = await getSettings()
-    console.log(chalk.red.bold(`${settings.useOpenTofu && semver.gte(version, '1.6.0') ? 'OpenTofu' : 'Terraform'} ${version} is not yet released or available.`))
+    console.log(chalk.red.bold(`${settings.useOpenTofu && semver.gte(version, LOWEST_OTF_VERSION) ? 'OpenTofu' : 'Terraform'} ${version} is not yet released or available.`))
     throw new Error()
   }
 }
