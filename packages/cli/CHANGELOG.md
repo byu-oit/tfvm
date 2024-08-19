@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0-beta.5](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.3.0-beta.4...@byu-oit/tfvm@0.3.0-beta.5) (2024-08-19)
+
+
+### Features
+
+* opentofu support ([#99](https://github.com/byu-oit/tfvm/issues/99)) ([dcfc32e](https://github.com/byu-oit/tfvm/commit/dcfc32e02b89995bf92d5f85d421fa4e670b29fc))
+
+
+
+
+
 # [0.3.0-beta.4](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.3.0-beta.3...@byu-oit/tfvm@0.3.0-beta.4) (2024-02-16)
 
 
