@@ -5,8 +5,11 @@ import getInstalledVersions from '../util/getInstalledVersions.js'
 import getErrorMessage from '../util/errorChecker.js'
 import { logger } from '../util/logger.js'
 import { getOS } from '../util/tfvmOS.js'
+import * as semver from 'semver'
+import getSettings from '../util/getSettings.js'
 const os = getOS()
 
+const LOWEST_OTF_VERSION = '1.6.0'
 async function list () {
   try {
     const printList = []
@@ -14,17 +17,38 @@ async function list () {
 
     if (tfList.length > 0) {
       const currentTFVersion = await getTerraformVersion()
-      console.log('\n')
       tfList.sort(compareVersions).reverse()
       for (const versionDir of tfList) {
+        const settings = await getSettings()
+        const version = versionDir.substring(1, versionDir.length)
+
+        let type = ''
+        if (settings.useOpenTofu) {
+          // logic to get the correct spacing
+          const parsed = semver.parse(version)
+          type += (parsed.minor.toString().length === 1 && parsed.patch.toString().length === 1 ? '  ' : ' ')
+          if (semver.gte(version, LOWEST_OTF_VERSION)) {
+            type += '[OpenTofu]'
+          } else if (semver.lt(version, LOWEST_OTF_VERSION)) {
+            type += '[Terraform]'
+          }
+        }
+
         if (versionDir === currentTFVersion) {
           let printVersion = '  * '
-          printVersion = printVersion + versionDir.substring(1, versionDir.length)
+          printVersion += version
+          if (settings.useOpenTofu) {
+            printVersion += type
+          }
           printVersion = printVersion + ` (Currently using ${os.getBitWidth()}-bit executable)`
           printList.push(printVersion)
         } else {
           let printVersion = '    '
-          printVersion = printVersion + versionDir.substring(1, versionDir.length)
+          printVersion += version
+
+          if (settings.useOpenTofu) {
+            printVersion += type
+          }
           printList.push(printVersion)
         }
       }

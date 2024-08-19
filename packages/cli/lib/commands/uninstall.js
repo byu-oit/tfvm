@@ -1,25 +1,36 @@
 import chalk from 'chalk'
 import { versionRegEx } from '../util/constants.js'
 import getInstalledVersions from '../util/getInstalledVersions.js'
-import { TfvmFS } from '../util/TfvmFS.js'
 import getErrorMessage from '../util/errorChecker.js'
 import { logger } from '../util/logger.js'
+import getSettings from '../util/getSettings.js'
 import { getOS } from '../util/tfvmOS.js'
+import { TfvmFS } from '../util/TfvmFS.js'
+import * as semver from 'semver'
 const os = getOS()
 
+const LOWEST_OTF_VERSION = '1.6.0'
 async function uninstall (uninstallVersion) {
   try {
     uninstallVersion = 'v' + uninstallVersion
     if (!versionRegEx.test(uninstallVersion)) {
       console.log(chalk.red.bold('Invalid version syntax'))
     } else {
+      const settings = await getSettings()
       const installedVersions = await getInstalledVersions()
+      const semverCheck = semver.gte(uninstallVersion, LOWEST_OTF_VERSION)
+      const openTofuCheck = settings.useOpenTofu && semverCheck
+
       if (!installedVersions.includes(uninstallVersion)) {
-        console.log(chalk.white.bold(`terraform ${uninstallVersion} is not installed. Type "tfvm list" to see what is installed.`))
+        console.log(chalk.white.bold(`${openTofuCheck ? 'opentofu' : 'terraform'} ${uninstallVersion} is not installed. Type "tfvm list" to see what is installed.`))
       } else {
-        console.log(chalk.white.bold(`Uninstalling terraform ${uninstallVersion}...`))
-        await TfvmFS.deleteDirectory(os.getTfVersionsDir(), uninstallVersion)
-        console.log(chalk.cyan.bold(`Successfully uninstalled terraform ${uninstallVersion}`))
+        console.log(chalk.white.bold(`Uninstalling ${openTofuCheck ? 'opentofu' : 'terraform'} ${uninstallVersion}...`))
+        if (openTofuCheck) {
+          await TfvmFS.deleteDirectory(os.getOtfVersionsDir(), uninstallVersion)
+        } else {
+          await TfvmFS.deleteDirectory(os.getTfVersionsDir(), uninstallVersion)
+        }
+        console.log(chalk.cyan.bold(`Successfully uninstalled ${openTofuCheck ? 'opentofu' : 'terraform'} ${uninstallVersion}`))
       }
     }
   } catch (error) {

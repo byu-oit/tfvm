@@ -71,6 +71,8 @@ Run `tfvm` in any command line, followed by one of these commands:
     - `tfvm config disableErrors=true` - disables configuration warnings.
     - `tfvm config disableAWSWarnings=true` - disables AWS warnings that appear when using older terraform versions.
     - `tfvm config disableSettingPrompts=true` - disables prompts that show how to hide some error messages.
+    - `tfvm config useOpenTofu=true` - uses the open source version of Terraform, OpenTofu (experimental flag). This flag will also delete your terraform executable so you can only perfom tofu actions. When you switch back to `useOpenTofu=false`, the tofu executable will be deleted. This is so you don't perform any accidental commands in the wrong type of IAC.
+    - `tfvm config disableTofuWarnings=true` - disables warnings related to using Tofu (deleting executables, using Tofu instead of Terraform, etc.)
 - `help`: prints usage information. Run `tfvm help <command>` to see information about the other tfvm commands.
 
 ## FAQ

@@ -9,6 +9,7 @@ const date = new Date().toISOString().split('T')[0]
 
 // TODO re-enable logging
 // before creating a log file, make sure the logs folder exists (and its parent tfvm folder)
+if (!fs.existsSync(os.getOtfvmDir())) fs.mkdirSync(os.getOtfvmDir())
 if (!fs.existsSync(os.getTfvmDir())) fs.mkdirSync(os.getTfvmDir())
 if (!fs.existsSync(os.getLogsDir())) fs.mkdirSync(os.getLogsDir())
 

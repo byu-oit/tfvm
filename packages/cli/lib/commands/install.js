@@ -1,4 +1,5 @@
 import chalk from 'chalk'
+import deleteExecutable from '../util/deleteExecutable.js'
 import fs from 'node:fs/promises'
 import { versionRegEx } from '../util/constants.js'
 import getInstalledVersions from '../util/getInstalledVersions.js'
@@ -8,20 +9,31 @@ import getErrorMessage from '../util/errorChecker.js'
 import getTerraformVersion from '../util/tfVersion.js'
 import getLatest from '../util/getLatest.js'
 import { logger } from '../util/logger.js'
+import getSettings from '../util/getSettings.js'
 import { getOS, Mac } from '../util/tfvmOS.js'
 import { compare } from 'compare-versions'
+import * as semver from 'semver'
 const os = getOS()
 
 const LAST_TF_VERSION_WITHOUT_ARM = '1.0.1'
+const LOWEST_OTF_VERSION = '1.6.0'
 
 async function install (versionNum) {
   try {
+    const settings = await getSettings()
     const installVersion = 'v' + versionNum
+    const openTofuCheck = settings.useOpenTofu && semver.gte(versionNum, LOWEST_OTF_VERSION)
+
     if (!versionRegEx.test(installVersion) && versionNum !== 'latest') {
       logger.warn(`invalid version attempted to install with version ${installVersion}`)
       console.log(chalk.red.bold('Invalid version syntax.'))
-      console.log(chalk.white.bold('Version should be formatted as \'vX.X.X\'\nGet a list of all current ' +
+      if (settings.useOpenTofu) {
+        console.log(chalk.white.bold('Version should be formatted as \'vX.X.X\'\nGet a list of all current ' +
+        'opentofu versions here: https://github.com/opentofu/opentofu/releases'))
+      } else {
+        console.log(chalk.white.bold('Version should be formatted as \'vX.X.X\'\nGet a list of all current ' +
         'terraform versions here: https://releases.hashicorp.com/terraform/'))
+      }
     } else if (versionNum === 'latest') {
       const installedVersions = await getInstalledVersions()
       const latest = await getLatest()
@@ -29,11 +41,11 @@ async function install (versionNum) {
       if (latest) {
         const versionLatest = 'v' + latest
         if (installedVersions.includes(versionLatest) && currentVersion !== versionLatest) {
-          console.log(chalk.bold.cyan(`The latest terraform version is ${latest} and is ` +
+          console.log(chalk.bold.cyan(`The latest ${openTofuCheck ? 'opentofu' : 'terraform'} version is ${latest} and is ` +
             `already installed on your computer. Run 'tfvm use ${latest}' to use.`))
         } else if (installedVersions.includes(versionLatest) && currentVersion === versionLatest) {
           const currentVersion = await getTerraformVersion()
-          console.log(chalk.bold.cyan(`The latest terraform version is ${currentVersion} and ` +
+          console.log(chalk.bold.cyan(`The latest ${openTofuCheck ? 'opentofu' : 'terraform'} version is ${currentVersion} and ` +
             'is already installed and in use on your computer.'))
         } else {
           await installFromWeb(latest)
@@ -42,7 +54,7 @@ async function install (versionNum) {
     } else {
       const installedVersions = await getInstalledVersions()
       if (installedVersions.includes(installVersion)) {
-        console.log(chalk.white.bold(`Terraform version ${installVersion} is already installed.`))
+        console.log(chalk.white.bold(`${openTofuCheck ? 'OpenTofu' : 'Terraform'} version ${installVersion} is already installed.`))
       } else {
         await installFromWeb(versionNum)
       }
@@ -56,8 +68,17 @@ async function install (versionNum) {
 export default install
 
 export async function installFromWeb (versionNum, printMessage = true) {
-  const zipPath = os.getPath(os.getTfVersionsDir(), `v${versionNum}.zip`)
-  const newVersionDir = os.getPath(os.getTfVersionsDir(), 'v' + versionNum)
+  const settings = await getSettings()
+  const openTofuCheck = settings.useOpenTofu && semver.gte(versionNum, LOWEST_OTF_VERSION)
+  const openTofuCheckLessThan = settings.useOpenTofu && semver.lt(versionNum, LOWEST_OTF_VERSION)
+  if (openTofuCheckLessThan) {
+    await deleteExecutable(false)
+  } else if (openTofuCheck) {
+    await deleteExecutable(true)
+  }
+  let url
+  let zipPath
+  let newVersionDir
   let arch = os.getArchitecture()
 
   // Only newer terraform versions include a release for ARM (Apple Silicon) hardware, but their chips *can*
@@ -68,7 +89,17 @@ export async function installFromWeb (versionNum, printMessage = true) {
     console.log(chalk.bold.yellow(`Warning: There is no available ARM release of Terraform for version ${versionNum}.
     Installing the amd64 version instead (should run without issue via Rosetta)...`))
   }
-  const url = `https://releases.hashicorp.com/terraform/${versionNum}/terraform_${versionNum}_${os.getOSName()}_${arch}.zip`
+
+  if (openTofuCheck) {
+    zipPath = os.getPath(os.getOtfVersionsDir(), `v${versionNum}.zip`)
+    newVersionDir = os.getPath(os.getOtfVersionsDir(), 'v' + versionNum)
+    url = `https://github.com/opentofu/opentofu/releases/download/v${versionNum}/tofu_${versionNum}_${os.getOSName()}_${arch}.zip`
+  } else {
+    zipPath = os.getPath(os.getTfVersionsDir(), `v${versionNum}.zip`)
+    newVersionDir = os.getPath(os.getTfVersionsDir(), 'v' + versionNum)
+    url = `https://releases.hashicorp.com/terraform/${versionNum}/terraform_${versionNum}_${os.getOSName()}_${arch}.zip`
+  }
+
   await download(url, zipPath, versionNum)
   await fs.mkdir(newVersionDir)
   await unzipFile(zipPath, newVersionDir)

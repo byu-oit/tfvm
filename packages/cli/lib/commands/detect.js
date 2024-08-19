@@ -13,8 +13,10 @@ import getTerraformVersion from '../util/tfVersion.js'
 import { installNewVersion, switchVersionTo, useVersion } from './use.js'
 import { logger } from '../util/logger.js'
 import { TfvmFS } from '../util/TfvmFS.js'
+import getSettings from '../util/getSettings.js'
 
 async function detect () {
+  const settings = await getSettings()
   // set of objects that contain the constraints and the file name
   const tfVersionConstraintSet = new Set()
   try {
@@ -26,10 +28,10 @@ async function detect () {
       await satisfyConstraints(tfVersionConstraintSet)
     } else {
       // todo let the user select from list of frequently used versions instead of this disappointing message
-      console.log(chalk.white.bold('No terraform files containing any version constraints are found in this directory.'))
+      console.log(chalk.white.bold(`No ${settings.useOpenTofu ? 'OpenTofu' : 'Terraform'} files containing any version constraints are found in this directory.`))
     }
   } catch (error) {
-    logger.fatal(error, 'Fatal error when running "detect" command with these local terraform ' +
+    logger.fatal(error, `Fatal error when running "detect" command with these local ${settings.useOpenTofu ? 'OpenTofu' : 'Terraform'} ` +
       `constraints: ${Array.from(tfVersionConstraintSet).map(c => JSON.stringify(c)).join('; ')}: `)
     getErrorMessage(error)
   }
@@ -48,9 +50,10 @@ async function satisfyConstraints (tfVersionConstraintSet) {
     ? tfVersionConstraints // if the current version is null, then all the constraints are unmet
     : getUnmetConstraints(tfVersionConstraints, currentTfVersion)
   if (unmetVersionConstraints.length === 0) {
+    const settings = await getSettings()
     // exit quickly if the current tf version satisfies all required constraints
-    console.log(chalk.cyan.bold(`Your current terraform version (${currentTfVersion}) already ` +
-    'satisfies the requirements of your local terraform files.'))
+    console.log(chalk.cyan.bold(`Your current ${settings.useOpenTofu ? 'OpenTofu' : 'Terraform'} version (${currentTfVersion}) already ` +
+    `satisfies the requirements of your local ${settings.useOpenTofu ? 'OpenTofu' : 'Terraform'} files.`))
   } else if (unmetVersionConstraints.length === 1 && tfVersionConstraints.length === 1) {
     await satisfySingleConstraint(unmetVersionConstraints[0])
   } else if (unmetVersionConstraints.length >= 1) {
@@ -68,7 +71,8 @@ async function satisfyMultipleConstraints (tfVersionConstraints) {
     // if all the constraints are single versions, give them a dropdown list to select from
     await chooseAndUseVersionFrom(tfVersionConstraints)
   } else {
-    console.log(chalk.white.bold('There are multiple terraform version constraints in this directory:'))
+    const settings = await getSettings()
+    console.log(chalk.white.bold(`There are multiple ${settings.useOpenTofu ? 'OpenTofu' : 'Terraform'} version constraints in this directory:`))
     tfVersionConstraints.forEach(c =>
       console.log(chalk.white.bold(`   - ${c.displayVersion} (${c.fileName})`)))
 
@@ -186,13 +190,14 @@ async function findLocalVersionConstraints (constraintSet) {
       const fileName = TfvmFS.getFileNameFromPath(filePath)
       const fileHclAsJson = parser.parse(content)
       if (fileHclAsJson.required_core) {
+        const settings = await getSettings()
         fileHclAsJson.required_core.forEach(version => {
           // terraform supports '!=' and `~>' in semver but the 'compare-versions' package does not
           for (const badOperator of ['!=']) {
             if (version.includes(badOperator)) {
               logger.error(`Failed to parse version ${version} because of '${badOperator}'.`)
               console.log(chalk.red.bold(`Ignoring constraint from ${fileName} ` +
-                `because tfvm doesn't support parsing versions with '${badOperator}' in the terraform required_version.`))
+                `because tfvm doesn't support parsing versions with '${badOperator}' in the ${settings.useOpenTofu ? 'OpenTofu' : 'Terraform'} required_version.`))
               return // functional equivalent of 'continue' in forEach
             }
           }

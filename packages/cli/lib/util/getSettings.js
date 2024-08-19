@@ -9,7 +9,9 @@ let settings
 export const defaultSettings = {
   disableErrors: false,
   disableAWSWarnings: false,
-  disableSettingPrompts: false
+  disableSettingPrompts: false,
+  useOpenTofu: false,
+  disableTofuWarnings: false
 }
 
 /**

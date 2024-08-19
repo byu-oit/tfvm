@@ -19,6 +19,7 @@ export class TfvmOS {
   logFolderName = 'logs'
   tfVersionsFolderName = 'versions'
   tfvmAppDataFolderName = 'tfvm'
+  otfvmAppDataFolderName = 'otfvm'
 
   static getOS () {
     const osClassBinding = {
@@ -36,8 +37,16 @@ export class TfvmOS {
     return this.getAppDataDir().concat(sep + this.tfvmAppDataFolderName)
   }
 
+  getOtfvmDir () {
+    return this.getAppDataDir().concat(sep + this.otfvmAppDataFolderName)
+  }
+
   getTfVersionsDir () {
     return this.getTfvmDir().concat(sep + this.tfVersionsFolderName)
+  }
+
+  getOtfVersionsDir () {
+    return this.getOtfvmDir().concat(sep + this.tfVersionsFolderName)
   }
 
   getLogsDir () {
@@ -48,6 +57,10 @@ export class TfvmOS {
     return this.getAppDataDir().concat(sep + 'terraform')
   }
 
+  getOpenTofuDir () {
+    return this.getAppDataDir().concat(sep + 'opentofu')
+  }
+
   getSettingsDir () {
     return this.getTfvmDir().concat(sep + this.settingsFileName)
   }
@@ -55,7 +68,8 @@ export class TfvmOS {
   /**
    * Returns arguments for the runShell() function and prepares the script for being run, if necessary
    */
-  getAddToPathShellArgs () { throw new Error('Not implemented in parent class') }
+  getAddToPathShellArgsTerraform () { throw new Error('Not implemented in parent class') }
+  getAddToPathShellArgsOpenTofu () { throw new Error('Not implemented in parent class') }
   getArchitecture () { throw new Error('Not implemented in parent class') }
   getBitWidth () { throw new Error('Not implemented in parent class') }
   getPathCommand () { throw new Error('Not implemented in parent class') }
@@ -64,7 +78,9 @@ export class TfvmOS {
   getAppDataDir () { throw new Error('Not implemented in parent class') }
   handleAddPathError () { throw new Error('Not implemented in parent class') }
   getTFExecutableName () { throw new Error('Not implemented in parent class') }
+  getOtfExecutableName () { throw new Error('Not implemented in parent class') }
   async prepareExecutable () { throw new Error('Not Implemented in parent class') }
+  async prepareTofuExecutable () { throw new Error('Not Implemented in parent class') }
   getOSName () {
     // This is whatever Terraform expects, not what node's process.platform returns
     throw new Error('Not implemented in parent class')
@@ -74,8 +90,11 @@ export class TfvmOS {
     return {
       tfvmDir: this.getTfvmDir(),
       tfVersionsDir: this.getTfVersionsDir(),
-      logsDir: this.getLogsDir(),
       tfDir: this.getTerraformDir(),
+      otfvmDir: this.getOtfvmDir(),
+      otfVersionsDir: this.getOtfVersionsDir(),
+      otfDir: this.getOpenTofuDir(),
+      logsDir: this.getLogsDir(),
       settingsDir: this.getSettingsDir(),
       appDataDir: this.getAppDataDir()
     }
@@ -98,8 +117,14 @@ export class Mac extends TfvmOS {
     return ':'
   }
 
-  async getAddToPathShellArgs () {
+  async getAddToPathShellArgsTerraform () {
     const scriptPath = resolve(__dirname, './../scripts/addToPathMac.sh')
+    await fsp.chmod(scriptPath, EXECUTE_PERM_CODE)
+    return [scriptPath, {}]
+  }
+
+  async getAddToPathShellArgsOpenTofu () {
+    const scriptPath = resolve(__dirname, './../scripts/addToPathMacOpenTofu.sh')
     await fsp.chmod(scriptPath, EXECUTE_PERM_CODE)
     return [scriptPath, {}]
   }
@@ -129,8 +154,17 @@ export class Mac extends TfvmOS {
     return 'terraform'
   }
 
+  getOtfExecutableName () {
+    return 'tofu'
+  }
+
   async prepareExecutable (version) {
     const exeLoc = resolve(this.getTfVersionsDir(), `v${version}/${this.getTFExecutableName()}`)
+    await fsp.chmod(exeLoc, EXECUTE_PERM_CODE)
+  }
+
+  async prepareTofuExecutable (version) {
+    const exeLoc = resolve(this.getOtfVersionsDir(), `v${version}/${this.getOtfExecutableName()}`)
     await fsp.chmod(exeLoc, EXECUTE_PERM_CODE)
   }
 }
@@ -144,8 +178,12 @@ export class Windows extends TfvmOS {
     return ';'
   }
 
-  async getAddToPathShellArgs () {
+  async getAddToPathShellArgsTerraform () {
     return [resolve(__dirname, './../scripts/addToPathWindows.ps1'), { shell: 'powershell.exe' }]
+  }
+
+  async getAddToPathShellArgsOpenTofu () {
+    return [resolve(__dirname, './../scripts/addToPathWindowsOpenTofu.ps1'), { shell: 'powershell.exe' }]
   }
 
   getAppDataDir () {
@@ -173,7 +211,13 @@ export class Windows extends TfvmOS {
     return 'terraform.exe'
   }
 
+  getOtfExecutableName () {
+    return 'tofu.exe'
+  }
+
   async prepareExecutable () {}
+
+  async prepareTofuExecutable () {}
 }
 
 export class Linux extends TfvmOS {
@@ -193,8 +237,14 @@ export class Linux extends TfvmOS {
     throw new Error('Bash script failed to add terraform directory to the path')
   }
 
-  async getAddToPathShellArgs () {
+  async getAddToPathShellArgsTerraform () {
     const scriptPath = resolve(__dirname, './../scripts/addToPathLinux.sh')
+    await fsp.chmod(scriptPath, EXECUTE_PERM_CODE)
+    return [scriptPath, {}]
+  }
+
+  async getAddToPathShellArgsOpenTofu () {
+    const scriptPath = resolve(__dirname, './../scripts/addToPathLinuxOpenTofu.sh')
     await fsp.chmod(scriptPath, EXECUTE_PERM_CODE)
     return [scriptPath, {}]
   }
@@ -225,8 +275,17 @@ export class Linux extends TfvmOS {
     return 'terraform'
   }
 
+  getOtfExecutableName () {
+    return 'tofu'
+  }
+
   async prepareExecutable (version) {
     const exeLoc = resolve(this.getTfVersionsDir(), `v${version}/${this.getTFExecutableName()}`)
+    await fsp.chmod(exeLoc, EXECUTE_PERM_CODE)
+  }
+
+  async prepareTofuExecutable (version) {
+    const exeLoc = resolve(this.getOtfVersionsDir(), `v${version}/${this.getOtfExecutableName()}`)
     await fsp.chmod(exeLoc, EXECUTE_PERM_CODE)
   }
 }

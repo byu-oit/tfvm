@@ -1,6 +1,10 @@
 import chalk from 'chalk'
+import getSettings from './getSettings.js'
 import axios from 'axios'
 import fs from 'node:fs/promises'
+import * as semver from 'semver'
+
+const LOWEST_OTF_VERSION = '1.6.0'
 
 const download = async (url, filePath, version) => {
   try {
@@ -8,7 +12,8 @@ const download = async (url, filePath, version) => {
     const fileData = Buffer.from(response.data, 'binary')
     await fs.writeFile(filePath, fileData)
   } catch (err) {
-    console.log(chalk.red.bold(`Terraform ${version} is not yet released or available.`))
+    const settings = await getSettings()
+    console.log(chalk.red.bold(`${settings.useOpenTofu && semver.gte(version, LOWEST_OTF_VERSION) ? 'OpenTofu' : 'Terraform'} ${version} is not yet released or available.`))
     throw new Error()
   }
 }
