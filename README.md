@@ -1,5 +1,5 @@
 # TFVM - Terraform Version Manager
-*A NodeJS-based CLI tool to manage terraform versions without needing admin access.*
+*A NodeJS-based CLI tool to manage terraform and OpenTofu versions without needing admin access.*
 
 This tool exists despite the existence of [tfswitch](https://tfswitch.warrensbox.com/) and similar tools because we
 needed a tool for managing Terraform versions on Windows that worked without needing
