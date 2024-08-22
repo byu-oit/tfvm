@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 import deleteExecutable from '../util/deleteExecutable.js'
 import fs from 'node:fs/promises'
-import { versionRegEx } from '../util/constants.js'
+import { versionRegEx, LOWEST_OTF_VERSION } from '../util/constants.js'
 import getInstalledVersions from '../util/getInstalledVersions.js'
 import download from '../util/download.js'
 import unzipFile from '../util/unzipFile.js'
@@ -14,7 +14,6 @@ import { getOS, Mac } from '../util/tfvmOS.js'
 import { compare } from 'compare-versions'
 import * as semver from 'semver'
 const os = getOS()
-import { LOWEST_OTF_VERSION } from "../util/constants.js"
 
 const LAST_TF_VERSION_WITHOUT_ARM = '1.0.1'
 

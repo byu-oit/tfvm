@@ -2,7 +2,7 @@ import chalk from 'chalk'
 import deleteExecutable from '../util/deleteExecutable.js'
 import fs from 'node:fs/promises'
 import enquirer from 'enquirer'
-import { versionRegEx } from '../util/constants.js'
+import { versionRegEx, LOWEST_OTF_VERSION } from '../util/constants.js'
 import getInstalledVersions from '../util/getInstalledVersions.js'
 import { TfvmFS } from '../util/TfvmFS.js'
 import getErrorMessage from '../util/errorChecker.js'
@@ -12,7 +12,6 @@ import requiresOldAWSAuth from '../util/requiresOldAWSAuth.js'
 import { logger } from '../util/logger.js'
 import { getOS } from '../util/tfvmOS.js'
 import * as semver from 'semver'
-import { LOWEST_OTF_VERSION } from "../util/constants.js"
 
 const os = getOS()
 let openTofuCheck = false

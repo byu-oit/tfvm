@@ -3,7 +3,7 @@ import getSettings from './getSettings.js'
 import axios from 'axios'
 import fs from 'node:fs/promises'
 import * as semver from 'semver'
-import { LOWEST_OTF_VERSION } from "./constants.js"
+import { LOWEST_OTF_VERSION } from './constants.js'
 
 const download = async (url, filePath, version) => {
   try {
