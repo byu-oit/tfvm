@@ -7,9 +7,9 @@ import { logger } from '../util/logger.js'
 import { getOS } from '../util/tfvmOS.js'
 import * as semver from 'semver'
 import getSettings from '../util/getSettings.js'
+import { LOWEST_OTF_VERSION } from '../util/constants.js'
 const os = getOS()
 
-const LOWEST_OTF_VERSION = '1.6.0'
 async function list () {
   try {
     const printList = []

@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import { versionRegEx } from '../util/constants.js'
+import { versionRegEx, LOWEST_OTF_VERSION } from '../util/constants.js'
 import getInstalledVersions from '../util/getInstalledVersions.js'
 import getErrorMessage from '../util/errorChecker.js'
 import { logger } from '../util/logger.js'
@@ -9,7 +9,6 @@ import { TfvmFS } from '../util/TfvmFS.js'
 import * as semver from 'semver'
 const os = getOS()
 
-const LOWEST_OTF_VERSION = '1.6.0'
 async function uninstall (uninstallVersion) {
   try {
     uninstallVersion = 'v' + uninstallVersion

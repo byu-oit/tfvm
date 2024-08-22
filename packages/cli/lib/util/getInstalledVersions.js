@@ -1,5 +1,5 @@
 import fs from 'node:fs/promises'
-import { versionRegEx } from './constants.js'
+import { versionRegEx, LOWEST_OTF_VERSION } from './constants.js'
 import { logger } from './logger.js'
 import getSettings from './getSettings.js'
 import { getOS } from './tfvmOS.js'
@@ -7,7 +7,6 @@ import * as semver from 'semver'
 const os = getOS()
 
 let installedVersions
-const LOWEST_OTF_VERSION = '1.6.0'
 
 /**
  * Returns a list of installed tf versions.
