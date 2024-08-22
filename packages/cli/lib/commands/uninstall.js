@@ -7,9 +7,9 @@ import getSettings from '../util/getSettings.js'
 import { getOS } from '../util/tfvmOS.js'
 import { TfvmFS } from '../util/TfvmFS.js'
 import * as semver from 'semver'
+import { LOWEST_OTF_VERSION } from "../util/constants.js"
 const os = getOS()
 
-const LOWEST_OTF_VERSION = '1.6.0'
 async function uninstall (uninstallVersion) {
   try {
     uninstallVersion = 'v' + uninstallVersion

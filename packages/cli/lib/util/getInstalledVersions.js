@@ -5,9 +5,9 @@ import getSettings from './getSettings.js'
 import { getOS } from './tfvmOS.js'
 import * as semver from 'semver'
 const os = getOS()
+import { LOWEST_OTF_VERSION } from "./constants.js"
 
 let installedVersions
-const LOWEST_OTF_VERSION = '1.6.0'
 
 /**
  * Returns a list of installed tf versions.

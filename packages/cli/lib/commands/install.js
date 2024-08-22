@@ -14,9 +14,9 @@ import { getOS, Mac } from '../util/tfvmOS.js'
 import { compare } from 'compare-versions'
 import * as semver from 'semver'
 const os = getOS()
+import { LOWEST_OTF_VERSION } from "../util/constants.js"
 
 const LAST_TF_VERSION_WITHOUT_ARM = '1.0.1'
-const LOWEST_OTF_VERSION = '1.6.0'
 
 async function install (versionNum) {
   try {
