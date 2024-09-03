@@ -2,34 +2,39 @@
 
 *A NodeJS-based CLI tool to manage terraform versions without needing admin access.*
 
-**Currently, this only works on Windows. Mac/Linux compatibility is a work-in-progress.**
+**Currently, this only works on Windows and Mac and Linux. (PR's welcome).**
 
 ## Setup
 
-### Step 1: Installation
-In order to use tfvm on windows, you must be able to run Powershell scripts, even if you call tfvm from another shell.
+### Step 0 (For Windows Users):
+
+In order to use tfvm on Windows, you must be able to run Powershell scripts, even if you call tfvm from another shell.
 To enable Powershell scripts to run on your machine, **run the following command in a Powershell window**
 (You do *not* need admin access to run this command):
 ```shell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
-Next, install tfvm. You will need to have node (≥v14) installed.
+### Step 1: Installation
+
+Install tfvm. You will need to have Node.js (≥v16) installed (some, but not all commands will also work with older versions).
 ```shell
 npm i -g @byu-oit/tfvm
 ```
 
-> If you frequently change versions of node and you wish to use tfvm in other node versions, you will need to re-install
+> If you frequently change versions of Node.js and you wish to use tfvm in other Node.js versions, you will need to re-install
 > tfvm in this way for each version.
 >
-> Fortunately, any installed terraform versions and your selected terraform version will be maintained for each node
-> version that you switch to, as they are stored on your system and not in node's files.
+> Fortunately, any installed terraform versions and your selected terraform version will be maintained for each Node.js
+> version that you switch to, as they are stored on your system and not in Node.js's files.
 
-### Step 2: Delete existing terraform setup
+### Step 2: Delete existing terraform setup and terraform version manager setup
 tfvm will auto-create directories and a variable in your 'Path' system environment variable for terraform setup.
-This will conflict with any terraform paths you already have.
-1. If you already have terraform set up on your computer, delete your entry for your terraform directory in your user path.
-2. You could leave your terraform.exe file(s), but you might as well delete them. tfvm will download its own files.
+This will conflict with any terraform paths or installations you already have.
+1. If you already have terraform set up on your computer, delete your entry for your terraform directory in your user path or from any `/bin` directories
+   1. If you know you have terraform installed but don't know where, you can run `which terraform` to help find it.
+2. You could leave your terraform executable (e.g. `.exe`) file(s), but you might as well delete them. tfvm will download its own files.
+3. If you are switching from another terraform version manager, you will probably have to uninstall it or remove any reference of it from your user PATH to use this package correctly.
 
 ### Step 3: Run tfvm for the first time
 1. Open up any command line
@@ -66,19 +71,21 @@ Run `tfvm` in any command line, followed by one of these commands:
     - `tfvm config disableErrors=true` - disables configuration warnings.
     - `tfvm config disableAWSWarnings=true` - disables AWS warnings that appear when using older terraform versions.
     - `tfvm config disableSettingPrompts=true` - disables prompts that show how to hide some error messages.
+    - `tfvm config useOpenTofu=true` - uses the open source version of Terraform, OpenTofu (experimental flag). This flag will also delete your terraform executable so you can only perfom tofu actions. When you switch back to `useOpenTofu=false`, the tofu executable will be deleted. This is so you don't perform any accidental commands in the wrong type of IAC.
+    - `tfvm config disableTofuWarnings=true` - disables warnings related to using Tofu (deleting executables, using Tofu instead of Terraform, etc.)
 - `help`: prints usage information. Run `tfvm help <command>` to see information about the other tfvm commands.
 
 ## FAQ
 **Q:** Why use this app instead of one of the other terraform version managers you can find?
 <br>
-**A:** It is the simplest to use for Windows and doesn't require administrator permissions.
+**A:** It is the simplest to use for Windows and doesn't require administrator permissions on Mac or Windows.
 Many terraform version managers don't support windows, and those that do are unintuitive.
 This one is simple and works well, especially for beginners to terraform.
 
 **Q:** I'm getting this error when running tfvm in powershell: `File C:\Users\<username>\nodejs\tfvm.ps1 cannot be
 loaded because running scripts is disabled on this system.`
 <br>
-**A:** Most custom CLI apps will throw this error. Run this command in Powershell to update your powershell execution policy:
+**A:** Most custom Node.js CLI apps will throw this error. Run this command in Powershell to update your powershell execution policy:
   ```shell
   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
   ```
@@ -92,7 +99,7 @@ At this time, tfvm will not allow you to select alpha, beta, or rc releases.
 **Q:** I'm seeing weird behavior or errors. Where can I view tfvm's logs for debugging?
 <br>
 **A:** The logs are stored separately from node so that they are maintained when you switch node versions.
-This should be somewhere like `~/AppData/Roaming/tfvm/logs`.
+This should be somewhere like `~/AppData/Roaming/tfvm/logs` (Windows) or `~/Library/Application Support/tfvm/logs` (Mac).
 
 > <sup>To generate more detailed logs, run tfvm with the `LOG_LEVEL` environment variable set to `debug` or `trace`.
 Alternatively, you can also use the `--log-level <level>` or `-l <level>` argument.

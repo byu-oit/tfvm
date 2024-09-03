@@ -1,5 +1,4 @@
 #! /usr/bin/env node
-
 import { Command } from 'commander'
 import list from './commands/list.js'
 import current from './commands/current.js'
@@ -65,10 +64,12 @@ program
   .action(config)
   .addHelpText('after', '\nAll settings are either true or false (default is false), and set like this:\n' +
     chalk.cyan('\n  tfvm config <setting>=<true/false>\n\n') +
-    'Herer are all the available settings:\n' +
+    'Here are all the available settings:\n' +
     'disableErrors - Disables some recurrent warning messages\n' +
     'disableAWSWarnings - Disables warnings about needing old AWS authentication with tf versions older than 0.14.6\n' +
-    'disableSettingsPrompts - Disables prompts to turn off warnings by enabling these settings')
+    'disableSettingsPrompts - Disables prompts to turn off warnings by enabling these settings\n' +
+    'useOpenTofu - Uses OpenTofu instead of Terraform\n' +
+    'disableTofuWarnings - Disables warnings related to using Tofu (deleting executables, using Tofu instead of Terraform, etc.)')
 
 program
   .command('install <version>')

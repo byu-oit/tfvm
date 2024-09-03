@@ -8,7 +8,6 @@ function getErrorMessage (error) {
     console.log(chalk.red.bold('Unexpected EPERM error while trying to copy files.'))
   } else {
     logger.fatal(error, `Unexpected error in getErrorMessage(${error}):`)
-    console.error(error)
   }
 }
 

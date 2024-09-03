@@ -1,18 +1,21 @@
 import pino from 'pino'
 import { fileURLToPath } from 'url'
-import { TfvmFS } from './getDirectoriesObj.js'
+import { getOS } from './tfvmOS.js'
 import fs from 'node:fs'
 
+const os = getOS()
 // today's date in YYYY-MM-DD format
 const date = new Date().toISOString().split('T')[0]
 
+// TODO re-enable logging
 // before creating a log file, make sure the logs folder exists (and its parent tfvm folder)
-if (!fs.existsSync(TfvmFS.tfvmDir)) fs.mkdirSync(TfvmFS.tfvmDir)
-if (!fs.existsSync(TfvmFS.logsDir)) fs.mkdirSync(TfvmFS.logsDir)
+if (!fs.existsSync(os.getOtfvmDir())) fs.mkdirSync(os.getOtfvmDir())
+if (!fs.existsSync(os.getTfvmDir())) fs.mkdirSync(os.getTfvmDir())
+if (!fs.existsSync(os.getLogsDir())) fs.mkdirSync(os.getLogsDir())
 
 // store logs in AppData so that they are maintained when switching node versions
 // at most one log file is created per day
-const todaysLogFile = TfvmFS.getPath(TfvmFS.logsDir, date + '.log')
+const todaysLogFile = os.getPath(os.getLogsDir(), date + '.log')
 
 export const logger = pino({
   transport: {
@@ -34,5 +37,5 @@ export function printDebugInfo (err) {
   logger.info(`process.platform: ${process.platform}`)
   logger.info(`process.env.HOME: ${process.env.HOME}`)
   logger.info(`fileURLToPath(import.meta.url): ${fileURLToPath(import.meta.url)}`)
-  logger.info(`TfvmFS.getDirectoriesObj(): ${JSON.stringify(TfvmFS.getDirectoriesObj())}`)
+  logger.info(`directoriesObj: ${os.getDirectories()}`)
 }

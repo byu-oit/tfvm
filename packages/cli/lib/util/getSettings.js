@@ -1,14 +1,17 @@
 import fs from 'node:fs/promises'
 import { logger } from './logger.js'
-import { TfvmFS } from './getDirectoriesObj.js'
+import { getOS } from './tfvmOS.js'
 
+const os = getOS()
 let settings
 
 // This should be updated to create new settings
 export const defaultSettings = {
   disableErrors: false,
   disableAWSWarnings: false,
-  disableSettingPrompts: false
+  disableSettingPrompts: false,
+  useOpenTofu: false,
+  disableTofuWarnings: false
 }
 
 /**
@@ -18,7 +21,7 @@ export const defaultSettings = {
 export default async function () {
   if (!settings) {
     // store settings in AppData so that they are maintained when switching node versions
-    const settingsFilePath = TfvmFS.settingsDir
+    const settingsFilePath = os.getSettingsDir()
     try {
       settings = JSON.parse(await fs.readFile(settingsFilePath, { encoding: 'utf8' }))
       logger.trace(settings, 'Settings: ')

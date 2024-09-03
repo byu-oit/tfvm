@@ -3,6 +3,93 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0-beta.6](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.3.0-beta.5...@byu-oit/tfvm@0.3.0-beta.6) (2024-08-22)
+
+**Note:** Version bump only for package @byu-oit/tfvm
+
+
+
+
+
+# [0.3.0-beta.5](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.3.0-beta.4...@byu-oit/tfvm@0.3.0-beta.5) (2024-08-19)
+
+
+### Features
+
+* opentofu support ([#99](https://github.com/byu-oit/tfvm/issues/99)) ([dcfc32e](https://github.com/byu-oit/tfvm/commit/dcfc32e02b89995bf92d5f85d421fa4e670b29fc))
+
+
+
+
+
+# [0.3.0-beta.4](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.3.0-beta.3...@byu-oit/tfvm@0.3.0-beta.4) (2024-02-16)
+
+
+### Bug Fixes
+
+* linting ([9f08e22](https://github.com/byu-oit/tfvm/commit/9f08e22f051c202d619ba9f4a4733934b6952b52))
+* stop the hanging after failed downlaod ([0ab23b7](https://github.com/byu-oit/tfvm/commit/0ab23b78056d04651a48663c669099bca5ec4271))
+
+
+
+
+
+# [0.3.0-beta.3](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.3.0-beta.2...@byu-oit/tfvm@0.3.0-beta.3) (2024-02-15)
+
+
+### Bug Fixes
+
+* update readem and GHA mods ([1a0f5bc](https://github.com/byu-oit/tfvm/commit/1a0f5bc06b8170a5e37c1ab23363f76a2c6b9c69))
+
+
+
+
+
+# [0.3.0-beta.2](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.3.0-beta.1...@byu-oit/tfvm@0.3.0-beta.2) (2024-02-15)
+
+
+### Bug Fixes
+
+* bash script ([03f3b84](https://github.com/byu-oit/tfvm/commit/03f3b842c025d15a9d9d15000f3d76197d528d40))
+* lint ([20b6a8a](https://github.com/byu-oit/tfvm/commit/20b6a8a9738526ecbd35dcee0fcf5476574258dd))
+
+
+### Features
+
+* add linux ([30c37de](https://github.com/byu-oit/tfvm/commit/30c37de1484f66bc342ecb22fb6470f6bd6dc9dd))
+* enable linux support ([471b88b](https://github.com/byu-oit/tfvm/commit/471b88bce5b86ff73c125900de8fd834c4be3e2a))
+
+
+
+
+
+# [0.3.0-beta.1](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.3.0-beta.0...@byu-oit/tfvm@0.3.0-beta.1) (2024-02-15)
+
+
+### Bug Fixes
+
+* logging errors ([#80](https://github.com/byu-oit/tfvm/issues/80)) ([8fcd046](https://github.com/byu-oit/tfvm/commit/8fcd046c2e96070afc534cfba30f7ce24c8baadf))
+
+
+
+
+
+# [0.3.0-beta.0](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.2.0...@byu-oit/tfvm@0.3.0-beta.0) (2024-02-15)
+
+
+### Bug Fixes
+
+* add path.sep for all operatign systs ([db4ae03](https://github.com/byu-oit/tfvm/commit/db4ae03aabb1104c9a32257ee533437982b80fff))
+
+
+### Features
+
+* enable mac support ([86cfffa](https://github.com/byu-oit/tfvm/commit/86cfffac89785c8ca79ecb362e7c2b01d67c84d0))
+
+
+
+
+
 # [0.2.0](https://github.com/byu-oit/tfvm/compare/@byu-oit/tfvm@0.1.0...@byu-oit/tfvm@0.2.0) (2023-08-01)
 
 
