@@ -1,3 +1,7 @@
+# Deprecation
+Use [tenv](https://github.com/tofuutils/tenv) instead. It can manage both OpenTofu and Terraform. It seems likely that
+it doesn't require admin access from a brief search, but that is unverified.
+
 # TFVM - Terraform Version Manager
 *A NodeJS-based CLI tool to manage terraform and opentofu versions without needing admin access.*
 
